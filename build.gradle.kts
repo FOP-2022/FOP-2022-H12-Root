@@ -44,6 +44,7 @@ tasks {
             archiveFileName.set("FOP-2022-H12-${project.version}.jar")
             from(sourceSets.main.get().allSource)
             from(sourceSets.test.get().allSource)
+            from(grader.allSource)
         }
     }
     withType<JavaCompile> {
