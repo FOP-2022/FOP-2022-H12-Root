@@ -16,7 +16,9 @@ class StudentExamTableIOTest {
 
     @Test
     void testWriteStudentExamTable() throws IOException {
-        assumeTrue(ioFactory.supportsWriter()); // skips test if false
+        assumeTrue(ioFactory.supportsWriter());
+        TableWithTitle table1 = TableGenerator.createTable(50, 2);
+        TableWithTitle table2 = TableGenerator.createTable(100, 3);
         try (BufferedWriter wr = ioFactory.createWriter("test.txt")) {
             StudentExamEntry[] entries = {
                 new StudentExamEntry("a", "b", 2, "1,3"),
