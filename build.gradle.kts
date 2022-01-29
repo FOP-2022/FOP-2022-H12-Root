@@ -17,6 +17,7 @@ val grader: SourceSet by sourceSets.creating {
 }
 
 dependencies {
+    implementation("org.jetbrains:annotations:23.0.0")
     "graderImplementation"("org.sourcegrade:jagr-launcher:0.4.0-SNAPSHOT")
     testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
 }
@@ -26,11 +27,26 @@ application {
 }
 
 tasks {
+    val runDir = File("build/run")
+    named<JavaExec>("run") {
+        doFirst {
+            runDir.mkdirs()
+        }
+        workingDir = runDir
+    }
     test {
+        doFirst {
+            runDir.mkdirs()
+        }
+        workingDir = runDir
         useJUnitPlatform()
     }
     val graderTest by creating(Test::class) {
         group = "verification"
+        doFirst {
+            runDir.mkdirs()
+        }
+        workingDir = runDir
         testClassesDirs = grader.output.classesDirs
         classpath = grader.runtimeClasspath
         useJUnitPlatform()
