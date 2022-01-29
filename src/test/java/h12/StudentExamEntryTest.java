@@ -32,19 +32,6 @@ class StudentExamEntryTest {
     }
 
     @Test
-    void testMarks() {
-        StudentExamEntry entry = assertDoesNotThrow(() ->
-            new StudentExamEntry("a", "b", 1));
-        assertEquals("n/a", entry.getMark());
-        for (String validMark : VALID_MARKS) {
-            assertDoesNotThrow(() -> entry.setMark(validMark), "setMark unexpectedly failed for mark " + validMark);
-            assertEquals(validMark, entry.getMark());
-        }
-        assertThrows(BadStudentMarkException.class, () -> entry.setMark("hello"));
-        assertThrows(NullPointerException.class, () -> entry.setMark(null));
-    }
-
-    @Test
     void testConstructorsThrow() {
         assertThrows(NullPointerException.class,
             () -> new StudentExamEntry(null, "b", 1, "1,0"));
@@ -63,5 +50,18 @@ class StudentExamEntryTest {
             new StudentExamEntry("!", "a", 1, "1,0")).getMessage());
         assertEquals("Bad char '!' at position 5", assertThrows(BadCharException.class, () ->
             new StudentExamEntry("a", "aaaaa!", 1, "1,0")).getMessage());
+    }
+
+    @Test
+    void testMarks() {
+        StudentExamEntry entry = assertDoesNotThrow(() ->
+            new StudentExamEntry("a", "b", 1));
+        assertEquals("n/a", entry.getMark());
+        for (String validMark : VALID_MARKS) {
+            assertDoesNotThrow(() -> entry.setMark(validMark), "setMark unexpectedly failed for mark " + validMark);
+            assertEquals(validMark, entry.getMark());
+        }
+        assertThrows(BadStudentMarkException.class, () -> entry.setMark("hello"));
+        assertThrows(NullPointerException.class, () -> entry.setMark(null));
     }
 }
