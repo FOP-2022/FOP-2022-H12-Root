@@ -13,7 +13,7 @@ public class ResourceIOFactory implements IOFactory {
 
     @Override
     public BufferedReader createReader(String resourceName) throws IOException {
-        final @Nullable InputStream resourceStream = IOFactory.class.getResourceAsStream(resourceName);
+        final @Nullable InputStream resourceStream = getClass().getResourceAsStream(resourceName);
         if (resourceStream == null) {
             throw new IOException("Could not find %s/%s".formatted(getClass().getPackageName(), resourceName));
         }
