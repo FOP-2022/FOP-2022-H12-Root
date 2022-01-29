@@ -58,7 +58,7 @@ public class StudentExamTableIO {
         final String lastName = elements[1];
         final int enrollmentNumber = Integer.parseInt(elements[2]);
         final String mark;
-        if (elements[3].isEmpty()) {
+        if (elements.length < 4) {
             mark = "n/a";
         } else {
             mark = elements[3];
