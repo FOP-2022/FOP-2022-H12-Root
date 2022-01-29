@@ -31,6 +31,10 @@ class StudentExamEntry {
     private String mark;
 
     public StudentExamEntry(String firstName, String lastName, int enrollmentNumber) {
+        this(firstName, lastName, enrollmentNumber, VALID_MARKS[VALID_MARKS.length - 1] /* "n/a" */);
+    }
+
+    public StudentExamEntry(String firstName, String lastName, int enrollmentNumber, String mark) {
         this.firstName = Objects.requireNonNull(firstName);
         this.lastName = Objects.requireNonNull(lastName);
         if (enrollmentNumber <= 0) {
@@ -38,11 +42,6 @@ class StudentExamEntry {
         }
         this.enrollmentNumber = enrollmentNumber;
         ensureNoBadChar(firstName, lastName);
-        mark = VALID_MARKS[VALID_MARKS.length - 1]; // "n/a"
-    }
-
-    public StudentExamEntry(String firstName, String lastName, int enrollmentNumber, String mark) {
-        this(firstName, lastName, enrollmentNumber);
         setMark(mark);
     }
 
@@ -73,7 +72,7 @@ class StudentExamEntry {
         return mark;
     }
 
-    final void setMark(String mark) {
+    public void setMark(String mark) {
         Objects.requireNonNull(mark);
         if (!List.of(VALID_MARKS).contains(mark)) {
             throw new BadStudentMarkException(mark);
