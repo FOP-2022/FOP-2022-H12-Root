@@ -10,7 +10,7 @@ class StudentExamEntry {
         '!',
     };
 
-    private static final String[] VALID_MARKS = {
+    static final String[] VALID_MARKS = {
         "1,0",
         "1,3",
         "1,7",
@@ -79,5 +79,21 @@ class StudentExamEntry {
             throw new BadStudentMarkException(mark);
         }
         this.mark = mark;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        StudentExamEntry entry = (StudentExamEntry) o;
+        return enrollmentNumber == entry.enrollmentNumber
+            && firstName.equals(entry.firstName)
+            && lastName.equals(entry.lastName)
+            && mark.equals(entry.mark);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(firstName, lastName, enrollmentNumber, mark);
     }
 }

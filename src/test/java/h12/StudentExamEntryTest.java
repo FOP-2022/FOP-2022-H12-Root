@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class StudentExamEntryTest {
 
-    private static final String[] VALID_MARKS = {
+    static final String[] VALID_MARKS = {
         "1,0",
         "1,3",
         "1,7",

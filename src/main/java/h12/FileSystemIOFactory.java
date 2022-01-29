@@ -17,4 +17,14 @@ public class FileSystemIOFactory implements IOFactory {
     public BufferedWriter createWriter(String resourceName) throws IOException {
         return new BufferedWriter(new FileWriter(resourceName));
     }
+
+    @Override
+    public boolean supportsReader() {
+        return true;
+    }
+
+    @Override
+    public boolean supportsWriter() {
+        return true;
+    }
 }

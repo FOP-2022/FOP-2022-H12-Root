@@ -24,4 +24,14 @@ public class ResourceIOFactory implements IOFactory {
     public BufferedWriter createWriter(String resourceName) {
         throw new UnsupportedOperationException("%s does not support writing!".formatted(getClass().getName()));
     }
+
+    @Override
+    public boolean supportsReader() {
+        return true;
+    }
+
+    @Override
+    public boolean supportsWriter() {
+        return false;
+    }
 }
