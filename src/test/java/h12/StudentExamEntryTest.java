@@ -39,10 +39,10 @@ class StudentExamEntryTest {
             () -> new StudentExamEntry("b", null, 1, "1,0"));
         assertThrows(NullPointerException.class,
             () -> new StudentExamEntry("a", "b", 1, null));
-        assertThrows(BadEnrollmentNumberException.class,
-            () -> new StudentExamEntry("a", "b", -5, "1,3"));
-        assertThrows(BadStudentMarkException.class,
-            () -> new StudentExamEntry("a", "b", 2, "1,4"));
+        assertEquals("Bad enrollment number '-5'", assertThrows(BadEnrollmentNumberException.class,
+            () -> new StudentExamEntry("a", "b", -5, "1,3")).getMessage());
+        assertEquals("Bad student mark '1,4'", assertThrows(BadStudentMarkException.class,
+            () -> new StudentExamEntry("a", "b", 2, "1,4")).getMessage());
 
         assertEquals("Bad char ':' at position 0", assertThrows(BadCharException.class, () ->
             new StudentExamEntry(":", "a", 1, "1,0")).getMessage());
