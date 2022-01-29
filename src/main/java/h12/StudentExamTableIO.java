@@ -65,7 +65,4 @@ public class StudentExamTableIO {
         }
         return new StudentExamEntry(firstName, lastName, enrollmentNumber, mark);
     }
-
-    void testWriteAndReadStudentExamTable() {
-    }
 }
