@@ -65,8 +65,8 @@ tasks {
     }
     withType<JavaCompile> {
         options.encoding = "UTF-8"
-        sourceCompatibility = "11"
-        targetCompatibility = "11"
+        sourceCompatibility = "17"
+        targetCompatibility = "17"
     }
     jar {
         enabled = false
