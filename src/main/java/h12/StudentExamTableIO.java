@@ -52,7 +52,7 @@ public class StudentExamTableIO {
         return new TableWithTitle(tableName, entries);
     }
 
-    public static StudentExamEntry readStudentExamEntry(String line) throws IOException {
+    public static StudentExamEntry readStudentExamEntry(String line) {
         final String[] elements = line.split(":");
         final String firstName = elements[0];
         final String lastName = elements[1];
