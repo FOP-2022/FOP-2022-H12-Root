@@ -17,11 +17,11 @@ public class StudentExamTableIO {
         writer.write(Integer.toString(entries.length));
         writer.write('\n');
         for (StudentExamEntry entry : entries) {
-            writeStudentEntry(writer, entry);
+            writeStudentExamEntry(writer, entry);
         }
     }
 
-    private static void writeStudentEntry(Writer writer, StudentExamEntry entry) throws IOException {
+    public static void writeStudentExamEntry(Writer writer, StudentExamEntry entry) throws IOException {
         writer.write(entry.getFirstName());
         writer.write(':');
         writer.write(entry.getLastName());
@@ -52,7 +52,7 @@ public class StudentExamTableIO {
         return new TableWithTitle(tableName, entries);
     }
 
-    private static StudentExamEntry readStudentExamEntry(String line) throws IOException {
+    public static StudentExamEntry readStudentExamEntry(String line) throws IOException {
         final String[] elements = line.split(":");
         final String firstName = elements[0];
         final String lastName = elements[1];
