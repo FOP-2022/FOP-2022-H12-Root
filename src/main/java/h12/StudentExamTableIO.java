@@ -6,9 +6,9 @@ import java.io.Writer;
 
 public class StudentExamTableIO {
 
-    public static void writeStudentExamTable(Writer writer, StudentExamEntry[] entries, String input) throws IOException {
+    public static void writeStudentExamTable(Writer writer, StudentExamEntry[] entries, String title) throws IOException {
         writer.write('!');
-        writer.write(input);
+        writer.write(title);
         writer.write('\n');
         writeStudentExamTable(writer, entries);
     }
