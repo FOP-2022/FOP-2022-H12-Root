@@ -36,6 +36,34 @@ class StudentExamTableIOTest {
     }
 
     @Test
+    void testWriteStudentExamTableComplex() throws IOException {
+        assumeTrue(ioFactory.supportsWriter());
+        assumeTrue(ioFactory.supportsReader());
+        final int size = 50;
+        final TableWithTitle table = TableGenerator.createTable(size, 2);
+        final String fileName = "testWriteStudentExamTableComplex.txt";
+        try (BufferedWriter bw = ioFactory.createWriter(fileName)) {
+            StudentExamTableIO.writeStudentExamTable(bw, table.getEntries(), table.getTitle());
+        }
+        try (BufferedReader br = ioFactory.createReader(fileName)) {
+            assertEquals("!" + table.getTitle(), br.readLine());
+            assertEquals(size, assertDoesNotThrow(() -> Integer.parseInt(br.readLine())));
+            @Nullable String next;
+            for (int i = 0; i < size; i++) {
+                if ((next = br.readLine()) == null) {
+                    break;
+                }
+                final StudentExamEntry entry = table.getEntries()[i];
+                final String expected = entry.getFirstName() + ":"
+                    + entry.getLastName() + ":"
+                    + entry.getEnrollmentNumber() + ":"
+                    + (entry.getMark().equals("n/a") ? "" : entry.getMark());
+                assertEquals(expected, next);
+            }
+        }
+    }
+
+    @Test
     void testWriteAndReadStudentTable() throws IOException {
         assumeTrue(ioFactory.supportsWriter());
         assumeTrue(ioFactory.supportsReader());
