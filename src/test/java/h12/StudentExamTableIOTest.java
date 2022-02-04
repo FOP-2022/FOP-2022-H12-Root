@@ -51,7 +51,7 @@ class StudentExamTableIOTest {
             @Nullable String next;
             for (int i = 0; i < size; i++) {
                 if ((next = br.readLine()) == null) {
-                    break;
+                    fail("Expected more lines");
                 }
                 final StudentExamEntry entry = table.getEntries()[i];
                 final String expected = entry.getFirstName() + ":"
@@ -60,6 +60,7 @@ class StudentExamTableIOTest {
                     + (entry.getMark().equals("n/a") ? "" : entry.getMark());
                 assertEquals(expected, next);
             }
+            assertNull(br.readLine());
         }
     }
 
