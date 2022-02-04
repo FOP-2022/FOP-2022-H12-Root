@@ -1,14 +1,18 @@
 package h12;
 
-import org.junit.jupiter.api.Assertions;
+import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.Test;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assumptions.*;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 class StudentExamTableIOTest {
 
@@ -32,6 +36,25 @@ class StudentExamTableIOTest {
         try (BufferedReader br = ioFactory.createReader("test.txt")) {
             TableWithTitle table = StudentExamTableIO.readStudentExamTable(br);
             System.out.println(table.getEntries()[0].getFirstName());
+        }
+    }
+
+    @Test
+    void testReadStudentExamEntry() {
+        for (int i = 0; i < 10; i++) {
+            final String firstName = new String(TestConstants.A_Z, i, 5);
+            final String lastName = new String(TestConstants.A_Z, i + 1, 5);
+            final int enrollmentNumber = 54321 + 1234 * i;
+            final String mark = TestConstants.VALID_MARKS[i * 7 % (TestConstants.VALID_MARKS.length - 1)];
+            final String actualEntry = firstName + ":"
+                + lastName + ":"
+                + enrollmentNumber + ":"
+                + (mark.equals("n/a") ? "" : mark);
+            final StudentExamEntry entry = StudentExamTableIO.readStudentExamEntry(actualEntry);
+            assertEquals(firstName, entry.getFirstName());
+            assertEquals(lastName, entry.getLastName());
+            assertEquals(enrollmentNumber, entry.getEnrollmentNumber());
+            assertEquals(mark, entry.getMark());
         }
     }
 

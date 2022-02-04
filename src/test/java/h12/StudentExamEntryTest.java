@@ -8,21 +8,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class StudentExamEntryTest {
 
-    static final String[] VALID_MARKS = {
-        "1,0",
-        "1,3",
-        "1,7",
-        "2,0",
-        "2,3",
-        "2,7",
-        "3,0",
-        "3,3",
-        "3,7",
-        "4,0",
-        "5,0",
-        "n/a",
-    };
-
     @Test
     void testConstructorsWork() {
         assertDoesNotThrow(() ->
@@ -56,7 +41,7 @@ class StudentExamEntryTest {
         StudentExamEntry entry = assertDoesNotThrow(() ->
             new StudentExamEntry("a", "b", 1));
         assertEquals("n/a", entry.getMark());
-        for (String validMark : VALID_MARKS) {
+        for (String validMark : TestConstants.VALID_MARKS) {
             assertDoesNotThrow(() -> entry.setMark(validMark), "setMark unexpectedly failed for mark " + validMark);
             assertEquals(validMark, entry.getMark());
         }

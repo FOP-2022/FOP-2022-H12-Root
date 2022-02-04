@@ -4,19 +4,11 @@ import java.util.Random;
 
 class TableGenerator {
 
-    private static final char[] A_Z = new char[26];
-
-    static {
-        for (int i = 0; i < A_Z.length; i++) {
-            A_Z[i] = (char) (97 + i);
-        }
-    }
-
     private static String createRandomString(Random random) {
         final int size = random.nextInt(5, 20);
         final char[] chars = new char[size];
         for (int i = 0; i < size; i++) {
-            chars[i] = A_Z[random.nextInt(A_Z.length)];
+            chars[i] = TestConstants.A_Z[random.nextInt('z')];
         }
         return new String(chars);
     }
