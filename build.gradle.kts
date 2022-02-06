@@ -67,7 +67,7 @@ tasks {
         group = "build"
         duplicatesStrategy = DuplicatesStrategy.EXCLUDE
         val runtimeDeps = grader.runtimeClasspath.mapNotNull {
-            if (it.path.toLowerCase().contains("h08")) {
+            if (it.path.toLowerCase().contains("h12")) {
                 null
             } else if (it.isDirectory) {
                 it
@@ -76,7 +76,7 @@ tasks {
             }
         }
         from(runtimeDeps)
-        archiveFileName.set("FOP-2022-H08-${project.version}-libs.jar")
+        archiveFileName.set("FOP-2022-H12-${project.version}-libs.jar")
     }
     create("graderAll") {
         group = "build"
