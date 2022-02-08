@@ -18,6 +18,7 @@ public class StudentExamTableIO {
         writer.write('\n');
         for (StudentExamEntry entry : entries) {
             writeStudentExamEntry(writer, entry);
+            writer.write('\n');
         }
     }
 
@@ -32,7 +33,6 @@ public class StudentExamTableIO {
         if (!mark.equals("n/a")) {
             writer.write(mark);
         }
-        writer.write('\n');
     }
 
     public static TableWithTitle readStudentExamTable(BufferedReader reader) throws IOException {
