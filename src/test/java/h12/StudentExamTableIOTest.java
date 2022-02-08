@@ -22,12 +22,12 @@ class StudentExamTableIOTest {
     void testWriteStudentExamTable() throws IOException {
         assumeTrue(ioFactory.supportsWriter());
         TableWithTitle table1 = TableGenerator.createTable(50, 2);
-        TableWithTitle table2 = TableGenerator.createTable(100, 3);
+        TableWithTitle table2 = new TableWithTitle(null, TableGenerator.createEntries(50, 3));
         try (BufferedWriter wr = ioFactory.createWriter("test.txt")) {
-            StudentExamEntry[] entries = {
-                new StudentExamEntry("a", "b", 2, "1,3"),
-            };
-            StudentExamTableIO.writeStudentExamTable(wr, entries);
+            assertDoesNotThrow(() -> StudentExamTableIO.writeStudentExamTable(wr, table1.getEntries(), table1.getTitle()));
+        }
+        try (BufferedWriter wr = ioFactory.createWriter("test2.txt")) {
+            assertDoesNotThrow(() -> StudentExamTableIO.writeStudentExamTable(wr, table2.getEntries()));
         }
     }
 
