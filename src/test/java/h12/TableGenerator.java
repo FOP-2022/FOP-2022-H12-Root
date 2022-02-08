@@ -8,7 +8,7 @@ class TableGenerator {
         final int size = random.nextInt(5, 20);
         final char[] chars = new char[size];
         for (int i = 0; i < size; i++) {
-            chars[i] = TestConstants.A_Z[random.nextInt('z')];
+            chars[i] = TestConstants.A_Z[random.nextInt('z' - 'a')];
         }
         return new String(chars);
     }
