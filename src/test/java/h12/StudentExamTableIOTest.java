@@ -88,7 +88,7 @@ class StudentExamTableIOTest {
     }
 
     @Test
-    void testWriteAndReadStudentTable() throws IOException {
+    void testWriteAndReadStudentExamTable() throws IOException {
         assumeTrue(ioFactory.supportsWriter());
         assumeTrue(ioFactory.supportsReader());
         final int tableCount = 100;
