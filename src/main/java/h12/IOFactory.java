@@ -17,7 +17,7 @@ public interface IOFactory {
     BufferedReader createReader(String resourceName) throws IOException;
 
     /**
-     * Creates a {@link BufferedReader} for writing to the provided resource.
+     * Creates a {@link BufferedWriter} for writing to the provided resource.
      *
      * @param resourceName The resource to write to
      * @return A {@link BufferedWriter} to write to the resource
