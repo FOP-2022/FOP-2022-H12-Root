@@ -21,8 +21,8 @@ class StudentExamTableIOTest {
     @Test
     void testWriteStudentExamTable() throws IOException {
         assumeTrue(ioFactory.supportsWriter());
-        TableWithTitle table1 = TableGenerator.createTable(50, 2);
-        TableWithTitle table2 = new TableWithTitle(null, TableGenerator.createEntries(50, 3));
+        final TableWithTitle table1 = TableGenerator.createTable(50, 2);
+        final TableWithTitle table2 = new TableWithTitle(null, TableGenerator.createEntries(50, 3));
         try (BufferedWriter wr = ioFactory.createWriter("test.txt")) {
             assertDoesNotThrow(() -> StudentExamTableIO.writeStudentExamTable(wr, table1.getEntries(), table1.getTitle()));
         }
@@ -33,9 +33,9 @@ class StudentExamTableIOTest {
 
     @Test
     void testReadStudentExamTable() throws IOException {
+        assumeTrue(ioFactory.supportsReader());
         try (BufferedReader br = ioFactory.createReader("test.txt")) {
-            TableWithTitle table = StudentExamTableIO.readStudentExamTable(br);
-            System.out.println(table.getEntries()[0].getFirstName());
+            assertDoesNotThrow(() -> StudentExamTableIO.readStudentExamTable(br));
         }
     }
 
