@@ -5,7 +5,7 @@ import java.util.Random;
 class TableGenerator {
 
     private static String createRandomString(Random random) {
-        final int size = random.nextInt(5, 20);
+        final int size = random.nextInt(5, 26);
         final char[] chars = new char[size];
         for (int i = 0; i < size; i++) {
             chars[i] = TestConstants.A_Z[random.nextInt('z' - 'a')];
@@ -23,7 +23,7 @@ class TableGenerator {
         for (int i = 0; i < size; i++) {
             final String firstName = createRandomString(random);
             final String lastName = createRandomString(random);
-            final int enrollmentNumber = random.nextInt(500, 2000);
+            final int enrollmentNumber = random.nextInt(1000, 10000000);
             final String mark = marks[random.nextInt(marks.length)];
             result[i] = new StudentExamEntry(firstName, lastName, enrollmentNumber, mark);
         }
