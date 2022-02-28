@@ -12,13 +12,15 @@ repositories {
 }
 
 val grader: SourceSet by sourceSets.creating {
-    compileClasspath += sourceSets.test.get().compileClasspath
-    runtimeClasspath += output + compileClasspath
+    val test = sourceSets.test.get()
+    compileClasspath += test.output + test.compileClasspath
+    runtimeClasspath += output + test.runtimeClasspath
 }
 
 dependencies {
     implementation("org.jetbrains:annotations:23.0.0")
     "graderCompileOnly"("org.sourcegrade:jagr-launcher:0.4.0-SNAPSHOT")
+    "graderImplementation"("org.ow2.asm:asm-util:9.2")
     testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
 }
 
@@ -66,8 +68,17 @@ tasks {
     val graderLibs by creating(Jar::class) {
         group = "build"
         duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+        // don't include Jagr's runtime dependencies
+        val jagrRuntime = configurations["graderCompileClasspath"]
+            .resolvedConfiguration
+            .firstLevelModuleDependencies
+            .first { it.moduleGroup == "org.sourcegrade" && it.moduleName == "jagr-launcher" }
+            .allModuleArtifacts
+            .map { it.file }
+
         val runtimeDeps = grader.runtimeClasspath.mapNotNull {
-            if (it.path.toLowerCase().contains("h12")) {
+            if (it.path.toLowerCase().contains("h12") || jagrRuntime.contains(it)) {
                 null
             } else if (it.isDirectory) {
                 it
