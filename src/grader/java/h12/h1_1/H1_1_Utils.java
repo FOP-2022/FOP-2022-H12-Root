@@ -1,8 +1,8 @@
-package h12;
+package h12.h1_1;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class ExceptionTestUtil {
+class H1_1_Utils {
 
     static void checkException(Class<? extends Throwable> type) {
         assertEquals(

@@ -7,11 +7,43 @@
     {
       "name": "grader",
       "files": [
+        "h12/h1_1/BadCharExceptionTutorTest.java",
+        "h12/h1_1/BadEnrollmentNumberExceptionTutorTest.java",
+        "h12/h1_1/BadStudentMarkExceptionTutorTest.java",
+        "h12/h1_1/ExceptionTest.java",
+        "h12/h1_1/H1_1_Utils.java",
+        "h12/h1_1/StudentExamEntryGeneralTutorTest.java",
+        "h12/h1_1/StudentExamEntrySignaturesTutorTest.java",
+        "h12/h1_2/StudentExamEntryEqualsTutorTest.java",
+        "h12/transform/StudentExamEntryCtorVerifier.java",
+        "h12/transform/StudentExamEntryMeta.java",
+        "h12/transform/StudentExamTableIOTestTransformer.java",
+        "h12/transform/TutorAssertions.java",
+        "h12/H12_RubricProvider.java",
+        "h12/StudentExamEntryTestFunctionTutorTest.java",
+        "h12/StudentExamEntryTestSignaturesTutorTest.java",
+        "h12/TutorIOFactory.java",
+        "h12/TutorIOFileSystem.java",
+        "h12/TutorUtils.java"
       ]
     },
     {
       "name": "solution",
       "files": [
+        "h12/BadCharException.java",
+        "h12/BadEnrollmentNumberException.java",
+        "h12/BadStudentMarkException.java",
+        "h12/FileSystemIOFactory.java",
+        "h12/IOFactory.java",
+        "h12/Main.java",
+        "h12/ResourceIOFactory.java",
+        "h12/StudentExamEntry.java",
+        "h12/StudentExamTableIO.java",
+        "h12/TableWithTitle.java",
+        "h12/StudentExamEntryTest.java",
+        "h12/StudentExamTableIOTest.java",
+        "h12/TableGenerator.java",
+        "h12/TestConstants.java"
       ]
     }
   ]

@@ -3,7 +3,7 @@ package h12;
 import java.util.List;
 import java.util.Objects;
 
-class StudentExamEntry {
+public class StudentExamEntry {
 
     private static final char[] BAD_CHARS = {
         ':',
@@ -30,6 +30,10 @@ class StudentExamEntry {
     private final int enrollmentNumber;
     private String mark;
 
+    private static void baz(String[] foo) {
+
+    }
+
     public StudentExamEntry(String firstName, String lastName, int enrollmentNumber) {
         this(firstName, lastName, enrollmentNumber, VALID_MARKS[VALID_MARKS.length - 1] /* "n/a" */);
     }
@@ -43,6 +47,17 @@ class StudentExamEntry {
         this.enrollmentNumber = enrollmentNumber;
         ensureNoBadChar(firstName, lastName);
         setMark(mark);
+        String[] foo = {
+            "bar1",
+            "bar2",
+            "bar2",
+            "bar2",
+            "bar2",
+            "bar2",
+            "bar2",
+            "bar2",
+        };
+        baz(foo);
     }
 
     private void ensureNoBadChar(String... inputs) {
