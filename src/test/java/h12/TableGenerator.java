@@ -4,6 +4,7 @@ import org.jetbrains.annotations.VisibleForTesting;
 
 import java.util.Random;
 
+@VisibleForTesting
 public class TableGenerator {
 
     private static String createRandomString(Random random) {

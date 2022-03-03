@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Writer;
 
+@SuppressWarnings("DuplicatedCode")
 public class StudentExamTableIO {
 
     public static void writeStudentExamTable(Writer writer, StudentExamEntry[] entries, String title) throws IOException {

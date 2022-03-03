@@ -1,7 +1,5 @@
 package h12;
 
-import org.jetbrains.annotations.VisibleForTesting;
-
 import java.util.Random;
 
 public class TutorTableGenerator {
@@ -61,6 +59,10 @@ public class TutorTableGenerator {
 
     public static TableWithTitle createTable(int size, long seed) {
         final Random random = new Random(seed);
+        return createTable(size, random);
+    }
+
+    public static TableWithTitle createTable(int size, Random random) {
         final StudentExamEntry[] entries = createEntries(size, random);
         return new TableWithTitle(createRandomString(random), entries);
     }

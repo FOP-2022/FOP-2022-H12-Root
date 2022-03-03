@@ -10,11 +10,14 @@ import h12.h1_2.StudentExamEntryEqualsTutorTest;
 import h12.h1_3.StudentExamEntryTestFunctionTutorTest;
 import h12.h1_3.StudentExamEntryTestSignaturesTutorTest;
 import h12.h2_1.StudentExamTableIOSignaturesTutorTest;
+import h12.h2_1.StudentExamTableIOWriteEntryTutorTest;
+import h12.h2_1.StudentExamTableIOWriteTable2TutorTest;
+import h12.h2_1.StudentExamTableIOWriteTable3TutorTest;
 import h12.h2_1.TableWithTitleGeneralTutorTest;
 import h12.h2_1.TableWithTitleSignaturesTutorTest;
 import h12.transform.AccessTransformer;
-import h12.transform.StudentExamEntryTestTransformer;
 import h12.transform.StudentExamEntryCtorVerifier;
+import h12.transform.StudentExamEntryTestTransformer;
 import h12.transform.TutorAssertions;
 import org.junit.jupiter.api.Assertions;
 import org.sourcegrade.jagr.api.rubric.Criterion;
@@ -227,6 +230,12 @@ public class H12_RubricProvider implements RubricProvider {
 
     public static Criterion H2_1_Entry_Correct = Criterion.builder()
         .shortDescription("writeStudentExamEntry vollständig korrekt")
+        .grader(Grader.testAwareBuilder()
+            .requirePass(JUnitTestRef.ofMethod(() ->
+                StudentExamTableIOWriteEntryTutorTest.class.getMethod("testWriteStudentExamEntry")))
+            .pointsPassedMax()
+            .pointsFailedMin()
+            .build())
         .build();
 
     public static Criterion H2_1_Table_Signatures = Criterion.builder()
@@ -241,9 +250,34 @@ public class H12_RubricProvider implements RubricProvider {
 
     public static Criterion H2_1_Table_Basic = Criterion.builder()
         .shortDescription("writeStudentExamTable funktioniert")
+        .grader(Grader.testAwareBuilder()
+            .requirePass(JUnitTestRef.ofMethod(() ->
+                StudentExamTableIOSignaturesTutorTest.class.getMethod("testWriteStudentExamTableExists")))
+            .requirePass(
+                JUnitTestRef.or(
+                    JUnitTestRef.ofMethod(() ->
+                        StudentExamTableIOWriteTable2TutorTest.class.getMethod("testWriteStudentExamTable2")),
+                    JUnitTestRef.ofMethod(() ->
+                        StudentExamTableIOWriteTable3TutorTest.class.getMethod("testWriteStudentExamTable3"))
+                )
+            )
+            .pointsPassedMax()
+            .pointsFailedMin()
+            .build())
         .build();
+
     public static Criterion H2_1_Table_Complex = Criterion.builder()
         .shortDescription("writeStudentExamTable ist vollständig korrekt")
+        .grader(Grader.testAwareBuilder()
+            .requirePass(JUnitTestRef.ofMethod(() ->
+                StudentExamTableIOSignaturesTutorTest.class.getMethod("testWriteStudentExamTableExists")))
+            .requirePass(JUnitTestRef.ofMethod(() ->
+                StudentExamTableIOWriteTable2TutorTest.class.getMethod("testWriteStudentExamTable2")))
+            .requirePass(JUnitTestRef.ofMethod(() ->
+                StudentExamTableIOWriteTable3TutorTest.class.getMethod("testWriteStudentExamTable3")))
+            .pointsPassedMax()
+            .pointsFailedMin()
+            .build())
         .build();
 
     public static final Criterion H2_1 = Criterion.builder()
