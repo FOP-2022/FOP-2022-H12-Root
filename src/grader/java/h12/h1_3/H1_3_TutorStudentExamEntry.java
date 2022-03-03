@@ -5,15 +5,15 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Predicate;
 
-public class SetMark_TutorStudentExamEntry extends StudentExamEntry {
+public class H1_3_TutorStudentExamEntry extends StudentExamEntry {
 
     public static @Nullable Predicate<String> SET_MARK_CONSUMER;
 
-    public SetMark_TutorStudentExamEntry(String firstName, String lastName, int enrollmentNumber) {
+    public H1_3_TutorStudentExamEntry(String firstName, String lastName, int enrollmentNumber) {
         super(firstName, lastName, enrollmentNumber);
     }
 
-    public SetMark_TutorStudentExamEntry(String firstName, String lastName, int enrollmentNumber, String mark) {
+    public H1_3_TutorStudentExamEntry(String firstName, String lastName, int enrollmentNumber, String mark) {
         super(firstName, lastName, enrollmentNumber, mark);
     }
 

@@ -7,7 +7,8 @@ import java.util.Random;
 @VisibleForTesting
 public class TableGenerator {
 
-    private static String createRandomString(Random random) {
+    @VisibleForTesting
+    public static String createRandomString(Random random) {
         final int size = random.nextInt(5, 26);
         final char[] chars = new char[size];
         for (int i = 0; i < size; i++) {
@@ -21,7 +22,8 @@ public class TableGenerator {
         return createEntries(size, new Random(seed));
     }
 
-    private static StudentExamEntry[] createEntries(int size, Random random) {
+    @VisibleForTesting
+    public static StudentExamEntry[] createEntries(int size, Random random) {
         final StudentExamEntry[] result = new StudentExamEntry[size];
         final String[] marks = StudentExamEntry.VALID_MARKS;
         for (int i = 0; i < size; i++) {

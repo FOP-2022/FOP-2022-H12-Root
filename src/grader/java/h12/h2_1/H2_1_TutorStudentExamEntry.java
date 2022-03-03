@@ -1,12 +1,14 @@
-package h12;
+package h12.h2_1;
 
-public class TutorStudentExamEntry extends StudentExamEntry {
+import h12.StudentExamEntry;
+
+public class H2_1_TutorStudentExamEntry extends StudentExamEntry {
     private final String firstName;
     private final String lastName;
     private final int enrollmentNumber;
     private final String mark;
 
-    public TutorStudentExamEntry(final String firstName, final String lastName, final int enrollmentNumber, final String mark) {
+    public H2_1_TutorStudentExamEntry(final String firstName, final String lastName, final int enrollmentNumber, final String mark) {
         super("a", "b", 1, "n/a");
         this.firstName = firstName;
         this.lastName = lastName;

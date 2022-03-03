@@ -12,28 +12,42 @@
         "h12/h1_1/BadStudentMarkExceptionTutorTest.java",
         "h12/h1_1/ExceptionTest.java",
         "h12/h1_1/H1_1_Utils.java",
+        "h12/h1_1/StudentExamEntryCtorVerifier.java",
+        "h12/h1_1/StudentExamEntryMeta.java",
         "h12/h1_1/StudentExamEntryGeneralTutorTest.java",
         "h12/h1_1/StudentExamEntrySignaturesTutorTest.java",
+
         "h12/h1_2/StudentExamEntryEqualsTutorTest.java",
-        "h12/h1_3/SetMark_TutorStudentExamEntry.java",
+
+        "h12/h1_3/H1_3_TutorStudentExamEntry.java",
         "h12/h1_3/StudentExamEntryTestFunctionTutorTest.java",
         "h12/h1_3/StudentExamEntryTestSignaturesTutorTest.java",
+        "h12/h1_3/StudentExamEntryTestTransformer.java",
+
+        "h12/h2_1/TutorStudentExamEntry.java",
+        "h12/h2_1/H2_1_TutorStudentExamEntry.java",
         "h12/h2_1/H2_1_Utils.java",
         "h12/h2_1/StudentExamTableIOSignaturesTutorTest.java",
+        "h12/h2_1/StudentExamTableIOTestTransformer.java",
         "h12/h2_1/StudentExamTableIOWriteEntryTutorTest.java",
         "h12/h2_1/StudentExamTableIOWriteTable2TutorTest.java",
         "h12/h2_1/StudentExamTableIOWriteTable3TutorTest.java",
         "h12/h2_1/TableWithTitleGeneralTutorTest.java",
         "h12/h2_1/TableWithTitleSignaturesTutorTest.java",
+
+        "h12/h2_2and3/H2_2_TutorStudentExamEntry.java",
+        "h12/h2_2and3/TableGeneratorCommonTutorTest.java",
+        "h12/h2_2and3/TableGeneratorEntriesTutorTest.java",
+        "h12/h2_2and3/TableGeneratorSignaturesTutorTest.java",
+        "h12/h2_2and3/TableGeneratorSwitcheroo.java",
+        "h12/h2_2and3/TableGeneratorTableTutorTest.java",
+        "h12/h2_2and3/TableGeneratorTransformer.java",
+
         "h12/transform/AccessTransformer.java",
-        "h12/transform/StudentExamEntryCtorVerifier.java",
-        "h12/transform/StudentExamEntryMeta.java",
-        "h12/transform/StudentExamEntryTestTransformer.java",
-        "h12/transform/StudentExamTableIOTestTransformer.java",
         "h12/transform/TutorAssertions.java",
+
         "h12/H12_RubricProvider.java",
         "h12/TutorIOFactory.java",
-        "h12/TutorStudentExamEntry.java",
         "h12/TutorTableGenerator.java",
         "h12/TutorUtils.java"
       ]

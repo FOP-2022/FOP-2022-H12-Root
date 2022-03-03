@@ -1,4 +1,4 @@
-package h12.transform;
+package h12.h1_1;
 
 import h12.StudentExamEntry;
 import org.objectweb.asm.ClassReader;
@@ -78,7 +78,7 @@ public class StudentExamEntryCtorVerifier implements ClassTransformer {
                 }
                 super.visitMethodInsn(
                     Opcodes.INVOKESTATIC,
-                    "h12/transform/StudentExamEntryMeta",
+                    "h12/h1_1/StudentExamEntryMeta",
                     "setCtor3Invokes",
                     "([Ljava/lang/String;)V",
                     false

@@ -1,4 +1,4 @@
-package h12.transform;
+package h12.h1_3;
 
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
@@ -101,12 +101,12 @@ public class StudentExamEntryTestTransformer implements ClassTransformer {
             final MethodVisitor mv = super.visitMethod(
                 Opcodes.ACC_PRIVATE | Opcodes.ACC_STATIC | Opcodes.ACC_SYNTHETIC,
                 "lambda$tutorTestMarks$0",
-                "()Lh12/h1_3/SetMark_TutorStudentExamEntry;",
+                "()Lh12/h1_3/H1_3_TutorStudentExamEntry;",
                 null,
                 new String[]{"java/lang/Throwable"}
             );
             mv.visitCode();
-            mv.visitTypeInsn(Opcodes.NEW, "h12/h1_3/SetMark_TutorStudentExamEntry");
+            mv.visitTypeInsn(Opcodes.NEW, "h12/h1_3/H1_3_TutorStudentExamEntry");
             mv.visitInsn(Opcodes.DUP);
             mv.visitLdcInsn("a");
             mv.visitLdcInsn("b");
@@ -114,7 +114,7 @@ public class StudentExamEntryTestTransformer implements ClassTransformer {
             mv.visitLdcInsn("n/a");
             mv.visitMethodInsn(
                 Opcodes.INVOKESPECIAL,
-                "h12/h1_3/SetMark_TutorStudentExamEntry",
+                "h12/h1_3/H1_3_TutorStudentExamEntry",
                 "<init>",
                 "(Ljava/lang/String;Ljava/lang/String;ILjava/lang/String;)V",
                 false
@@ -138,7 +138,7 @@ public class StudentExamEntryTestTransformer implements ClassTransformer {
                 if (opcode == Opcodes.INVOKESPECIAL
                     && "h12/StudentExamEntry".equals(owner)
                     && "<init>".equals(name)) {
-                    super.visitMethodInsn(opcode, "h12/h1_3/SetMark_TutorStudentExamEntry", name, descriptor, isInterface);
+                    super.visitMethodInsn(opcode, "h12/h1_3/H1_3_TutorStudentExamEntry", name, descriptor, isInterface);
                 } else {
                     super.visitMethodInsn(opcode, owner, name, descriptor, isInterface);
                 }
@@ -147,7 +147,7 @@ public class StudentExamEntryTestTransformer implements ClassTransformer {
             @Override
             public void visitTypeInsn(int opcode, String type) {
                 if ((opcode == Opcodes.CHECKCAST || opcode == Opcodes.NEW) && "h12/StudentExamEntry".equals(type)) {
-                    super.visitTypeInsn(opcode, "h12/h1_3/SetMark_TutorStudentExamEntry");
+                    super.visitTypeInsn(opcode, "h12/h1_3/H1_3_TutorStudentExamEntry");
                 } else {
                     super.visitTypeInsn(opcode, type);
                 }
@@ -179,10 +179,10 @@ public class StudentExamEntryTestTransformer implements ClassTransformer {
                             Opcodes.H_INVOKESTATIC,
                             "h12/StudentExamEntryTest",
                             "lambda$tutorTestMarks$0",
-                            "()Lh12/h1_3/SetMark_TutorStudentExamEntry;",
+                            "()Lh12/h1_3/H1_3_TutorStudentExamEntry;",
                             false
                         ),
-                        Type.getType("()Lh12/h1_3/SetMark_TutorStudentExamEntry;")
+                        Type.getType("()Lh12/h1_3/H1_3_TutorStudentExamEntry;")
                     );
                 } else {
                     super.visitInvokeDynamicInsn(name, descriptor, bootstrapMethodHandle, bootstrapMethodArguments);

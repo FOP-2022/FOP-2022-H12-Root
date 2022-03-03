@@ -94,7 +94,7 @@ public class StudentExamEntryTestFunctionTutorTest {
         TutorAssertions.forwardReturningInvocations = true;
         // marks that were passed to setMark method
         final Set<String> setMarks = new HashSet<>();
-        SetMark_TutorStudentExamEntry.SET_MARK_CONSUMER = mark -> {
+        H1_3_TutorStudentExamEntry.SET_MARK_CONSUMER = mark -> {
             setMarks.add(mark);
             return true; // invoke super.setMark
         };

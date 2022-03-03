@@ -15,9 +15,13 @@ import h12.h2_1.StudentExamTableIOWriteTable2TutorTest;
 import h12.h2_1.StudentExamTableIOWriteTable3TutorTest;
 import h12.h2_1.TableWithTitleGeneralTutorTest;
 import h12.h2_1.TableWithTitleSignaturesTutorTest;
+import h12.h2_2and3.TableGeneratorEntriesTutorTest;
+import h12.h2_2and3.TableGeneratorSignaturesTutorTest;
+import h12.h2_2and3.TableGeneratorTableTutorTest;
 import h12.transform.AccessTransformer;
-import h12.transform.StudentExamEntryCtorVerifier;
-import h12.transform.StudentExamEntryTestTransformer;
+import h12.h1_1.StudentExamEntryCtorVerifier;
+import h12.h1_3.StudentExamEntryTestTransformer;
+import h12.h2_2and3.TableGeneratorTransformer;
 import h12.transform.TutorAssertions;
 import org.junit.jupiter.api.Assertions;
 import org.sourcegrade.jagr.api.rubric.Criterion;
@@ -267,7 +271,7 @@ public class H12_RubricProvider implements RubricProvider {
         .build();
 
     public static Criterion H2_1_Table_Complex = Criterion.builder()
-        .shortDescription("writeStudentExamTable ist vollständig korrekt")
+        .shortDescription("writeStudentExamTable vollständig korrekt")
         .grader(Grader.testAwareBuilder()
             .requirePass(JUnitTestRef.ofMethod(() ->
                 StudentExamTableIOSignaturesTutorTest.class.getMethod("testWriteStudentExamTableExists")))
@@ -281,7 +285,7 @@ public class H12_RubricProvider implements RubricProvider {
         .build();
 
     public static final Criterion H2_1 = Criterion.builder()
-        .shortDescription("H2.1")
+        .shortDescription("H2.1 StudentExamTableIO")
         .addChildCriteria(new Criterion[]{
             H2_1_TableWithTitle_Signatures,
             H2_1_TableWithTitle_Correct,
@@ -292,9 +296,88 @@ public class H12_RubricProvider implements RubricProvider {
             H2_1_Table_Complex,
         }).build();
 
+    public static final Criterion H2_2_TableGenerator_Signatures = Criterion.builder()
+        .shortDescription("TableGenerator#createEntries(int, long) existiert")
+        .grader(Grader.testAwareBuilder()
+            .requirePass(JUnitTestRef.ofMethod(() ->
+                TableGeneratorSignaturesTutorTest.class.getMethod("testCreateEntriesExists")))
+            .pointsPassedMax()
+            .pointsFailedMin()
+            .build())
+        .build();
+
+    public static final Criterion H2_2_TableGenerator_Entries_Basic = Criterion.builder()
+        .shortDescription("TableGenerator#createEntries(int, long) level 1")
+        .grader(Grader.testAwareBuilder()
+            .requirePass(JUnitTestRef.ofMethod(() ->
+                TableGeneratorEntriesTutorTest.class.getMethod("testCreateEntriesBasic")))
+            .pointsPassedMax()
+            .pointsFailedMin()
+            .build())
+        .build();
+
+    public static final Criterion H2_2_TableGenerator_Entries_Mid = Criterion.builder()
+        .shortDescription("TableGenerator#createEntries(int, long) level 2")
+        .grader(Grader.testAwareBuilder()
+            .requirePass(JUnitTestRef.ofMethod(() ->
+                TableGeneratorEntriesTutorTest.class.getMethod("testCreateEntriesMid")))
+            .pointsPassedMax()
+            .pointsFailedMin()
+            .build())
+        .build();
+
+    public static final Criterion H2_2_TableGenerator_Entries_Complex = Criterion.builder()
+        .shortDescription("TableGenerator#createEntries(int, long) level 3")
+        .grader(Grader.testAwareBuilder()
+            .requirePass(JUnitTestRef.ofMethod(() ->
+                TableGeneratorEntriesTutorTest.class.getMethod("testCreateEntriesComplex")))
+            .pointsPassedMax()
+            .pointsFailedMin()
+            .build())
+        .build();
+
+
+    public static final Criterion H2_2 = Criterion.builder()
+        .shortDescription("H2.2 TableGenerator createEntries")
+        .addChildCriteria(new Criterion[]{
+            H2_2_TableGenerator_Signatures,
+            H2_2_TableGenerator_Entries_Basic,
+            H2_2_TableGenerator_Entries_Mid,
+            H2_2_TableGenerator_Entries_Complex,
+        }).build();
+
+    public static final Criterion H2_3_Signatures = Criterion.builder()
+        .shortDescription("TableGenerator#createTable(int, long) existiert")
+        .grader(Grader.testAwareBuilder()
+            .requirePass(JUnitTestRef.ofMethod(() ->
+                TableGeneratorSignaturesTutorTest.class.getMethod("testCreateTableExists")))
+            .pointsPassedMax()
+            .pointsFailedMin()
+            .build())
+        .build();
+
+    public static final Criterion H2_3_Function = Criterion.builder()
+        .shortDescription("TableGenerator#createTable(int, long) vollständig korrekt")
+        .grader(Grader.testAwareBuilder()
+            .requirePass(JUnitTestRef.ofMethod(() ->
+                TableGeneratorTableTutorTest.class.getMethod("testCreateTableBasic")))
+            .requirePass(JUnitTestRef.ofMethod(() ->
+                TableGeneratorTableTutorTest.class.getMethod("testCreateTableMid")))
+            .requirePass(JUnitTestRef.ofMethod(() ->
+                TableGeneratorTableTutorTest.class.getMethod("testCreateTableComplex")))
+            .pointsPassedMax()
+            .pointsFailedMin()
+            .build())
+        .build();
+
+    public static final Criterion H2_3 = Criterion.builder()
+        .shortDescription("H2.3 TableGenerator createTable")
+        .addChildCriteria(H2_3_Signatures, H2_3_Function)
+        .build();
+
     public static final Criterion H2 = Criterion.builder()
         .shortDescription("H2")
-        .addChildCriteria(H2_1)
+        .addChildCriteria(H2_1, H2_2, H2_3)
         .build();
 
     @Override
@@ -312,5 +395,6 @@ public class H12_RubricProvider implements RubricProvider {
         configuration.addTransformer(new AccessTransformer());
         configuration.addTransformer(ClassTransformer.replacement(TutorAssertions.class, Assertions.class));
         configuration.addTransformer(new StudentExamEntryTestTransformer());
+        configuration.addTransformer(new TableGeneratorTransformer());
     }
 }
