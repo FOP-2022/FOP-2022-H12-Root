@@ -1,6 +1,7 @@
 package h12.h1_2;
 
 import h12.StudentExamEntry;
+import h12.TutorTableGenerator;
 import h12.TutorUtils;
 import org.junit.jupiter.api.Test;
 import org.sourcegrade.jagr.api.rubric.TestForSubmission;
@@ -16,13 +17,13 @@ public class StudentExamEntryEqualsTutorTest {
     public void testBasic() {
         final Random random = new Random(72);
         for (int i = 0; i < 10; i++) {
-            final String firstName = TutorUtils.createRandomString(random);
-            final String lastName = TutorUtils.createRandomString(random);
+            final String firstName = TutorTableGenerator.createRandomString(random);
+            final String lastName = TutorTableGenerator.createRandomString(random);
             final int enrollmentNumber = random.nextInt(5, 50);
-            final int markIndex = random.nextInt(TutorUtils.VALID_MARKS.length);
-            final int nextMarkIndex = (markIndex + 1) % TutorUtils.VALID_MARKS.length;
-            final String mark = TutorUtils.VALID_MARKS[markIndex];
-            final String nextMark = TutorUtils.VALID_MARKS[nextMarkIndex];
+            final int markIndex = random.nextInt(TutorTableGenerator.VALID_MARKS.length);
+            final int nextMarkIndex = (markIndex + 1) % TutorTableGenerator.VALID_MARKS.length;
+            final String mark = TutorTableGenerator.VALID_MARKS[markIndex];
+            final String nextMark = TutorTableGenerator.VALID_MARKS[nextMarkIndex];
             final StudentExamEntry e1 = new StudentExamEntry(firstName, lastName, enrollmentNumber, mark);
             final StudentExamEntry e2 = new StudentExamEntry(firstName, lastName, enrollmentNumber, mark);
             final StudentExamEntry w1 = new StudentExamEntry(firstName + "a", lastName, enrollmentNumber, mark);
@@ -42,10 +43,10 @@ public class StudentExamEntryEqualsTutorTest {
     public void testComplex() {
         final Random random = new Random(72);
         for (int i = 0; i < 10; i++) {
-            final String firstName = TutorUtils.createRandomString(random);
-            final String lastName = TutorUtils.createRandomString(random);
+            final String firstName = TutorTableGenerator.createRandomString(random);
+            final String lastName = TutorTableGenerator.createRandomString(random);
             final int enrollmentNumber = random.nextInt(5, 50);
-            final String mark = TutorUtils.createRandomMark(random);
+            final String mark = TutorTableGenerator.createRandomMark(random);
             final StudentExamEntry e1 = new StudentExamEntry(firstName, lastName, enrollmentNumber, mark);
             //noinspection ConstantConditions
             assertFalse(

@@ -9,6 +9,9 @@ import h12.h1_1.StudentExamEntrySignaturesTutorTest;
 import h12.h1_2.StudentExamEntryEqualsTutorTest;
 import h12.h1_3.StudentExamEntryTestFunctionTutorTest;
 import h12.h1_3.StudentExamEntryTestSignaturesTutorTest;
+import h12.h2_1.StudentExamTableIOSignaturesTutorTest;
+import h12.h2_1.TableWithTitleGeneralTutorTest;
+import h12.h2_1.TableWithTitleSignaturesTutorTest;
 import h12.transform.AccessTransformer;
 import h12.transform.StudentExamEntryTestTransformer;
 import h12.transform.StudentExamEntryCtorVerifier;
@@ -163,7 +166,7 @@ public class H12_RubricProvider implements RubricProvider {
         .build();
 
     public static final Criterion H1_3_TestMarks = Criterion.builder()
-        .shortDescription("testMarks funktioniert")
+        .shortDescription("testMarks korrekt")
         .grader(Grader.testAwareBuilder()
             .requirePass(JUnitTestRef.ofMethod(() ->
                 StudentExamEntryTestFunctionTutorTest.class.getMethod("testTestMarks")))
@@ -177,11 +180,94 @@ public class H12_RubricProvider implements RubricProvider {
         .addChildCriteria(H1_3_Signatures, H1_3_TestConstructorsThrow, H1_3_TestMarks)
         .build();
 
+    public static final Criterion H1 = Criterion.builder()
+        .shortDescription("H1")
+        .addChildCriteria(H1_1, H1_2, H1_3)
+        .build();
+
+    public static final Criterion H2_1_TableWithTitle_Signatures = Criterion.builder()
+        .shortDescription("TableWithTitle Signaturen korrekt")
+        .grader(Grader.testAwareBuilder()
+            .requirePass(JUnitTestRef.ofMethod(() ->
+                TableWithTitleSignaturesTutorTest.class.getMethod("testAttributesExist")))
+            .requirePass(JUnitTestRef.ofMethod(() ->
+                TableWithTitleSignaturesTutorTest.class.getMethod("testConstructorExists")))
+            .requirePass(JUnitTestRef.ofMethod(() ->
+                TableWithTitleSignaturesTutorTest.class.getMethod("testGettersExist")))
+            .pointsPassedMax()
+            .pointsFailedMin()
+            .build())
+        .build();
+
+    public static final Criterion H2_1_TableWithTitle_Correct = Criterion.builder()
+        .shortDescription("TableWithTitle vollständig korrekt")
+        .grader(Grader.testAwareBuilder()
+            .requirePass(JUnitTestRef.ofMethod(() ->
+                TableWithTitleSignaturesTutorTest.class.getMethod("testAttributesExist")))
+            .requirePass(JUnitTestRef.ofMethod(() ->
+                TableWithTitleSignaturesTutorTest.class.getMethod("testConstructorExists")))
+            .requirePass(JUnitTestRef.ofMethod(() ->
+                TableWithTitleSignaturesTutorTest.class.getMethod("testGettersExist")))
+            .requirePass(JUnitTestRef.ofMethod(() ->
+                TableWithTitleGeneralTutorTest.class.getMethod("testFieldsAndGetters")))
+            .pointsPassedMax()
+            .pointsFailedMin()
+            .build())
+        .build();
+
+    public static Criterion H2_1_Entry_Signature = Criterion.builder()
+        .shortDescription("writeStudentExamEntry Signatur korrekt")
+        .grader(Grader.testAwareBuilder()
+            .requirePass(JUnitTestRef.ofMethod(() ->
+                StudentExamTableIOSignaturesTutorTest.class.getMethod("testWriteStudentExamEntryExists")))
+            .pointsPassedMax()
+            .pointsFailedMin()
+            .build())
+        .build();
+
+    public static Criterion H2_1_Entry_Correct = Criterion.builder()
+        .shortDescription("writeStudentExamEntry vollständig korrekt")
+        .build();
+
+    public static Criterion H2_1_Table_Signatures = Criterion.builder()
+        .shortDescription("writeStudentExamTable Signaturen korrekt")
+        .grader(Grader.testAwareBuilder()
+            .requirePass(JUnitTestRef.ofMethod(() ->
+                StudentExamTableIOSignaturesTutorTest.class.getMethod("testWriteStudentExamTableExists")))
+            .pointsPassedMax()
+            .pointsFailedMin()
+            .build())
+        .build();
+
+    public static Criterion H2_1_Table_Basic = Criterion.builder()
+        .shortDescription("writeStudentExamTable funktioniert")
+        .build();
+    public static Criterion H2_1_Table_Complex = Criterion.builder()
+        .shortDescription("writeStudentExamTable ist vollständig korrekt")
+        .build();
+
+    public static final Criterion H2_1 = Criterion.builder()
+        .shortDescription("H2.1")
+        .addChildCriteria(new Criterion[]{
+            H2_1_TableWithTitle_Signatures,
+            H2_1_TableWithTitle_Correct,
+            H2_1_Entry_Signature,
+            H2_1_Entry_Correct,
+            H2_1_Table_Signatures,
+            H2_1_Table_Basic,
+            H2_1_Table_Complex,
+        }).build();
+
+    public static final Criterion H2 = Criterion.builder()
+        .shortDescription("H2")
+        .addChildCriteria(H2_1)
+        .build();
+
     @Override
     public Rubric getRubric() {
         return Rubric.builder()
             .title("h12")
-            .addChildCriteria(H1_1, H1_2, H1_3)
+            .addChildCriteria(H1, H2)
             .build();
     }
 

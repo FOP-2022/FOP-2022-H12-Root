@@ -18,6 +18,9 @@
         "h12/h1_3/SetMark_TutorStudentExamEntry.java",
         "h12/h1_3/StudentExamEntryTestFunctionTutorTest.java",
         "h12/h1_3/StudentExamEntryTestSignaturesTutorTest.java",
+        "h12/h2_1/StudentExamTableIOSignaturesTutorTest.java",
+        "h12/h2_1/TableWithTitleGeneralTutorTest.java",
+        "h12/h2_1/TableWithTitleSignaturesTutorTest.java",
         "h12/transform/AccessTransformer.java",
         "h12/transform/StudentExamEntryCtorVerifier.java",
         "h12/transform/StudentExamEntryMeta.java",
@@ -27,6 +30,7 @@
         "h12/H12_RubricProvider.java",
         "h12/TutorIOFactory.java",
         "h12/TutorIOFileSystem.java",
+        "h12/TutorTableGenerator.java",
         "h12/TutorUtils.java"
       ]
     },

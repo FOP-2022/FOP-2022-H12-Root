@@ -2,6 +2,7 @@ package h12.h1_1;
 
 import h12.BadStudentMarkException;
 import h12.StudentExamEntry;
+import h12.TutorTableGenerator;
 import h12.TutorUtils;
 import h12.transform.StudentExamEntryMeta;
 import org.junit.jupiter.api.Test;
@@ -41,14 +42,14 @@ public class StudentExamEntryGeneralTutorTest {
     public void testFieldsAndGetters() {
         final Random random = new Random(87);
         for (int i = 0; i < 10; i++) {
-            final String firstName = TutorUtils.createRandomString(random);
-            final String lastName = TutorUtils.createRandomString(random);
+            final String firstName = TutorTableGenerator.createRandomString(random);
+            final String lastName = TutorTableGenerator.createRandomString(random);
             final int enrollmentNumber = random.nextInt(5, 50);
             final StudentExamEntry e1 = new StudentExamEntry(firstName, lastName, enrollmentNumber);
             checkFirstAndLastName(firstName, lastName, e1);
             assertEquals(enrollmentNumber, e1.getEnrollmentNumber(), "enrollmentNumber incorrect");
             assertEquals("n/a", e1.getMark(), "Mark set by constructor with 3 parameters should have mark 'n/a'");
-            final String mark = TutorUtils.createRandomMark(random);
+            final String mark = TutorTableGenerator.createRandomMark(random);
             final StudentExamEntry e2 = new StudentExamEntry(firstName, lastName, enrollmentNumber, mark);
             checkFirstAndLastName(firstName, lastName, e2);
             assertEquals(enrollmentNumber, e2.getEnrollmentNumber(), "enrollmentNumber incorrect");
@@ -59,14 +60,14 @@ public class StudentExamEntryGeneralTutorTest {
     @Test
     public void testSetMark() {
         final Random random = new Random(56);
-        final String firstName = TutorUtils.createRandomString(random);
-        final String lastName = TutorUtils.createRandomString(random);
+        final String firstName = TutorTableGenerator.createRandomString(random);
+        final String lastName = TutorTableGenerator.createRandomString(random);
         final int enrollmentNumber = random.nextInt(5, 50);
-        final String mark = TutorUtils.createRandomMark(random);
+        final String mark = TutorTableGenerator.createRandomMark(random);
         final StudentExamEntry e1 = new StudentExamEntry(firstName, lastName, enrollmentNumber);
         final StudentExamEntry e2 = new StudentExamEntry(firstName, lastName, enrollmentNumber, mark);
         for (int i = 0; i < 10; i++) {
-            final String testMark = TutorUtils.createRandomMark(random);
+            final String testMark = TutorTableGenerator.createRandomMark(random);
             assertDoesNotThrow(() -> e1.setMark(testMark), "setMark threw an exception for mark " + testMark);
             assertDoesNotThrow(() -> e2.setMark(testMark), "setMark threw an exception for mark " + testMark);
             assertEquals(testMark, e1.getMark(), "setMark and/or getMark did correctly handle a set mark");
@@ -101,7 +102,7 @@ public class StudentExamEntryGeneralTutorTest {
             "setMark did not throw a NullPointerException when given null");
         final Random random = new Random(28);
         for (int i = 0; i < 10; i++) {
-            final String testMark = TutorUtils.createRandomString(random);
+            final String testMark = TutorTableGenerator.createRandomString(random);
             final BadStudentMarkException e = assertThrows(BadStudentMarkException.class, () -> entry.setMark(testMark),
                 "setMark for value '%s' did not throw BadStudentMarkException".formatted(testMark));
             assertEquals(exceptionMessageTemplate.formatted(testMark), e.getMessage());
