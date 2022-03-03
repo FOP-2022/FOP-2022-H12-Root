@@ -55,9 +55,8 @@ public class StudentExamEntryTestFunctionTutorTest {
         TutorAssertions.reset();
         invokeSafe(new StudentExamEntryTest()::testConstructorsThrow);
         checkAssertThrows(NullPointerException.class, 3);
-        checkAssertThrows(BadStudentMarkException.class, 1);
         checkAssertThrows(BadEnrollmentNumberException.class, 1);
-        checkAssertThrows(BadCharException.class, 2);
+        checkAssertThrows(BadCharException.class, 1);
     }
 
     private void checkAssertEquals(String startsWith, long count) {
@@ -73,9 +72,8 @@ public class StudentExamEntryTestFunctionTutorTest {
     public void testTestConstructorsThrowComplex() {
         TutorAssertions.reset();
         invokeSafe(new StudentExamEntryTest()::testConstructorsThrow);
-        checkAssertEquals("Bad student mark", 1);
         checkAssertEquals("Bad enrollment number", 1);
-        checkAssertEquals("Bad char", 2);
+        checkAssertEquals("Bad char", 1);
     }
 
     private void checkAssertDoesNotThrow(long count) {

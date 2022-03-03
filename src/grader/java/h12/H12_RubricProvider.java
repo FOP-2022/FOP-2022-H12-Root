@@ -136,36 +136,32 @@ public class H12_RubricProvider implements RubricProvider {
         .build();
 
     public static final Criterion H1_3_Signatures = Criterion.builder()
-        .shortDescription("Methoden-Signaturen korrekt")
+        .shortDescription("Methoden-Signaturen und testTestConstructorsWork korrekt")
         .grader(Grader.testAwareBuilder()
             .requirePass(JUnitTestRef.ofMethod(() ->
                 StudentExamEntryTestSignaturesTutorTest.class.getMethod("testSignaturesCorrect")))
+            .requirePass(JUnitTestRef.ofMethod(() ->
+                StudentExamEntryTestFunctionTutorTest.class.getMethod("testTestConstructorsWork")))
             .pointsPassedMax()
             .pointsFailedMin()
             .build())
         .build();
 
-    public static final Criterion H1_3_Function_Basic = Criterion.builder()
-        .shortDescription("Tests funktionieren")
+    public static final Criterion H1_3_TestConstructorsThrow = Criterion.builder()
+        .shortDescription("testConstructorsThrow korrekt")
         .grader(Grader.testAwareBuilder()
-            .requirePass(JUnitTestRef.ofMethod(() ->
-                StudentExamEntryTestFunctionTutorTest.class.getMethod("testTestConstructorsWork")))
-            .requirePass(JUnitTestRef.ofMethod(() ->
-                StudentExamEntryTestFunctionTutorTest.class.getMethod("testTestConstructorsThrowSimple")))
-            .pointsPassedMax()
-            .pointsFailedMin()
-            .build())
-        .build();
-
-    public static final Criterion H1_3_Function_Complex = Criterion.builder()
-        .shortDescription("Tests sind voll vollständig korrekt")
-        .grader(Grader.testAwareBuilder()
-            .requirePass(JUnitTestRef.ofMethod(() ->
-                StudentExamEntryTestFunctionTutorTest.class.getMethod("testTestConstructorsWork")))
             .requirePass(JUnitTestRef.ofMethod(() ->
                 StudentExamEntryTestFunctionTutorTest.class.getMethod("testTestConstructorsThrowSimple")))
             .requirePass(JUnitTestRef.ofMethod(() ->
                 StudentExamEntryTestFunctionTutorTest.class.getMethod("testTestConstructorsThrowComplex")))
+            .pointsPassedMax()
+            .pointsFailedMin()
+            .build())
+        .build();
+
+    public static final Criterion H1_3_TestMarks = Criterion.builder()
+        .shortDescription("testMarks funktioniert")
+        .grader(Grader.testAwareBuilder()
             .requirePass(JUnitTestRef.ofMethod(() ->
                 StudentExamEntryTestFunctionTutorTest.class.getMethod("testTestMarks")))
             .pointsPassedMax()
@@ -175,7 +171,7 @@ public class H12_RubricProvider implements RubricProvider {
 
     public static final Criterion H1_3 = Criterion.builder()
         .shortDescription("H1.3 StudentExamEntryTest")
-        .addChildCriteria(H1_3_Signatures, H1_3_Function_Basic, H1_3_Function_Complex)
+        .addChildCriteria(H1_3_Signatures, H1_3_TestConstructorsThrow, H1_3_TestMarks)
         .build();
 
     @Override

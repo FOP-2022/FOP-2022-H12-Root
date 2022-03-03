@@ -27,6 +27,16 @@ public class StudentExamEntryGeneralTutorTest {
         );
     }
 
+    private void checkFirstAndLastName(String firstName, String lastName, StudentExamEntry entry) {
+        // allow swapped firstName <-> lastName
+        if (!firstName.equals(entry.getFirstName()) && !lastName.equals(entry.getFirstName())) {
+            fail("firstName incorrect");
+        }
+        if (!firstName.equals(entry.getLastName()) && !lastName.equals(entry.getLastName())) {
+            fail("lastName incorrect");
+        }
+    }
+
     @Test
     public void testFieldsAndGetters() {
         final Random random = new Random(87);
@@ -35,14 +45,12 @@ public class StudentExamEntryGeneralTutorTest {
             final String lastName = TutorUtils.createRandomString(random);
             final int enrollmentNumber = random.nextInt(5, 50);
             final StudentExamEntry e1 = new StudentExamEntry(firstName, lastName, enrollmentNumber);
-            assertEquals(firstName, e1.getFirstName(), "firstName incorrect");
-            assertEquals(lastName, e1.getLastName(), "lastName incorrect");
+            checkFirstAndLastName(firstName, lastName, e1);
             assertEquals(enrollmentNumber, e1.getEnrollmentNumber(), "enrollmentNumber incorrect");
             assertEquals("n/a", e1.getMark(), "Mark set by constructor with 3 parameters should have mark 'n/a'");
             final String mark = TutorUtils.createRandomMark(random);
             final StudentExamEntry e2 = new StudentExamEntry(firstName, lastName, enrollmentNumber, mark);
-            assertEquals(firstName, e2.getFirstName(), "firstName incorrect");
-            assertEquals(lastName, e2.getLastName(), "lastName incorrect");
+            checkFirstAndLastName(firstName, lastName, e2);
             assertEquals(enrollmentNumber, e2.getEnrollmentNumber(), "enrollmentNumber incorrect");
             assertEquals(mark, e2.getMark(), "mark incorrect");
         }

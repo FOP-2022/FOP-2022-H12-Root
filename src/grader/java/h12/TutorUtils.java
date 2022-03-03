@@ -10,6 +10,14 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class TutorUtils {
 
+    public static final char[] A_Z = new char['z' - 'a' + 1];
+
+    static {
+        for (char i = 'a'; i <= 'z'; i++) {
+            A_Z[i - 'a'] = i;
+        }
+    }
+
     public static final String[] VALID_MARKS = {
         "1,0",
         "1,3",
@@ -33,7 +41,7 @@ public class TutorUtils {
         final int size = random.nextInt(5, 26);
         final char[] chars = new char[size];
         for (int i = 0; i < size; i++) {
-            chars[i] = TestConstants.A_Z[random.nextInt('z' - 'a')];
+            chars[i] = A_Z[random.nextInt('z' - 'a')];
         }
         return new String(chars);
     }

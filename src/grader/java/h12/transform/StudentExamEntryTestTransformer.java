@@ -198,7 +198,8 @@ public class StudentExamEntryTestTransformer implements ClassTransformer {
 
             private boolean checkCastType(String name) {
                 return switch (name) {
-                    case "java/lang/NullPointerException",
+                    case "java/lang/Exception",
+                        "java/lang/NullPointerException",
                         "h12/BadStudentMarkException",
                         "h12/BadEnrollmentNumberException",
                         "h12/BadCharException" -> true;
