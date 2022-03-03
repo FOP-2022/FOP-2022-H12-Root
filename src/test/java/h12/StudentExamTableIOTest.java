@@ -1,6 +1,7 @@
 package h12;
 
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.VisibleForTesting;
 import org.junit.jupiter.api.Test;
 
 import java.io.BufferedReader;
@@ -14,12 +15,14 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
-class StudentExamTableIOTest {
+@VisibleForTesting
+public class StudentExamTableIOTest {
 
     final IOFactory ioFactory = new FileSystemIOFactory();
 
     @Test
-    void testWriteStudentExamTable() throws IOException {
+    @VisibleForTesting
+    public void testWriteStudentExamTable() throws IOException {
         assumeTrue(ioFactory.supportsWriter());
         final TableWithTitle table1 = TableGenerator.createTable(50, 2);
         final TableWithTitle table2 = new TableWithTitle(null, TableGenerator.createEntries(50, 3));
@@ -32,7 +35,8 @@ class StudentExamTableIOTest {
     }
 
     @Test
-    void testReadStudentExamTable() throws IOException {
+    @VisibleForTesting
+    public void testReadStudentExamTable() throws IOException {
         assumeTrue(ioFactory.supportsReader());
         try (BufferedReader br = ioFactory.createReader("test.txt")) {
             assertDoesNotThrow(() -> StudentExamTableIO.readStudentExamTable(br));
@@ -40,7 +44,8 @@ class StudentExamTableIOTest {
     }
 
     @Test
-    void testReadStudentExamEntry() {
+    @VisibleForTesting
+    public void testReadStudentExamEntry() {
         for (int i = 0; i < 10; i++) {
             final String firstName = new String(TestConstants.A_Z, i, 5);
             final String lastName = new String(TestConstants.A_Z, i + 1, 5);
@@ -59,7 +64,8 @@ class StudentExamTableIOTest {
     }
 
     @Test
-    void testWriteStudentExamTableComplex() throws IOException {
+    @VisibleForTesting
+    public void testWriteStudentExamTableComplex() throws IOException {
         assumeTrue(ioFactory.supportsWriter());
         assumeTrue(ioFactory.supportsReader());
         final int size = 50;
@@ -88,7 +94,8 @@ class StudentExamTableIOTest {
     }
 
     @Test
-    void testWriteAndReadStudentExamTable() throws IOException {
+    @VisibleForTesting
+    public void testWriteAndReadStudentExamTable() throws IOException {
         assumeTrue(ioFactory.supportsWriter());
         assumeTrue(ioFactory.supportsReader());
         final int tableCount = 100;

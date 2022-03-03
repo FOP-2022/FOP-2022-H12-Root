@@ -1,8 +1,10 @@
 package h12;
 
+import org.jetbrains.annotations.VisibleForTesting;
+
 import java.util.Random;
 
-class TableGenerator {
+public class TableGenerator {
 
     private static String createRandomString(Random random) {
         final int size = random.nextInt(5, 26);
@@ -13,7 +15,8 @@ class TableGenerator {
         return new String(chars);
     }
 
-    static StudentExamEntry[] createEntries(int size, long seed) {
+    @VisibleForTesting
+    public static StudentExamEntry[] createEntries(int size, long seed) {
         return createEntries(size, new Random(seed));
     }
 
@@ -30,7 +33,8 @@ class TableGenerator {
         return result;
     }
 
-    static TableWithTitle createTable(int size, long seed) {
+    @VisibleForTesting
+    public static TableWithTitle createTable(int size, long seed) {
         final Random random = new Random(seed);
         final StudentExamEntry[] entries = createEntries(size, random);
         return new TableWithTitle(createRandomString(random), entries);

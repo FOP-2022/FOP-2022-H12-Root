@@ -1,5 +1,7 @@
-package h12;
+package h12.h1_3;
 
+import h12.StudentExamEntryTest;
+import h12.TutorUtils;
 import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.Test;
 import org.sourcegrade.jagr.api.rubric.TestForSubmission;

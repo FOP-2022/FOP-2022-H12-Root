@@ -7,6 +7,9 @@ import h12.h1_1.ExceptionTest;
 import h12.h1_1.StudentExamEntryGeneralTutorTest;
 import h12.h1_1.StudentExamEntrySignaturesTutorTest;
 import h12.h1_2.StudentExamEntryEqualsTutorTest;
+import h12.h1_3.StudentExamEntryTestFunctionTutorTest;
+import h12.h1_3.StudentExamEntryTestSignaturesTutorTest;
+import h12.transform.AccessTransformer;
 import h12.transform.StudentExamEntryTestTransformer;
 import h12.transform.StudentExamEntryCtorVerifier;
 import h12.transform.TutorAssertions;
@@ -186,6 +189,7 @@ public class H12_RubricProvider implements RubricProvider {
     public void configure(RubricConfiguration configuration) {
 //        configuration.addTransformer(new StudentExamTableIOTestTransformer());
         configuration.addTransformer(new StudentExamEntryCtorVerifier(), ClassTransformerOrder.PRE);
+        configuration.addTransformer(new AccessTransformer());
         configuration.addTransformer(ClassTransformer.replacement(TutorAssertions.class, Assertions.class));
         configuration.addTransformer(new StudentExamEntryTestTransformer());
     }
