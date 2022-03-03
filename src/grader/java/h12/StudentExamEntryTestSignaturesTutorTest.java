@@ -2,11 +2,13 @@ package h12;
 
 import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.Test;
+import org.sourcegrade.jagr.api.rubric.TestForSubmission;
 import org.sourcegrade.jagr.api.testing.TestCycle;
 import org.sourcegrade.jagr.api.testing.extension.TestCycleResolver;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@TestForSubmission("h12")
 public class StudentExamEntryTestSignaturesTutorTest {
 
     @SuppressWarnings("UnstableApiUsage")

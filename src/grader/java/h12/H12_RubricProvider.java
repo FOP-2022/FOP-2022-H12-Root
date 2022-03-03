@@ -7,6 +7,7 @@ import h12.h1_1.ExceptionTest;
 import h12.h1_1.StudentExamEntryGeneralTutorTest;
 import h12.h1_1.StudentExamEntrySignaturesTutorTest;
 import h12.h1_2.StudentExamEntryEqualsTutorTest;
+import h12.transform.StudentExamEntryTestTransformer;
 import h12.transform.StudentExamEntryCtorVerifier;
 import h12.transform.TutorAssertions;
 import org.junit.jupiter.api.Assertions;
@@ -144,11 +145,29 @@ public class H12_RubricProvider implements RubricProvider {
             .build())
         .build();
 
-    public static final Criterion H1_3_Function = Criterion.builder()
-        .shortDescription("Methoden-Signaturen korrekt")
+    public static final Criterion H1_3_Function_Basic = Criterion.builder()
+        .shortDescription("Tests funktionieren")
         .grader(Grader.testAwareBuilder()
             .requirePass(JUnitTestRef.ofMethod(() ->
                 StudentExamEntryTestFunctionTutorTest.class.getMethod("testTestConstructorsWork")))
+            .requirePass(JUnitTestRef.ofMethod(() ->
+                StudentExamEntryTestFunctionTutorTest.class.getMethod("testTestConstructorsThrowSimple")))
+            .pointsPassedMax()
+            .pointsFailedMin()
+            .build())
+        .build();
+
+    public static final Criterion H1_3_Function_Complex = Criterion.builder()
+        .shortDescription("Tests sind voll vollständig korrekt")
+        .grader(Grader.testAwareBuilder()
+            .requirePass(JUnitTestRef.ofMethod(() ->
+                StudentExamEntryTestFunctionTutorTest.class.getMethod("testTestConstructorsWork")))
+            .requirePass(JUnitTestRef.ofMethod(() ->
+                StudentExamEntryTestFunctionTutorTest.class.getMethod("testTestConstructorsThrowSimple")))
+            .requirePass(JUnitTestRef.ofMethod(() ->
+                StudentExamEntryTestFunctionTutorTest.class.getMethod("testTestConstructorsThrowComplex")))
+            .requirePass(JUnitTestRef.ofMethod(() ->
+                StudentExamEntryTestFunctionTutorTest.class.getMethod("testTestMarks")))
             .pointsPassedMax()
             .pointsFailedMin()
             .build())
@@ -156,7 +175,7 @@ public class H12_RubricProvider implements RubricProvider {
 
     public static final Criterion H1_3 = Criterion.builder()
         .shortDescription("H1.3 StudentExamEntryTest")
-        .addChildCriteria(H1_3_Signatures, H1_3_Function)
+        .addChildCriteria(H1_3_Signatures, H1_3_Function_Basic, H1_3_Function_Complex)
         .build();
 
     @Override
@@ -172,5 +191,6 @@ public class H12_RubricProvider implements RubricProvider {
 //        configuration.addTransformer(new StudentExamTableIOTestTransformer());
         configuration.addTransformer(new StudentExamEntryCtorVerifier(), ClassTransformerOrder.PRE);
         configuration.addTransformer(ClassTransformer.replacement(TutorAssertions.class, Assertions.class));
+        configuration.addTransformer(new StudentExamEntryTestTransformer());
     }
 }
