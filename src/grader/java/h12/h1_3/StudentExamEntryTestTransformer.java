@@ -18,7 +18,7 @@ public class StudentExamEntryTestTransformer implements ClassTransformer {
 
     @Override
     public String getName() {
-        return "StudentEamEntryTestTransformer-transformer";
+        return "StudentEamEntryTestTransformer";
     }
 
     @Override

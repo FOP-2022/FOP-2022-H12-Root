@@ -2,7 +2,7 @@ package h12;
 
 import java.util.Random;
 
-public class TutorTableGenerator {
+public class SolutionTableGenerator {
 
     public static final char[] A_Z = new char['z' - 'a' + 1];
 

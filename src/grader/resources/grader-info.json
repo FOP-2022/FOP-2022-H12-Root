@@ -39,9 +39,7 @@
         "h12/h2_2and3/TableGeneratorCommonTutorTest.java",
         "h12/h2_2and3/TableGeneratorEntriesTutorTest.java",
         "h12/h2_2and3/TableGeneratorSignaturesTutorTest.java",
-        "h12/h2_2and3/TableGeneratorSwitcheroo.java",
         "h12/h2_2and3/TableGeneratorTableTutorTest.java",
-        "h12/h2_2and3/TableGeneratorTransformer.java",
 
         "h12/h2_4/FileSystemIOFactoryGeneralTutorTest.java",
         "h12/h2_4/FileSystemIOFactorySignaturesTutorTest.java",
@@ -51,12 +49,18 @@
         "h12/h2_4/TutorFileReader.java",
         "h12/h2_4/TutorFileWriter.java",
 
+        "h12/tablegenerator/TableGeneratorTransformer.java",
+        "h12/tablegenerator/TutorTableGenerator.java",
+
+        "h12/tableiotest/StudentExamTableIOTestSignaturesTutorTest.java",
+
         "h12/transform/AccessTransformer.java",
         "h12/transform/TutorAssertions.java",
+        "h12/transform/TutorAssumptions.java",
 
         "h12/H12_RubricProvider.java",
         "h12/TutorIOFactory.java",
-        "h12/TutorTableGenerator.java",
+        "h12/SolutionTableGenerator.java",
         "h12/TutorUtils.java"
       ]
     },

@@ -2,6 +2,7 @@ package h12.h2_2and3;
 
 import h12.TableGenerator;
 import h12.TableWithTitle;
+import h12.tablegenerator.TutorTableGenerator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.opentest4j.AssertionFailedError;
@@ -29,12 +30,12 @@ public class TableGeneratorTableTutorTest {
             return t1.getEntries();
         });
         for (int i = 0; i < 10; i++) {
-            TableGeneratorSwitcheroo.USE_TUTOR = false;
+            TutorTableGenerator.USE_SOLUTION = false;
             try {
                 test.run();
             } catch (Exception | AssertionFailedError ignored) {
                 // try again with tutor solution for createEntries
-                TableGeneratorSwitcheroo.USE_TUTOR = true;
+                TutorTableGenerator.USE_SOLUTION = true;
                 test.run();
             }
         }

@@ -2,7 +2,7 @@ package h12.h2_1;
 
 import h12.StudentExamEntry;
 import h12.StudentExamTableIO;
-import h12.TutorTableGenerator;
+import h12.SolutionTableGenerator;
 import org.junit.jupiter.api.Test;
 import org.sourcegrade.jagr.api.rubric.TestForSubmission;
 
@@ -20,7 +20,7 @@ public class StudentExamTableIOWriteTable2TutorTest {
         final Random random = new Random(73);
         for (int i = 0; i < 10; i++) {
             final int tableSize = i * 4;
-            final StudentExamEntry[] entries = TutorTableGenerator.createEntries(tableSize, random);
+            final StudentExamEntry[] entries = SolutionTableGenerator.createEntries(tableSize, random);
 
             final StringWriter expectedWriter = new StringWriter();
             H2_1_Utils.writeStudentExamTableTutor(expectedWriter, entries);

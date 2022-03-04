@@ -1,9 +1,11 @@
 package h12;
 
+import h12.transform.TutorAssumptions;
 import org.junit.jupiter.api.Test;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.stream.Collectors;
@@ -39,7 +41,7 @@ public class TutorUtils {
     }
 
     public static void assertGetter(Class<?> type, String name, Class<?> returnType) {
-        Method method = assertDoesNotThrow(() -> type.getMethod(name),
+        final Method method = assertDoesNotThrow(() -> type.getMethod(name),
             "%s.%s() does not exist".formatted(type.getName(), name));
         assertEquals(returnType, method.getReturnType(),
             "%s.%s() has incorrect return type %s".formatted(type.getName(), name, method.getReturnType().getName()));
@@ -50,11 +52,29 @@ public class TutorUtils {
     public static void assertMethod(Class<?> type, String name, Class<?> returnType, Class<?>... parameterTypes) {
         final String signature = "%s.%s(%s)".formatted(type.getName(), name,
             Stream.of(parameterTypes).map(Class::getSimpleName).collect(Collectors.joining(", ")));
-        Method method = assertDoesNotThrow(() -> type.getMethod(name, parameterTypes),
+        final Method method = assertDoesNotThrow(() -> type.getMethod(name, parameterTypes),
             "%s does not exist".formatted(signature));
         assertEquals(returnType, method.getReturnType(),
             "%s has incorrect return type %s".formatted(signature, method.getReturnType().getName()));
         assertArrayEquals(parameterTypes, method.getParameterTypes(),
             "%s has incorrect parameters".formatted(signature));
+    }
+
+    public static void assertMethodUsesAssumption(Class<?> type, String name, boolean correct, Class<?>... parameterTypes) {
+        final String signature = "%s.%s(%s)".formatted(type.getName(), name,
+            Stream.of(parameterTypes).map(Class::getSimpleName).collect(Collectors.joining(", ")));
+        final Method method = assertDoesNotThrow(() -> type.getMethod(name, parameterTypes),
+            "%s does not exist".formatted(signature));
+        TutorAssumptions.reset();
+        final Object instance = assertDoesNotThrow(() -> type.getConstructor().newInstance(),
+            "Could not create instance of " + type.getName() + ". Probably missing public no-args constructor.");
+        try {
+            method.invoke(instance);
+        } catch (InvocationTargetException e) {
+            fail("Could not invoke " + signature, e.getCause());
+        } catch (IllegalAccessException e) {
+            fail("Could not invoke " + signature, e);
+        }
+        assertTrue(TutorAssumptions.streamAllAssumptions().allMatch(t -> t.isCorrect() == correct));
     }
 }

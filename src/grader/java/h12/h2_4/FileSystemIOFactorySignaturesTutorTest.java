@@ -40,7 +40,7 @@ public class FileSystemIOFactorySignaturesTutorTest {
     public void testSupportsMethods() {
         Class<?> type = assertClassExists();
         final Object instance = assertDoesNotThrow(() -> type.getConstructor().newInstance(),
-            "Could not create instance of " + type.getName() + ". Probably missing no-args public constructor.");
+            "Could not create instance of " + type.getName() + ". Probably missing public no-args constructor.");
         assertTrue((boolean) assertDoesNotThrow(() -> type.getMethod("supportsReader").invoke(instance)),
             "FileSystemIOFactory#supportsReader() should return true");
         assertTrue((boolean) assertDoesNotThrow(() -> type.getMethod("supportsWriter").invoke(instance)),

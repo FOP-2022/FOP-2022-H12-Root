@@ -12,6 +12,9 @@ import java.util.function.Supplier;
 
 import static org.apiguardian.api.API.Status.STABLE;
 
+/**
+ * Replaces {@link Assertions}.
+ */
 @SuppressWarnings("unused")
 public class TutorAssertions {
 

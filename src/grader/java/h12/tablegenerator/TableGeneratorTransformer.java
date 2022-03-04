@@ -1,4 +1,4 @@
-package h12.h2_2and3;
+package h12.tablegenerator;
 
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
@@ -16,9 +16,9 @@ public class TableGeneratorTransformer implements ClassTransformer {
     @Override
     public void transform(final ClassReader reader, final ClassWriter writer) {
         if ("h12/TableGenerator".equals(reader.getClassName())) {
-            reader.accept(new CV(Opcodes.ASM9, writer), 0);
+            reader.accept(new SwitcherooCV(Opcodes.ASM9, new CV(Opcodes.ASM9, writer)), 0);
         } else {
-            reader.accept(writer, 0);
+            reader.accept(new SwitcherooCV(Opcodes.ASM9, writer), 0);
         }
     }
 
@@ -29,13 +29,9 @@ public class TableGeneratorTransformer implements ClassTransformer {
         }
 
         @Override
-        public MethodVisitor visitMethod(final int access, final String name, final String descriptor, final String signature, final String[] exceptions) {
-            MethodVisitor mv = new MV(api, super.visitMethod(access, name, descriptor, signature, exceptions));
-            if ("createTable".equals(name)
-                && "(IJ)Lh12/TableWithTitle;".equals(descriptor)) {
-                mv = new SwitcherooMV(api, mv);
-            }
-            return mv;
+        public MethodVisitor visitMethod(final int access, final String name, final String descriptor,
+                                         final String signature, final String[] exceptions) {
+            return new MV(api, super.visitMethod(access, name, descriptor, signature, exceptions));
         }
 
         private static class MV extends MethodVisitor {
@@ -65,6 +61,19 @@ public class TableGeneratorTransformer implements ClassTransformer {
                 }
             }
         }
+    }
+
+    private static class SwitcherooCV extends ClassVisitor {
+
+        public SwitcherooCV(final int api, final ClassVisitor classVisitor) {
+            super(api, classVisitor);
+        }
+
+        @Override
+        public MethodVisitor visitMethod(final int access, final String name, final String descriptor,
+                                         final String signature, final String[] exceptions) {
+            return new SwitcherooMV(api, super.visitMethod(access, name, descriptor, signature, exceptions));
+        }
 
         private static class SwitcherooMV extends MethodVisitor {
 
@@ -77,13 +86,23 @@ public class TableGeneratorTransformer implements ClassTransformer {
                                         final String descriptor, final boolean isInterface) {
                 if (opcode == Opcodes.INVOKESTATIC
                     && "h12/TableGenerator".equals(owner)
-                    && "createEntries".equals(name)
-                    && ("(IJ)[Lh12/StudentExamEntry;".equals(descriptor)
-                    || "(ILjava/util/Random;)[Lh12/StudentExamEntry;".equals(descriptor))) {
-                    super.visitMethodInsn(opcode, "h12/h2_2and3/TableGeneratorSwitcheroo", name, descriptor, isInterface);
+                    && (matchesCreateEntries(name, descriptor) || matchesCreateTable(name, descriptor))) {
+                    super.visitMethodInsn(opcode, "h12/tablegenerator/TutorTableGenerator", name, descriptor, isInterface);
                 } else {
                     super.visitMethodInsn(opcode, owner, name, descriptor, isInterface);
                 }
+            }
+
+            private static boolean matchesCreateEntries(String name, String descriptor) {
+                return "createEntries".equals(name)
+                    && ("(IJ)[Lh12/StudentExamEntry;".equals(descriptor)
+                    || "(ILjava/util/Random;)[Lh12/StudentExamEntry;".equals(descriptor));
+            }
+
+            private static boolean matchesCreateTable(String name, String descriptor) {
+                return "createTable".equals(name)
+                    && ("(IJ)Lh12/TableWithTitle;".equals(descriptor)
+                    || "(ILjava/util/Random;)Lh12/TableWithTitle;".equals(descriptor));
             }
         }
     }

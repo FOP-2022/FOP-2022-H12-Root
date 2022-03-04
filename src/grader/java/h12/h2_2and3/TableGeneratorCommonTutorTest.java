@@ -1,7 +1,7 @@
 package h12.h2_2and3;
 
 import h12.StudentExamEntry;
-import h12.TutorTableGenerator;
+import h12.SolutionTableGenerator;
 
 import java.util.List;
 import java.util.Random;
@@ -68,7 +68,7 @@ public class TableGeneratorCommonTutorTest {
     }
 
     private static void checkMark(String mark) {
-        assertTrue(List.of(TutorTableGenerator.VALID_MARKS).contains(mark),
+        assertTrue(List.of(SolutionTableGenerator.VALID_MARKS).contains(mark),
             "invalid mark " + mark);
     }
 

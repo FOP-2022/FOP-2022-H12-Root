@@ -1,7 +1,7 @@
 package h12.h2_4;
 
 import h12.FileSystemIOFactory;
-import h12.TutorTableGenerator;
+import h12.SolutionTableGenerator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.sourcegrade.jagr.api.rubric.TestForSubmission;
@@ -27,8 +27,8 @@ public class FileSystemIOFactoryGeneralTutorTest {
             TutorBufferedReader.reset0();
             TutorFileReader.reset0();
             final Random random = new Random(98);
-            final String resourceName = TutorTableGenerator.createRandomString(random);
-            final String expected = TutorTableGenerator.createRandomString(random);
+            final String resourceName = SolutionTableGenerator.createRandomString(random);
+            final String expected = SolutionTableGenerator.createRandomString(random);
             TutorFileReader.FUNCTIONAL_READ = new StringReader(expected + "\n")::read;
             try (BufferedReader br = fileSystemIOFactory.createReader(resourceName)) {
                 assertEquals(expected, br.readLine());
@@ -46,8 +46,8 @@ public class FileSystemIOFactoryGeneralTutorTest {
             TutorBufferedWriter.reset0();
             TutorFileWriter.reset0();
             final Random random = new Random(93);
-            final String resourceName = TutorTableGenerator.createRandomString(random);
-            final String expected = TutorTableGenerator.createRandomString(random);
+            final String resourceName = SolutionTableGenerator.createRandomString(random);
+            final String expected = SolutionTableGenerator.createRandomString(random);
             final StringWriter stringWriter = new StringWriter();
             TutorFileWriter.FUNCTIONAL_WRITE = stringWriter::write;
             try (BufferedWriter bw = fileSystemIOFactory.createWriter(resourceName)) {

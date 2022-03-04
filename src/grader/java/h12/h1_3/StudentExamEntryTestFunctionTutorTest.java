@@ -4,7 +4,7 @@ import h12.BadCharException;
 import h12.BadEnrollmentNumberException;
 import h12.BadStudentMarkException;
 import h12.StudentExamEntryTest;
-import h12.TutorTableGenerator;
+import h12.SolutionTableGenerator;
 import h12.transform.TutorAssertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -104,7 +104,7 @@ public class StudentExamEntryTestFunctionTutorTest {
         checkAssertDoesNotThrow(1);
 
         // check that all valid mark values are tested
-        final List<String> validMarks = List.of(TutorTableGenerator.VALID_MARKS);
+        final List<String> validMarks = List.of(SolutionTableGenerator.VALID_MARKS);
         final Set<String> testedMarks = new HashSet<>();
         for (TutorAssertions.EqualsInvocation invocation : TutorAssertions.EQUALS_INVOCATIONS) {
             final String potentialMark = invocation.expected().toString();
