@@ -24,6 +24,7 @@ import h12.h2_4.FileSystemIOFactorySignaturesTutorTest;
 import h12.h2_5.TestWriteStudentExamTableTutorTest;
 import h12.h3_1.StudentExamTableIOReadEntryTutorTest;
 import h12.h3_1.StudentExamTableIOReadTableTutorTest;
+import h12.h3_2.TestReadStudentExamTableTutorTest;
 import h12.io.FileSystemIOFactoryTransformer;
 import h12.studentexamtableio.StudentExamTableIOSignaturesTutorTest;
 import h12.studentexamtableio.StudentExamTableIOTransformer;
@@ -500,9 +501,19 @@ public class H12_RubricProvider implements RubricProvider {
             H3_1_Table_Works,
         }).build();
 
+    public static final Criterion H3_2 = Criterion.builder()
+        .shortDescription("H3.2 StudentExamTableIOTest testReadStudentExamTable")
+        .grader(Grader.testAwareBuilder()
+            .requirePass(JUnitTestRef.ofMethod(() ->
+                TestReadStudentExamTableTutorTest.class.getMethod("testFunction")))
+            .pointsPassedMax()
+            .pointsFailedMin()
+            .build())
+        .build();
+
     public static final Criterion H3 = Criterion.builder()
         .shortDescription("H3")
-        .addChildCriteria(H3_1)
+        .addChildCriteria(H3_1, H3_2)
         .build();
 
     @Override

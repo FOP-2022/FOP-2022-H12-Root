@@ -67,6 +67,24 @@ public class TutorStudentExamTableIO {
         StudentExamEntry readStudentExamEntry(String line);
     }
 
+    public static class StoreRead implements Read {
+
+        public final List<BufferedReader> readers = new ArrayList<>();
+        public final List<String> lines = new ArrayList<>();
+
+        @Override
+        public TableWithTitle readStudentExamTable(final BufferedReader reader) throws IOException {
+            readers.add(reader);
+            return new TableWithTitle(null, new StudentExamEntry[0]);
+        }
+
+        @Override
+        public StudentExamEntry readStudentExamEntry(final String line) {
+            lines.add(line);
+            return new StudentExamEntry("a", "b", 1, "n/a");
+        }
+    }
+
     public enum ExecutionType {
         USE_ORIGINAL,
         USE_SOLUTION_INFORM_CUSTOM,
