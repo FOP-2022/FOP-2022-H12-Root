@@ -4,7 +4,7 @@ import h12.BadCharException;
 import h12.BadEnrollmentNumberException;
 import h12.BadStudentMarkException;
 import h12.StudentExamEntryTest;
-import h12.SolutionTableGenerator;
+import h12.tablegenerator.SolutionTableGenerator;
 import h12.transform.TutorAssertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

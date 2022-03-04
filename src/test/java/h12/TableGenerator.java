@@ -37,14 +37,14 @@ public class TableGenerator {
     }
 
     @VisibleForTesting
-    public static TableWithTitle createTable(int size, Random random) {
-        final StudentExamEntry[] entries = createEntries(size, random);
-        return new TableWithTitle(createRandomString(random), entries);
-    }
-
-    @VisibleForTesting
     public static TableWithTitle createTable(int size, long seed) {
         final Random random = new Random(seed);
         return createTable(size, random);
+    }
+
+    @VisibleForTesting
+    public static TableWithTitle createTable(int size, Random random) {
+        final StudentExamEntry[] entries = createEntries(size, random);
+        return new TableWithTitle(createRandomString(random), entries);
     }
 }

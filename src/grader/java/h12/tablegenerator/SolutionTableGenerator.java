@@ -1,4 +1,7 @@
-package h12;
+package h12.tablegenerator;
+
+import h12.StudentExamEntry;
+import h12.TableWithTitle;
 
 import java.util.Random;
 

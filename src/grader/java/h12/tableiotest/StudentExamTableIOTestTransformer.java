@@ -1,6 +1,5 @@
-package h12.h2_1;
+package h12.tableiotest;
 
-import h12.TutorIOFactory;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
@@ -51,7 +50,7 @@ public class StudentExamTableIOTestTransformer implements ClassTransformer {
             public void visitTypeInsn(int opcode, String type) {
                 if (opcode == Opcodes.NEW
                     && ("h12/FileSystemIOFactory".equals(type) || "h12/ResourceIOFactory".equals(type))) {
-                    super.visitTypeInsn(opcode, "h12/TutorIOFactory");
+                    super.visitTypeInsn(opcode, "h12/tableiotest/TutorIOFactory");
                 } else {
                     super.visitTypeInsn(opcode, type);
                 }
@@ -67,7 +66,7 @@ public class StudentExamTableIOTestTransformer implements ClassTransformer {
                     }
                     super.visitMethodInsn(
                         opcode,
-                        "h12/TutorIOFactory",
+                        "h12/tableiotest/TutorIOFactory",
                         name,
                         "()V",
                         false

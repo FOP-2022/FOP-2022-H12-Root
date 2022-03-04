@@ -20,10 +20,14 @@ import h12.h2_1.TableWithTitleSignaturesTutorTest;
 import h12.h2_2and3.TableGeneratorEntriesTutorTest;
 import h12.h2_2and3.TableGeneratorSignaturesTutorTest;
 import h12.h2_2and3.TableGeneratorTableTutorTest;
-import h12.tablegenerator.TableGeneratorTransformer;
 import h12.h2_4.FileSystemIOFactoryGeneralTutorTest;
 import h12.h2_4.FileSystemIOFactorySignaturesTutorTest;
-import h12.h2_4.FileSystemIOFactoryTransformer;
+import h12.h2_5.TestWriteStudentExamTableTutorTest;
+import h12.io.FileSystemIOFactoryTransformer;
+import h12.studentexamtableio.StudentExamTableIOTransformer;
+import h12.tablegenerator.TableGeneratorTransformer;
+import h12.tableiotest.StudentExamTableIOTestSignaturesTutorTest;
+import h12.tableiotest.StudentExamTableIOTestTransformer;
 import h12.transform.AccessTransformer;
 import h12.transform.TutorAssertions;
 import h12.transform.TutorAssumptions;
@@ -408,6 +412,31 @@ public class H12_RubricProvider implements RubricProvider {
         .addChildCriteria(H2_4_Basic, H2_4_Reader_Writer)
         .build();
 
+    public static final Criterion H2_5_Signatures = Criterion.builder()
+        .shortDescription("StudentExamTableIOTest signaturen korrekt")
+        .grader(Grader.testAwareBuilder()
+            .requirePass(JUnitTestRef.ofMethod(() ->
+                StudentExamTableIOTestSignaturesTutorTest.class.getMethod("testTestWriteStudentExamTableExists")))
+            .pointsPassedMax()
+            .pointsFailedMin()
+            .build())
+        .build();
+
+    public static final Criterion H2_5_Complete = Criterion.builder()
+        .shortDescription("StudentExamTableIOTest#testWriteStudentExamTable")
+        .grader(Grader.testAwareBuilder()
+            .requirePass(JUnitTestRef.ofMethod(() ->
+                TestWriteStudentExamTableTutorTest.class.getMethod("testFunction")))
+            .pointsPassedMax()
+            .pointsFailedMin()
+            .build())
+        .build();
+
+    public static final Criterion H2_5 = Criterion.builder()
+        .shortDescription("H2.5 StudentExamTableIOTest ioFactory und testWriteStudentExamTable")
+        .addChildCriteria(H2_5_Signatures, H2_5_Complete)
+        .build();
+
     public static final Criterion H2 = Criterion.builder()
         .shortDescription("H2")
         .addChildCriteria(new Criterion[]{
@@ -415,6 +444,7 @@ public class H12_RubricProvider implements RubricProvider {
             H2_2,
             H2_3,
             H2_4,
+            H2_5,
         }).build();
 
     @Override
@@ -427,11 +457,12 @@ public class H12_RubricProvider implements RubricProvider {
 
     @Override
     public void configure(RubricConfiguration configuration) {
-//        configuration.addTransformer(new StudentExamTableIOTestTransformer());
         configuration.addTransformer(new StudentExamEntryCtorVerifier(), ClassTransformerOrder.PRE);
         configuration.addTransformer(new AccessTransformer());
         configuration.addTransformer(ClassTransformer.replacement(TutorAssertions.class, Assertions.class));
         configuration.addTransformer(ClassTransformer.replacement(TutorAssumptions.class, Assumptions.class));
+        configuration.addTransformer(new StudentExamTableIOTransformer());
+        configuration.addTransformer(new StudentExamTableIOTestTransformer());
         configuration.addTransformer(new StudentExamEntryTestTransformer());
         configuration.addTransformer(new TableGeneratorTransformer());
         configuration.addTransformer(new FileSystemIOFactoryTransformer());

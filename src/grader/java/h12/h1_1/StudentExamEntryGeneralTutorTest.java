@@ -2,7 +2,7 @@ package h12.h1_1;
 
 import h12.BadStudentMarkException;
 import h12.StudentExamEntry;
-import h12.SolutionTableGenerator;
+import h12.tablegenerator.SolutionTableGenerator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.sourcegrade.jagr.api.rubric.TestForSubmission;

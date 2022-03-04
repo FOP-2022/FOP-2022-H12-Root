@@ -1,4 +1,4 @@
-package h12.h2_4;
+package h12.io;
 
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
@@ -53,9 +53,9 @@ public class FileSystemIOFactoryTransformer implements ClassTransformer {
             public void visitTypeInsn(final int opcode, final String type) {
                 if (opcode == Opcodes.NEW) {
                     if (("java/io/File" + visitName).equals(type)) {
-                        super.visitTypeInsn(opcode, "h12/h2_4/TutorFile" + visitName);
+                        super.visitTypeInsn(opcode, "h12/io/TutorFile" + visitName);
                     } else if (("java/io/Buffered" + visitName).equals(type)) {
-                        super.visitTypeInsn(opcode, "h12/h2_4/TutorBuffered" + visitName);
+                        super.visitTypeInsn(opcode, "h12/io/TutorBuffered" + visitName);
                     } else {
                         super.visitTypeInsn(opcode, type);
                     }
@@ -71,7 +71,7 @@ public class FileSystemIOFactoryTransformer implements ClassTransformer {
                     if (("java/io/File" + visitName).equals(owner)) {
                         super.visitMethodInsn(
                             Opcodes.INVOKESPECIAL,
-                            "h12/h2_4/TutorFile" + visitName,
+                            "h12/io/TutorFile" + visitName,
                             name,
                             descriptor,
                             false
@@ -79,7 +79,7 @@ public class FileSystemIOFactoryTransformer implements ClassTransformer {
                     } else if (("java/io/Buffered" + visitName).equals(owner)) {
                         super.visitMethodInsn(
                             Opcodes.INVOKESPECIAL,
-                            "h12/h2_4/TutorBuffered" + visitName,
+                            "h12/io/TutorBuffered" + visitName,
                             name,
                             descriptor,
                             false

@@ -2,7 +2,7 @@ package h12.h2_1;
 
 import h12.StudentExamEntry;
 import h12.TableWithTitle;
-import h12.SolutionTableGenerator;
+import h12.tablegenerator.SolutionTableGenerator;
 import org.junit.jupiter.api.Test;
 import org.sourcegrade.jagr.api.rubric.TestForSubmission;
 

@@ -18,6 +18,10 @@ public class TutorAssumptions {
 
     public interface Assumption {
         boolean isCorrect();
+
+        default boolean isNotCorrect() {
+            return !isCorrect();
+        }
     }
 
     public record TrueAssumption(boolean assumption) implements Assumption {

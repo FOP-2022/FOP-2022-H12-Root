@@ -1,7 +1,11 @@
 package h12.h2_4;
 
 import h12.FileSystemIOFactory;
-import h12.SolutionTableGenerator;
+import h12.tablegenerator.SolutionTableGenerator;
+import h12.io.TutorBufferedReader;
+import h12.io.TutorBufferedWriter;
+import h12.io.TutorFileReader;
+import h12.io.TutorFileWriter;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.sourcegrade.jagr.api.rubric.TestForSubmission;

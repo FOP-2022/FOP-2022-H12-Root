@@ -1,12 +1,15 @@
-package h12.h2_4;
+package h12.io;
 
 import org.jetbrains.annotations.Nullable;
 
 import java.io.BufferedWriter;
 import java.io.Writer;
+import java.util.function.Function;
 
 public class TutorBufferedWriter extends BufferedWriter {
 
+    public static final Function<String, TutorBufferedWriter> FS_IO_TUTOR =
+        resourceName -> new TutorBufferedWriter(new TutorFileWriter(resourceName));
     public static @Nullable Writer OUT;
     public static @Nullable TutorBufferedWriter INSTANCE;
 

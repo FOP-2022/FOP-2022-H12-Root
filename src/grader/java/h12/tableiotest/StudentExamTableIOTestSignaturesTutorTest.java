@@ -38,25 +38,25 @@ public class StudentExamTableIOTestSignaturesTutorTest {
     }
 
     @Test
-    public void testTestReadStudentExamTable() {
+    public void testTestReadStudentExamTableExists() {
         Class<?> type = assertClassExists();
         TutorUtils.assertTestMethod(type, "testReadStudentExamTable");
     }
 
     @Test
-    public void testTestReadStudentExamEntry() {
+    public void testTestReadStudentExamEntryExists() {
         Class<?> type = assertClassExists();
         TutorUtils.assertTestMethod(type, "testReadStudentExamEntry");
     }
 
     @Test
-    public void testTestWriteStudentExamTableComplex() {
+    public void testTestWriteStudentExamTableComplexExists() {
         Class<?> type = assertClassExists();
         TutorUtils.assertTestMethod(type, "testWriteStudentExamTableComplex");
     }
 
     @Test
-    public void testTestWriteAndReadStudentExamTable() {
+    public void testTestWriteAndReadStudentExamTableExists() {
         Class<?> type = assertClassExists();
         TutorUtils.assertTestMethod(type, "testWriteAndReadStudentExamTable");
     }

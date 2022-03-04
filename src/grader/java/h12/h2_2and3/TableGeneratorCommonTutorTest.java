@@ -1,7 +1,7 @@
 package h12.h2_2and3;
 
 import h12.StudentExamEntry;
-import h12.SolutionTableGenerator;
+import h12.tablegenerator.SolutionTableGenerator;
 
 import java.util.List;
 import java.util.Random;

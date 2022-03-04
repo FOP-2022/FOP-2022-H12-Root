@@ -1,4 +1,4 @@
-package h12.h2_4;
+package h12.io;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -11,7 +11,7 @@ import java.nio.charset.Charset;
 public class TutorFileReader extends Reader {
 
     @FunctionalInterface
-    interface FunctionalRead {
+    public interface FunctionalRead {
         int read(char[] cbuf, int off, int len) throws IOException;
     }
 

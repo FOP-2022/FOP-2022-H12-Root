@@ -1,8 +1,9 @@
 package h12.h2_1;
 
+import h12.studentexamtableio.SolutionStudentExamTableIO;
 import h12.StudentExamEntry;
 import h12.StudentExamTableIO;
-import h12.SolutionTableGenerator;
+import h12.tablegenerator.SolutionTableGenerator;
 import org.junit.jupiter.api.Test;
 import org.sourcegrade.jagr.api.rubric.TestForSubmission;
 
@@ -23,7 +24,7 @@ public class StudentExamTableIOWriteTable2TutorTest {
             final StudentExamEntry[] entries = SolutionTableGenerator.createEntries(tableSize, random);
 
             final StringWriter expectedWriter = new StringWriter();
-            H2_1_Utils.writeStudentExamTableTutor(expectedWriter, entries);
+            SolutionStudentExamTableIO.writeStudentExamTable(expectedWriter, entries);
             final String[] expected = expectedWriter.toString().split("\n");
 
             final StringWriter actualWriter = new StringWriter();

@@ -1,12 +1,15 @@
-package h12.h2_4;
+package h12.io;
 
 import org.jetbrains.annotations.Nullable;
 
 import java.io.BufferedReader;
 import java.io.Reader;
+import java.util.function.Function;
 
 public class TutorBufferedReader extends BufferedReader {
 
+    public static final Function<String, TutorBufferedReader> FS_IO_TUTOR =
+        resourceName -> new TutorBufferedReader(new TutorFileReader(resourceName));
     public static @Nullable Reader IN;
     public static @Nullable TutorBufferedReader INSTANCE;
 

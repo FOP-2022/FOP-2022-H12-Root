@@ -1,4 +1,4 @@
-package h12.h2_4;
+package h12.io;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -10,7 +10,7 @@ import java.nio.charset.Charset;
 public class TutorFileWriter extends Writer {
 
     @FunctionalInterface
-    interface FunctionalWrite {
+    public interface FunctionalWrite {
         void write(final char[] cbuf, final int off, final int len);
     }
 
