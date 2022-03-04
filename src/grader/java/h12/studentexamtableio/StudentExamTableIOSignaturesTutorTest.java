@@ -1,7 +1,8 @@
-package h12.h2_1;
+package h12.studentexamtableio;
 
 import h12.StudentExamEntry;
 import h12.StudentExamTableIO;
+import h12.TableWithTitle;
 import h12.TutorUtils;
 import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.Test;
@@ -9,6 +10,7 @@ import org.sourcegrade.jagr.api.rubric.TestForSubmission;
 import org.sourcegrade.jagr.api.testing.TestCycle;
 import org.sourcegrade.jagr.api.testing.extension.TestCycleResolver;
 
+import java.io.BufferedReader;
 import java.io.Writer;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -41,5 +43,19 @@ public class StudentExamTableIOSignaturesTutorTest {
             void.class, Writer.class, StudentExamEntry[].class);
         TutorUtils.assertMethod(type, "writeStudentExamTable",
             void.class, Writer.class, StudentExamEntry[].class, String.class);
+    }
+
+    @Test
+    public void testReadStudentExamEntryExists() {
+        Class<?> type = assertClassExists();
+        TutorUtils.assertMethod(type, "readStudentExamEntry",
+            StudentExamEntry.class, String.class);
+    }
+
+    @Test
+    public void testReadStudentExamTableExists() {
+        Class<?> type = assertClassExists();
+        TutorUtils.assertMethod(type, "readStudentExamTable",
+            TableWithTitle.class, BufferedReader.class);
     }
 }

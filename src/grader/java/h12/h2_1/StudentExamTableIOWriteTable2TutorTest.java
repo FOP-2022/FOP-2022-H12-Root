@@ -1,8 +1,9 @@
 package h12.h2_1;
 
-import h12.studentexamtableio.SolutionStudentExamTableIO;
 import h12.StudentExamEntry;
 import h12.StudentExamTableIO;
+import h12.studentexamtableio.SolutionStudentExamTableIO;
+import h12.studentexamtableio.TutorStudentExamTableIO;
 import h12.tablegenerator.SolutionTableGenerator;
 import org.junit.jupiter.api.Test;
 import org.sourcegrade.jagr.api.rubric.TestForSubmission;
@@ -18,6 +19,7 @@ public class StudentExamTableIOWriteTable2TutorTest {
 
     @Test
     public void testWriteStudentExamTable2() throws IOException {
+        TutorStudentExamTableIO.reset();
         final Random random = new Random(73);
         for (int i = 0; i < 10; i++) {
             final int tableSize = i * 4;
