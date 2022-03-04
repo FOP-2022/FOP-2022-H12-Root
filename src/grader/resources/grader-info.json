@@ -43,6 +43,14 @@
         "h12/h2_2and3/TableGeneratorTableTutorTest.java",
         "h12/h2_2and3/TableGeneratorTransformer.java",
 
+        "h12/h2_4/FileSystemIOFactoryGeneralTutorTest.java",
+        "h12/h2_4/FileSystemIOFactorySignaturesTutorTest.java",
+        "h12/h2_4/FileSystemIOFactoryTransformer.java",
+        "h12/h2_4/TutorBufferedReader.java",
+        "h12/h2_4/TutorBufferedWriter.java",
+        "h12/h2_4/TutorFileReader.java",
+        "h12/h2_4/TutorFileWriter.java",
+
         "h12/transform/AccessTransformer.java",
         "h12/transform/TutorAssertions.java",
 

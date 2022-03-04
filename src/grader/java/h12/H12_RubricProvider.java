@@ -4,11 +4,13 @@ import h12.h1_1.BadCharExceptionTutorTest;
 import h12.h1_1.BadEnrollmentNumberExceptionTutorTest;
 import h12.h1_1.BadStudentMarkExceptionTutorTest;
 import h12.h1_1.ExceptionTest;
+import h12.h1_1.StudentExamEntryCtorVerifier;
 import h12.h1_1.StudentExamEntryGeneralTutorTest;
 import h12.h1_1.StudentExamEntrySignaturesTutorTest;
 import h12.h1_2.StudentExamEntryEqualsTutorTest;
 import h12.h1_3.StudentExamEntryTestFunctionTutorTest;
 import h12.h1_3.StudentExamEntryTestSignaturesTutorTest;
+import h12.h1_3.StudentExamEntryTestTransformer;
 import h12.h2_1.StudentExamTableIOSignaturesTutorTest;
 import h12.h2_1.StudentExamTableIOWriteEntryTutorTest;
 import h12.h2_1.StudentExamTableIOWriteTable2TutorTest;
@@ -18,10 +20,11 @@ import h12.h2_1.TableWithTitleSignaturesTutorTest;
 import h12.h2_2and3.TableGeneratorEntriesTutorTest;
 import h12.h2_2and3.TableGeneratorSignaturesTutorTest;
 import h12.h2_2and3.TableGeneratorTableTutorTest;
-import h12.transform.AccessTransformer;
-import h12.h1_1.StudentExamEntryCtorVerifier;
-import h12.h1_3.StudentExamEntryTestTransformer;
 import h12.h2_2and3.TableGeneratorTransformer;
+import h12.h2_4.FileSystemIOFactoryGeneralTutorTest;
+import h12.h2_4.FileSystemIOFactorySignaturesTutorTest;
+import h12.h2_4.FileSystemIOFactoryTransformer;
+import h12.transform.AccessTransformer;
 import h12.transform.TutorAssertions;
 import org.junit.jupiter.api.Assertions;
 import org.sourcegrade.jagr.api.rubric.Criterion;
@@ -336,7 +339,6 @@ public class H12_RubricProvider implements RubricProvider {
             .build())
         .build();
 
-
     public static final Criterion H2_2 = Criterion.builder()
         .shortDescription("H2.2 TableGenerator createEntries")
         .addChildCriteria(new Criterion[]{
@@ -375,10 +377,43 @@ public class H12_RubricProvider implements RubricProvider {
         .addChildCriteria(H2_3_Signatures, H2_3_Function)
         .build();
 
+    public static final Criterion H2_4_Basic = Criterion.builder()
+        .shortDescription("FileSystemIOFactory signaturen und supports Methoden korrekt")
+        .grader(Grader.testAwareBuilder()
+            .requirePass(JUnitTestRef.ofMethod(() ->
+                FileSystemIOFactorySignaturesTutorTest.class.getMethod("testMethodsExist")))
+            .requirePass(JUnitTestRef.ofMethod(() ->
+                FileSystemIOFactorySignaturesTutorTest.class.getMethod("testSupportsMethods")))
+            .pointsPassedMax()
+            .pointsFailedMin()
+            .build())
+        .build();
+
+    public static final Criterion H2_4_Reader_Writer = Criterion.builder()
+        .shortDescription("FileSystemIOFactory#createReader(String) und FileSystemIOFactory#createWriter(String) korrekt")
+        .grader(Grader.testAwareBuilder()
+            .requirePass(JUnitTestRef.ofMethod(() ->
+                FileSystemIOFactoryGeneralTutorTest.class.getMethod("testFileSystemIOFactoryReader")))
+            .requirePass(JUnitTestRef.ofMethod(() ->
+                FileSystemIOFactoryGeneralTutorTest.class.getMethod("testFileSystemIOFactoryWriter")))
+            .pointsPassedMax()
+            .pointsFailedMin()
+            .build())
+        .build();
+
+    public static final Criterion H2_4 = Criterion.builder()
+        .shortDescription("H2.4")
+        .addChildCriteria(H2_4_Basic, H2_4_Reader_Writer)
+        .build();
+
     public static final Criterion H2 = Criterion.builder()
         .shortDescription("H2")
-        .addChildCriteria(H2_1, H2_2, H2_3)
-        .build();
+        .addChildCriteria(new Criterion[]{
+            H2_1,
+            H2_2,
+            H2_3,
+            H2_4,
+        }).build();
 
     @Override
     public Rubric getRubric() {
@@ -396,5 +431,6 @@ public class H12_RubricProvider implements RubricProvider {
         configuration.addTransformer(ClassTransformer.replacement(TutorAssertions.class, Assertions.class));
         configuration.addTransformer(new StudentExamEntryTestTransformer());
         configuration.addTransformer(new TableGeneratorTransformer());
+        configuration.addTransformer(new FileSystemIOFactoryTransformer());
     }
 }
