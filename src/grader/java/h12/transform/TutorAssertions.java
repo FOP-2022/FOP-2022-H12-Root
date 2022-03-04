@@ -8,6 +8,7 @@ import org.junit.jupiter.api.function.ThrowingSupplier;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
 import static org.apiguardian.api.API.Status.STABLE;
@@ -19,6 +20,10 @@ import static org.apiguardian.api.API.Status.STABLE;
 public class TutorAssertions {
 
     public record FailInvocation(@Nullable String message, @Nullable Throwable throwable) {}
+
+    public record TrueInvocation(boolean actual) {}
+
+    public record FalseInvocation(boolean actual) {}
 
     public record NullInvocation(@Nullable Object actual) {}
 
@@ -37,6 +42,8 @@ public class TutorAssertions {
     public record DoesNotThrowInvocation<T>(ThrowingSupplier<T> supplier) {}
 
     public static final List<FailInvocation> FAIL_INVOCATIONS = new ArrayList<>();
+    public static final List<TrueInvocation> TRUE_INVOCATIONS = new ArrayList<>();
+    public static final List<FalseInvocation> FALSE_INVOCATIONS = new ArrayList<>();
     public static final List<NullInvocation> NULL_INVOCATIONS = new ArrayList<>();
     public static final List<NotNullInvocation> NOT_NULL_INVOCATIONS = new ArrayList<>();
     public static final List<EqualsInvocation> EQUALS_INVOCATIONS = new ArrayList<>();
@@ -50,6 +57,8 @@ public class TutorAssertions {
 
     public static void reset() {
         FAIL_INVOCATIONS.clear();
+        TRUE_INVOCATIONS.clear();
+        FALSE_INVOCATIONS.clear();
         NULL_INVOCATIONS.clear();
         NOT_NULL_INVOCATIONS.clear();
         EQUALS_INVOCATIONS.clear();
@@ -101,6 +110,95 @@ public class TutorAssertions {
         }
         return null;
     }
+
+    // --- assertTrue ----------------------------------------------------------
+
+    public static void assertTrue(boolean condition) {
+        TRUE_INVOCATIONS.add(new TrueInvocation(condition));
+        if (forwardInvocations) {
+            Assertions.assertTrue(condition);
+        }
+    }
+
+    public static void assertTrue(boolean condition, Supplier<String> messageSupplier) {
+        TRUE_INVOCATIONS.add(new TrueInvocation(condition));
+        if (forwardInvocations) {
+            Assertions.assertTrue(condition, messageSupplier);
+        }
+    }
+
+    public static void assertTrue(BooleanSupplier booleanSupplier) {
+        TRUE_INVOCATIONS.add(new TrueInvocation(booleanSupplier.getAsBoolean()));
+        if (forwardInvocations) {
+            Assertions.assertTrue(booleanSupplier);
+        }
+    }
+
+    public static void assertTrue(BooleanSupplier booleanSupplier, String message) {
+        TRUE_INVOCATIONS.add(new TrueInvocation(booleanSupplier.getAsBoolean()));
+        if (forwardInvocations) {
+            Assertions.assertTrue(booleanSupplier, message);
+        }
+    }
+
+    public static void assertTrue(boolean condition, String message) {
+        TRUE_INVOCATIONS.add(new TrueInvocation(condition));
+        if (forwardInvocations) {
+            Assertions.assertTrue(condition, message);
+        }
+    }
+
+    public static void assertTrue(BooleanSupplier booleanSupplier, Supplier<String> messageSupplier) {
+        TRUE_INVOCATIONS.add(new TrueInvocation(booleanSupplier.getAsBoolean()));
+        if (forwardInvocations) {
+            Assertions.assertTrue(booleanSupplier, messageSupplier);
+        }
+    }
+
+    // --- assertFalse ---------------------------------------------------------
+
+    public static void assertFalse(boolean condition) {
+        FALSE_INVOCATIONS.add(new FalseInvocation(condition));
+        if (forwardInvocations) {
+            Assertions.assertFalse(condition);
+        }
+    }
+
+    public static void assertFalse(boolean condition, String message) {
+        FALSE_INVOCATIONS.add(new FalseInvocation(condition));
+        if (forwardInvocations) {
+            Assertions.assertFalse(condition, message);
+        }
+    }
+
+    public static void assertFalse(boolean condition, Supplier<String> messageSupplier) {
+        FALSE_INVOCATIONS.add(new FalseInvocation(condition));
+        if (forwardInvocations) {
+            Assertions.assertFalse(condition, messageSupplier);
+        }
+    }
+
+    public static void assertFalse(BooleanSupplier booleanSupplier) {
+        FALSE_INVOCATIONS.add(new FalseInvocation(booleanSupplier.getAsBoolean()));
+        if (forwardInvocations) {
+            Assertions.assertFalse(booleanSupplier);
+        }
+    }
+
+    public static void assertFalse(BooleanSupplier booleanSupplier, String message) {
+        FALSE_INVOCATIONS.add(new FalseInvocation(booleanSupplier.getAsBoolean()));
+        if (forwardInvocations) {
+            Assertions.assertFalse(booleanSupplier, message);
+        }
+    }
+
+    public static void assertFalse(BooleanSupplier booleanSupplier, Supplier<String> messageSupplier) {
+        FALSE_INVOCATIONS.add(new FalseInvocation(booleanSupplier.getAsBoolean()));
+        if (forwardInvocations) {
+            Assertions.assertFalse(booleanSupplier, messageSupplier);
+        }
+    }
+
 
     public static void assertNull(Object actual) {
         NULL_INVOCATIONS.add(new NullInvocation(actual));

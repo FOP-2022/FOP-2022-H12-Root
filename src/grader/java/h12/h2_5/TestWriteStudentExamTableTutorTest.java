@@ -27,7 +27,7 @@ public class TestWriteStudentExamTableTutorTest {
 
     @Test
     @ExtendWith(JagrExecutionCondition.class)
-    public void testFunction() throws IOException {
+    public void testFunction() {
 
         // table generator settings
 
