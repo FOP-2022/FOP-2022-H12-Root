@@ -508,8 +508,8 @@ public class H12_RubricProvider implements RubricProvider {
         .grader(Grader.testAwareBuilder()
             .requirePass(JUnitTestRef.ofMethod(() ->
                 TestReadStudentExamTableTutorTest.class.getMethod("testAssumption")))
-//            .requirePass(JUnitTestRef.ofMethod(() ->
-//                TestReadStudentExamTableTutorTest.class.getMethod("testFunction")))
+            .requirePass(JUnitTestRef.ofMethod(() ->
+                TestReadStudentExamTableTutorTest.class.getMethod("testFunction")))
             .pointsPassedMax()
             .pointsFailedMin()
             .build())
