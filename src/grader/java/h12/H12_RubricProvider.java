@@ -74,7 +74,7 @@ public class H12_RubricProvider implements RubricProvider {
         .build();
 
     public static final Criterion H1_1_Fields_And_Signatures = Criterion.builder()
-        .shortDescription("Attribute und methoden signaturen richtig")
+        .shortDescription("Attribute und methoden existieren")
         .grader(Grader.testAwareBuilder()
             .requirePass(JUnitTestRef.ofMethod(() ->
                 StudentExamEntrySignaturesTutorTest.class.getMethod("testAttributesExist")))
@@ -158,7 +158,7 @@ public class H12_RubricProvider implements RubricProvider {
         .build();
 
     public static final Criterion H1_3_Signatures = Criterion.builder()
-        .shortDescription("Methoden-Signaturen und testTestConstructorsWork korrekt")
+        .shortDescription("Methoden existieren und testTestConstructorsWork korrekt")
         .grader(Grader.testAwareBuilder()
             .requirePass(JUnitTestRef.ofMethod(() ->
                 StudentExamEntryTestSignaturesTutorTest.class.getMethod("testSignaturesCorrect")))
@@ -202,7 +202,7 @@ public class H12_RubricProvider implements RubricProvider {
         .build();
 
     public static final Criterion H2_1_TableWithTitle_Signatures = Criterion.builder()
-        .shortDescription("TableWithTitle Signaturen korrekt")
+        .shortDescription("TableWithTitle attribute, konstruktor und methoden existieren")
         .grader(Grader.testAwareBuilder()
             .requirePass(JUnitTestRef.ofMethod(() ->
                 TableWithTitleSignaturesTutorTest.class.getMethod("testAttributesExist")))
@@ -232,7 +232,7 @@ public class H12_RubricProvider implements RubricProvider {
         .build();
 
     public static Criterion H2_1_Entry_Signature = Criterion.builder()
-        .shortDescription("writeStudentExamEntry Signatur korrekt")
+        .shortDescription("writeStudentExamEntry existiert")
         .grader(Grader.testAwareBuilder()
             .requirePass(JUnitTestRef.ofMethod(() ->
                 StudentExamTableIOSignaturesTutorTest.class.getMethod("testWriteStudentExamEntryExists")))
@@ -252,7 +252,7 @@ public class H12_RubricProvider implements RubricProvider {
         .build();
 
     public static Criterion H2_1_Table_Signatures = Criterion.builder()
-        .shortDescription("writeStudentExamTable Signaturen korrekt")
+        .shortDescription("writeStudentExamTable existiert")
         .grader(Grader.testAwareBuilder()
             .requirePass(JUnitTestRef.ofMethod(() ->
                 StudentExamTableIOSignaturesTutorTest.class.getMethod("testWriteStudentExamTableExists")))
@@ -413,7 +413,7 @@ public class H12_RubricProvider implements RubricProvider {
         .build();
 
     public static final Criterion H2_5_Signatures = Criterion.builder()
-        .shortDescription("StudentExamTableIOTest signaturen korrekt")
+        .shortDescription("StudentExamTableIOTest und testWriteStudentExamTableExists existiert")
         .grader(Grader.testAwareBuilder()
             .requirePass(JUnitTestRef.ofMethod(() ->
                 StudentExamTableIOTestSignaturesTutorTest.class.getMethod("testTestWriteStudentExamTableExists")))
