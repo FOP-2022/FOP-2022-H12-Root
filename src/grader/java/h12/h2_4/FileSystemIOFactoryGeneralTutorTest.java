@@ -1,11 +1,11 @@
 package h12.h2_4;
 
 import h12.FileSystemIOFactory;
-import h12.tablegenerator.SolutionTableGenerator;
 import h12.io.TutorBufferedReader;
 import h12.io.TutorBufferedWriter;
 import h12.io.TutorFileReader;
 import h12.io.TutorFileWriter;
+import h12.tablegenerator.SolutionTableGenerator;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.sourcegrade.jagr.api.rubric.TestForSubmission;
@@ -33,7 +33,7 @@ public class FileSystemIOFactoryGeneralTutorTest {
             final Random random = new Random(98);
             final String resourceName = SolutionTableGenerator.createRandomString(random);
             final String expected = SolutionTableGenerator.createRandomString(random);
-            TutorFileReader.FUNCTIONAL_READ = new StringReader(expected + "\n")::read;
+            TutorFileReader.DELEGATE_SUPPLIER = () -> new StringReader(expected + "\n");
             try (BufferedReader br = fileSystemIOFactory.createReader(resourceName)) {
                 assertEquals(expected, br.readLine());
             }

@@ -45,13 +45,22 @@ public class StudentExamTableIOTestAssumptionsTutorTest {
         }
     }
 
-    public static void testAssume(
-        final boolean checkReader,
-        final boolean checkWriter,
-        final Executable executable
-    ) {
+    private static void checkAssumeReader(final Executable executable) {
         TutorTableGenerator.reset();
         checkAssume(false, null,
+            () -> assertThrows(TestAbortedException.class, executable,
+                "Test did not abort as expected"));
+        assertTrue(TutorAssumptions.streamAllAssumptions().allMatch(TutorAssumptions.Assumption::isNotCorrect),
+            "Expected assumeTrue to be invoked with false");
+        TutorTableGenerator.reset();
+        checkAssume(true, null, executable);
+        assertTrue(TutorAssumptions.streamAllAssumptions().allMatch(TutorAssumptions.Assumption::isCorrect),
+            "Expected assumeTrue to be invoked with true");
+    }
+
+    private static void checkAssumeWriter(final Executable executable) {
+        TutorTableGenerator.reset();
+        checkAssume(null, false,
             () -> assertThrows(TestAbortedException.class, executable,
                 "Test did not abort as expected"));
         assertTrue(TutorAssumptions.streamAllAssumptions().allMatch(TutorAssumptions.Assumption::isNotCorrect),
@@ -60,5 +69,18 @@ public class StudentExamTableIOTestAssumptionsTutorTest {
         checkAssume(null, true, executable);
         assertTrue(TutorAssumptions.streamAllAssumptions().allMatch(TutorAssumptions.Assumption::isCorrect),
             "Expected assumeTrue to be invoked with true");
+    }
+
+    public static void testAssume(
+        final boolean checkReader,
+        final boolean checkWriter,
+        final Executable executable
+    ) {
+        if (checkReader) {
+            checkAssumeReader(executable);
+        }
+        if (checkWriter) {
+            checkAssumeWriter(executable);
+        }
     }
 }

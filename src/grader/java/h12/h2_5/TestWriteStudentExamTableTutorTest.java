@@ -6,14 +6,15 @@ import h12.TableWithTitle;
 import h12.io.TutorBufferedWriter;
 import h12.studentexamtableio.TutorStudentExamTableIO;
 import h12.tablegenerator.TutorTableGenerator;
+import h12.tableiotest.StudentExamTableIOTestAssumptionsTutorTest;
 import h12.tableiotest.TutorIOFactory;
 import h12.transform.TutorAssertions;
+import h12.transform.TutorAssumptions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.sourcegrade.jagr.api.rubric.TestForSubmission;
 import org.sourcegrade.jagr.api.testing.extension.JagrExecutionCondition;
 
-import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,6 +25,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @TestForSubmission("h12")
 public class TestWriteStudentExamTableTutorTest {
+
+    @Test
+    @ExtendWith(JagrExecutionCondition.class)
+    public void testAssumption() {
+        StudentExamTableIOTestAssumptionsTutorTest.testAssume(false, true,
+            new StudentExamTableIOTest()::testWriteStudentExamTable);
+    }
 
     @Test
     @ExtendWith(JagrExecutionCondition.class)
@@ -57,6 +65,7 @@ public class TestWriteStudentExamTableTutorTest {
 
         // important, otherwise methods from StudentExamTableIO are not called
         TutorAssertions.forwardReturningInvocations = true;
+        TutorAssumptions.reset();
         assertDoesNotThrow(() -> new StudentExamTableIOTest().testWriteStudentExamTable());
         assertTrue(invokeCreateWriter[0], "Did not call IOFactory#createWriter(String)");
         assertFalse(allTables.isEmpty(), "Did not call TableGenerator#createTable");

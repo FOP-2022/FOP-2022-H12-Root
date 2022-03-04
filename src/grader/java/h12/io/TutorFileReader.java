@@ -7,15 +7,11 @@ import java.io.FileDescriptor;
 import java.io.IOException;
 import java.io.Reader;
 import java.nio.charset.Charset;
+import java.util.function.Supplier;
 
 public class TutorFileReader extends Reader {
 
-    @FunctionalInterface
-    public interface FunctionalRead {
-        int read(char[] cbuf, int off, int len) throws IOException;
-    }
-
-    public static @Nullable FunctionalRead FUNCTIONAL_READ;
+    public static @Nullable Supplier<Reader> DELEGATE_SUPPLIER;
 
     public static @Nullable String FILE_NAME;
     public static @Nullable File FILE;
@@ -31,41 +27,55 @@ public class TutorFileReader extends Reader {
         CLOSED = false;
     }
 
+    private final @Nullable Reader delegate;
+
+    private TutorFileReader() {
+        delegate = DELEGATE_SUPPLIER == null ? null : DELEGATE_SUPPLIER.get();
+    }
+
     public TutorFileReader(final String fileName) {
+        this();
         FILE_NAME = fileName;
         INSTANCE = this;
     }
 
     public TutorFileReader(final File file) {
+        this();
         FILE = file;
         INSTANCE = this;
     }
 
     public TutorFileReader(final FileDescriptor fd) {
+        this();
         FD = fd;
         INSTANCE = this;
     }
 
     public TutorFileReader(final String fileName, final Charset charset) {
+        this();
         FILE_NAME = fileName;
         INSTANCE = this;
     }
 
     public TutorFileReader(final File file, final Charset charset) {
+        this();
         FILE = file;
         INSTANCE = this;
     }
 
     @Override
     public int read(final char[] cbuf, final int off, final int len) throws IOException {
-        if (FUNCTIONAL_READ != null) {
-            return FUNCTIONAL_READ.read(cbuf, off, len);
+        if (delegate != null) {
+            return delegate.read(cbuf, off, len);
         }
         return -1;
     }
 
     @Override
-    public void close() {
+    public void close() throws IOException {
+        if (delegate != null) {
+            delegate.close();
+        }
         CLOSED = true;
     }
 }
