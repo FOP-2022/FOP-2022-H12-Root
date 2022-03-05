@@ -22,6 +22,7 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import static h12.transform.TutorAssertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.*;
@@ -136,9 +137,51 @@ public class TestWriteAndReadStudentExamTableTutorTest {
         assertTrue(invokeCreate[0], "Did not call IOFactory#createReader(String)");
         assertTrue(invokeCreate[1], "Did not call IOFactory#createWriter(String)");
         assertEquals(100, allTables.size(),
-            "Did not call TableGenerator#createTable the correct amount of times");
+            "Incorrect number of calls to TableGenerator#createTable");
 
+        final List<TableWithTitle> createdTables = new ArrayList<>();
+        TutorTableGenerator.CREATE_TABLE = table -> {
+            createdTables.add(table);
+            return table;
+        };
+        final boolean original = checkIfOriginalWorks(instance);
+        TutorTableGenerator.USE_SOLUTION = !original;
+        TutorStudentExamTableIO.reset();
+        TutorStudentExamTableIO.EXECUTION_TYPE = original
+            ? TutorStudentExamTableIO.ExecutionType.USE_ORIGINAL
+            : TutorStudentExamTableIO.ExecutionType.USE_SOLUTION_NO_INFORM;
 
+        // break title and make sure test reacts correctly
+
+        final FakeFileSystem fakeFs1 = new FakeFileSystem(tableString -> {
+            final String[] split = tableString.split("\n");
+            if (split[0].startsWith("!")) {
+                split[0] = split[0] + "foo";
+            }
+            return String.join("\n", split);
+        });
+
+        TutorIOFactory.CREATE_READER = fakeFs1::createReader;
+        TutorIOFactory.CREATE_WRITER = fakeFs1::createWriter;
+
+        assertThrows(AssertionFailedError.class, () -> invoke(instance, original),
+            "Incorrect table title did not lead to failed test");
+
+        final Random random = new Random();
+        for (int i = 0; i < 10; i++) {
+            final int breakIndex = random.nextInt(5, 200);
+            final FakeFileSystem fakeFs2 = new FakeFileSystem(tableString -> {
+                final String[] split = tableString.split("\n");
+                split[breakIndex] = split[breakIndex] + "foo";
+                return String.join("\n", split);
+            });
+
+            TutorIOFactory.CREATE_READER = fakeFs2::createReader;
+            TutorIOFactory.CREATE_WRITER = fakeFs2::createWriter;
+
+            assertThrows(AssertionFailedError.class, () -> invoke(instance, original),
+                "Incorrect entry " + breakIndex + " did not lead to failed test");
+        }
     }
 
     private void invoke(final StudentExamTableIOTest instance, final boolean original) throws IOException {
