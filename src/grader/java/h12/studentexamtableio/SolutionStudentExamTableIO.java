@@ -1,11 +1,15 @@
-package h12;
+package h12.studentexamtableio;
+
+import h12.OverridingTutorStudentExamEntry;
+import h12.StudentExamEntry;
+import h12.TableWithTitle;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Writer;
 
 @SuppressWarnings("DuplicatedCode")
-public class StudentExamTableIO {
+public class SolutionStudentExamTableIO {
 
     public static void writeStudentExamTable(Writer writer, StudentExamEntry[] entries, String title) throws IOException {
         writer.write('!');
@@ -64,6 +68,6 @@ public class StudentExamTableIO {
         } else {
             mark = elements[3];
         }
-        return new StudentExamEntry(firstName, lastName, enrollmentNumber, mark);
+        return new OverridingTutorStudentExamEntry(firstName, lastName, enrollmentNumber, mark);
     }
 }

@@ -1,15 +1,18 @@
 package h12;
 
+import org.jetbrains.annotations.VisibleForTesting;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class StudentExamEntryTest {
+@VisibleForTesting
+public class StudentExamEntryTest {
 
     @Test
-    void testConstructorsWork() {
+    @VisibleForTesting
+    public void testConstructorsWork() {
         assertDoesNotThrow(() ->
             new StudentExamEntry("a", "b", 1));
         assertDoesNotThrow(() ->
@@ -17,7 +20,8 @@ class StudentExamEntryTest {
     }
 
     @Test
-    void testConstructorsThrow() {
+    @VisibleForTesting
+    public void testConstructorsThrow() {
         assertThrows(NullPointerException.class,
             () -> new StudentExamEntry(null, "b", 1, "1,0"));
         assertThrows(NullPointerException.class,
@@ -37,7 +41,8 @@ class StudentExamEntryTest {
     }
 
     @Test
-    void testMarks() {
+    @VisibleForTesting
+    public void testMarks() {
         StudentExamEntry entry = assertDoesNotThrow(() ->
             new StudentExamEntry("a", "b", 1));
         assertEquals("n/a", entry.getMark());

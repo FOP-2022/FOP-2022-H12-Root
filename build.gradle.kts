@@ -1,7 +1,10 @@
+import org.sourcegrade.submitter.submit
+
 plugins {
     java
     application
     id("org.sourcegrade.style") version "1.2.0"
+    id("org.sourcegrade.submitter") version "0.4.0"
 }
 
 version = "0.1.0-SNAPSHOT"
@@ -9,6 +12,14 @@ version = "0.1.0-SNAPSHOT"
 repositories {
     mavenCentral()
     maven("https://s01.oss.sonatype.org/content/repositories/snapshots")
+}
+
+submit {
+    assignmentId = "h12"
+    studentId = "ab12cdef"
+    firstName = "sol_first"
+    lastName = "sol_last"
+    requireTests = false
 }
 
 val grader: SourceSet by sourceSets.creating {
@@ -19,7 +30,9 @@ val grader: SourceSet by sourceSets.creating {
 
 dependencies {
     implementation("org.jetbrains:annotations:23.0.0")
-    "graderCompileOnly"("org.sourcegrade:jagr-launcher:0.4.0-SNAPSHOT")
+    "graderCompileOnly"("org.sourcegrade:jagr-launcher:0.4.0-SNAPSHOT") {
+        exclude("org.jetbrains", "annotations")
+    }
     "graderImplementation"("org.ow2.asm:asm-util:9.2")
     testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
 }
@@ -50,7 +63,7 @@ tasks {
         }
         workingDir = runDir
         testClassesDirs = grader.output.classesDirs
-        classpath = grader.runtimeClasspath
+        classpath = grader.compileClasspath + grader.runtimeClasspath
         useJUnitPlatform()
     }
     named("check") {
