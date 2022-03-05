@@ -25,6 +25,7 @@ import h12.h2_5.TestWriteStudentExamTableTutorTest;
 import h12.h3_1.StudentExamTableIOReadEntryTutorTest;
 import h12.h3_1.StudentExamTableIOReadTableTutorTest;
 import h12.h3_2.TestReadStudentExamTableTutorTest;
+import h12.h3_3.TestReadStudentExamEntryTutorTest;
 import h12.io.FileSystemIOFactoryTransformer;
 import h12.studentexamtableio.StudentExamTableIOSignaturesTutorTest;
 import h12.studentexamtableio.StudentExamTableIOTransformer;
@@ -503,9 +504,11 @@ public class H12_RubricProvider implements RubricProvider {
             H3_1_Table_Works,
         }).build();
 
-    public static final Criterion H3_2 = Criterion.builder()
-        .shortDescription("H3.2 StudentExamTableIOTest testReadStudentExamTable")
+    public static final Criterion H3_2_Works = Criterion.builder()
+        .shortDescription("testReadStudentExamTable funktioniert")
         .grader(Grader.testAwareBuilder()
+            .requirePass(JUnitTestRef.ofMethod(() ->
+                StudentExamTableIOTestSignaturesTutorTest.class.getMethod("testTestReadStudentExamTableExists")))
             .requirePass(JUnitTestRef.ofMethod(() ->
                 TestReadStudentExamTableTutorTest.class.getMethod("testAssumption")))
             .requirePass(JUnitTestRef.ofMethod(() ->
@@ -515,9 +518,39 @@ public class H12_RubricProvider implements RubricProvider {
             .build())
         .build();
 
+    public static final Criterion H3_2 = Criterion.builder()
+        .shortDescription("H3.2 StudentExamTableIOTest testReadStudentExamTable")
+        .addChildCriteria(H3_2_Works)
+        .build();
+
+    public static final Criterion H3_3_Signatures = Criterion.builder()
+        .shortDescription("testReadStudentExamEntry existiert")
+        .grader(Grader.testAwareBuilder()
+            .requirePass(JUnitTestRef.ofMethod(() ->
+                StudentExamTableIOTestSignaturesTutorTest.class.getMethod("testTestReadStudentExamEntryExists")))
+            .pointsPassedMax()
+            .pointsFailedMin()
+            .build())
+        .build();
+
+    public static final Criterion H3_3_Works = Criterion.builder()
+        .shortDescription("testReadStudentExamEntry funktioniert")
+        .grader(Grader.testAwareBuilder()
+            .requirePass(JUnitTestRef.ofMethod(() ->
+                TestReadStudentExamEntryTutorTest.class.getMethod("testFunction")))
+            .pointsPassedMax()
+            .pointsFailedMin()
+            .build())
+        .build();
+
+    public static final Criterion H3_3 = Criterion.builder()
+        .shortDescription("H3.3 StudentExamTableIOTest testReadStudentExamEntry")
+        .addChildCriteria(H3_3_Signatures, H3_3_Works)
+        .build();
+
     public static final Criterion H3 = Criterion.builder()
         .shortDescription("H3")
-        .addChildCriteria(H3_1, H3_2)
+        .addChildCriteria(H3_1, H3_2, H3_3)
         .build();
 
     @Override
