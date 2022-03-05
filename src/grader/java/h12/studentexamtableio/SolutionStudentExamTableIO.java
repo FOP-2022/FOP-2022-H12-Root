@@ -1,5 +1,6 @@
 package h12.studentexamtableio;
 
+import h12.OverridingTutorStudentExamEntry;
 import h12.StudentExamEntry;
 import h12.TableWithTitle;
 
@@ -67,6 +68,6 @@ public class SolutionStudentExamTableIO {
         } else {
             mark = elements[3];
         }
-        return new StudentExamEntry(firstName, lastName, enrollmentNumber, mark);
+        return new OverridingTutorStudentExamEntry(firstName, lastName, enrollmentNumber, mark);
     }
 }

@@ -24,7 +24,6 @@
         "h12/h1_3/StudentExamEntryTestSignaturesTutorTest.java",
         "h12/h1_3/StudentExamEntryTestTransformer.java",
 
-        "h12/h2_1/H2_1_TutorStudentExamEntry.java",
         "h12/h2_1/StudentExamTableIOWriteEntryTutorTest.java",
         "h12/h2_1/StudentExamTableIOWriteTable2TutorTest.java",
         "h12/h2_1/StudentExamTableIOWriteTable3TutorTest.java",
@@ -74,6 +73,7 @@
         "h12/transform/TutorAssumptions.java",
 
         "h12/H12_RubricProvider.java",
+        "h12/OverridingTutorStudentExamEntry.java",
         "h12/TutorUtils.java"
       ]
     },
