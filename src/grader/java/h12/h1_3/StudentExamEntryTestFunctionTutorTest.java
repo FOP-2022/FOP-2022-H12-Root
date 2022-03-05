@@ -65,7 +65,7 @@ public class StudentExamEntryTestFunctionTutorTest {
 
     private void checkAssertEquals(String startsWith, long count) {
         final long actualCount = TutorAssertions.EQUALS_INVOCATIONS.stream()
-            .filter(t -> t.expected().toString().startsWith(startsWith)).count();
+            .filter(t -> t.expected() != null && t.expected().toString().startsWith(startsWith)).count();
         assertTrue(actualCount >= count,
             "Expected at least " + count + " invocation of Assertions#assertEquals starting with '"
                 + startsWith + "' but got " + actualCount);
