@@ -1,10 +1,26 @@
 package h12;
 
 import h12.tablegenerator.SolutionTableGenerator;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Random;
+import java.util.function.IntUnaryOperator;
+import java.util.function.UnaryOperator;
 
 public class OverridingTutorStudentExamEntry extends StudentExamEntry {
+
+    public static @Nullable UnaryOperator<String> FIRST_NAME_TRANSFORMER;
+    public static @Nullable UnaryOperator<String> LAST_NAME_TRANSFORMER;
+    public static @Nullable IntUnaryOperator ENROLLMENT_NUMBER_TRANSFORMER;
+    public static @Nullable UnaryOperator<String> MARK_TRANSFORMER;
+
+    public static void reset() {
+        FIRST_NAME_TRANSFORMER = null;
+        LAST_NAME_TRANSFORMER = null;
+        ENROLLMENT_NUMBER_TRANSFORMER = null;
+        MARK_TRANSFORMER = null;
+    }
+
     private final String firstName;
     private final String lastName;
     private final int enrollmentNumber;
@@ -28,21 +44,33 @@ public class OverridingTutorStudentExamEntry extends StudentExamEntry {
 
     @Override
     public String getFirstName() {
+        if (FIRST_NAME_TRANSFORMER != null) {
+            return FIRST_NAME_TRANSFORMER.apply(firstName);
+        }
         return firstName;
     }
 
     @Override
     public String getLastName() {
+        if (LAST_NAME_TRANSFORMER != null) {
+            return LAST_NAME_TRANSFORMER.apply(lastName);
+        }
         return lastName;
     }
 
     @Override
     public int getEnrollmentNumber() {
+        if (ENROLLMENT_NUMBER_TRANSFORMER != null) {
+            return ENROLLMENT_NUMBER_TRANSFORMER.applyAsInt(enrollmentNumber);
+        }
         return enrollmentNumber;
     }
 
     @Override
     public String getMark() {
+        if (MARK_TRANSFORMER != null) {
+            return MARK_TRANSFORMER.apply(mark);
+        }
         return mark;
     }
 

@@ -1,5 +1,6 @@
 package h12.h3_3;
 
+import h12.OverridingTutorStudentExamEntry;
 import h12.StudentExamEntry;
 import h12.StudentExamTableIOTest;
 import h12.TableWithTitle;
@@ -7,6 +8,7 @@ import h12.studentexamtableio.TutorStudentExamTableIO;
 import h12.transform.TutorAssertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.opentest4j.AssertionFailedError;
 import org.sourcegrade.jagr.api.rubric.TestForSubmission;
 import org.sourcegrade.jagr.api.testing.extension.JagrExecutionCondition;
 
@@ -50,10 +52,30 @@ public class TestReadStudentExamEntryTutorTest {
         TutorStudentExamTableIO.EXECUTION_TYPE = TutorStudentExamTableIO.ExecutionType.USE_SOLUTION_NO_INFORM;
         TutorAssertions.reset();
         TutorAssertions.forwardInvocations = true;
+        OverridingTutorStudentExamEntry.reset();
         assertDoesNotThrow(test::testReadStudentExamEntry,
             "testReadStudentExamEntry did not work with solution");
 
         // break readStudentExamEntry and see if the test reacts correctly
 
+        OverridingTutorStudentExamEntry.reset();
+        OverridingTutorStudentExamEntry.FIRST_NAME_TRANSFORMER = firstName -> firstName + "a";
+        assertThrows(AssertionFailedError.class, test::testReadStudentExamEntry,
+            "Broken getFirstName() implementation did not cause test to fail");
+
+        OverridingTutorStudentExamEntry.reset();
+        OverridingTutorStudentExamEntry.LAST_NAME_TRANSFORMER = lastName -> lastName + "a";
+        assertThrows(AssertionFailedError.class, test::testReadStudentExamEntry,
+            "Broken getLastName() implementation did not cause test to fail");
+
+        OverridingTutorStudentExamEntry.reset();
+        OverridingTutorStudentExamEntry.ENROLLMENT_NUMBER_TRANSFORMER = enrollmentNumber -> enrollmentNumber + 1;
+        assertThrows(AssertionFailedError.class, test::testReadStudentExamEntry,
+            "Broken getEnrollmentNumber() implementation did not cause test to fail");
+
+        OverridingTutorStudentExamEntry.reset();
+        OverridingTutorStudentExamEntry.MARK_TRANSFORMER = mark -> mark + "a";
+        assertThrows(AssertionFailedError.class, test::testReadStudentExamEntry,
+            "Broken getMark() implementation did not cause test to fail");
     }
 }
