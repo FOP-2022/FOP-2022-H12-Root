@@ -1,11 +1,17 @@
 package h12.io;
 
+import h12.TableWithTitle;
+import h12.studentexamtableio.SolutionStudentExamTableIO;
+import h12.studentexamtableio.TutorStudentExamTableIO;
+import h12.tablegenerator.SolutionTableGenerator;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.FileDescriptor;
 import java.io.IOException;
 import java.io.Reader;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.nio.charset.Charset;
 import java.util.function.Supplier;
 
@@ -25,6 +31,17 @@ public class TutorFileReader extends Reader {
         FD = null;
         INSTANCE = null;
         CLOSED = false;
+    }
+
+    public static void createFakeTable() throws IOException {
+        reset0();
+        TutorStudentExamTableIO.reset();
+        final StringWriter stringWriter = new StringWriter();
+        final TableWithTitle table = SolutionTableGenerator.createTable(20, 20);
+        SolutionStudentExamTableIO.writeStudentExamTable(stringWriter, table.getEntries(), table.getTitle());
+        final String tableString = stringWriter.toString();
+        DELEGATE_SUPPLIER = () -> new StringReader(tableString);
+        TutorStudentExamTableIO.EXECUTION_TYPE = TutorStudentExamTableIO.ExecutionType.USE_SOLUTION_NO_INFORM;
     }
 
     private final @Nullable Reader delegate;

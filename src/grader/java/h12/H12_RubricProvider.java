@@ -26,6 +26,7 @@ import h12.h3_1.StudentExamTableIOReadEntryTutorTest;
 import h12.h3_1.StudentExamTableIOReadTableTutorTest;
 import h12.h3_2.TestReadStudentExamTableTutorTest;
 import h12.h3_3.TestReadStudentExamEntryTutorTest;
+import h12.h4_1.TestWriteStudentExamTableComplexTutorTest;
 import h12.io.FileSystemIOFactoryTransformer;
 import h12.studentexamtableio.StudentExamTableIOSignaturesTutorTest;
 import h12.studentexamtableio.StudentExamTableIOTransformer;
@@ -553,11 +554,64 @@ public class H12_RubricProvider implements RubricProvider {
         .addChildCriteria(H3_1, H3_2, H3_3)
         .build();
 
+    public static final Criterion H4_1_Signature = Criterion.builder()
+        .shortDescription("testWriteStudentExamTableComplex existiert")
+        .grader(Grader.testAwareBuilder()
+            .requirePass(JUnitTestRef.ofMethod(() ->
+                StudentExamTableIOTestSignaturesTutorTest.class.getMethod("testTestWriteStudentExamTableComplexExists")))
+            .pointsPassedMax()
+            .pointsFailedMin()
+            .build())
+        .build();
+
+    public static final Criterion H4_1_Works = Criterion.builder()
+        .shortDescription("testWriteStudentExamTableComplex funktioniert")
+        .grader(Grader.testAwareBuilder()
+            .requirePass(JUnitTestRef.ofMethod(() ->
+                TestWriteStudentExamTableComplexTutorTest.class.getMethod("testAssumption")))
+            .pointsPassedMax()
+            .pointsFailedMin()
+            .build())
+        .build();
+
+    public static final Criterion H4_1 = Criterion.builder()
+        .shortDescription("H4.1 StudentExamTableIOTest testWriteStudentExamTableComplex")
+        .addChildCriteria(H4_1_Signature, H4_1_Works)
+        .build();
+
+    public static final Criterion H4_2_Signature = Criterion.builder()
+        .shortDescription("testWriteAndReadStudentExamTable existiert")
+        .grader(Grader.testAwareBuilder()
+            .requirePass(JUnitTestRef.ofMethod(() ->
+                StudentExamTableIOTestSignaturesTutorTest.class.getMethod("testTestWriteAndReadStudentExamTableExists")))
+            .pointsPassedMax()
+            .pointsFailedMin()
+            .build())
+        .build();
+
+    public static final Criterion H4_2_Basic = Criterion.builder()
+        .shortDescription("testWriteAndReadStudentExamTable funktioniert")
+        .build();
+
+    public static final Criterion H4_2_Complex = Criterion.builder()
+        .shortDescription("testWriteAndReadStudentExamTable vollständig korrekt")
+        .build();
+
+    public static final Criterion H4_2 = Criterion.builder()
+        .shortDescription("H4.2")
+        .addChildCriteria(H4_2_Signature, H4_2_Basic, H4_2_Complex)
+        .build();
+
+    public static final Criterion H4 = Criterion.builder()
+        .shortDescription("H4")
+        .addChildCriteria(H4_1, H4_2)
+        .build();
+
     @Override
     public Rubric getRubric() {
         return Rubric.builder()
             .title("h12")
-            .addChildCriteria(H1, H2, H3)
+            .addChildCriteria(H1, H2, H3, H4)
             .build();
     }
 

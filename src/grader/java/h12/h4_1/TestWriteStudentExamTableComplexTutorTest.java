@@ -1,9 +1,9 @@
-package h12.h2_5;
+package h12.h4_1;
 
-import h12.StudentExamEntry;
 import h12.StudentExamTableIOTest;
 import h12.TableWithTitle;
 import h12.io.TutorBufferedWriter;
+import h12.io.TutorFileReader;
 import h12.studentexamtableio.TutorStudentExamTableIO;
 import h12.tablegenerator.TutorTableGenerator;
 import h12.tableiotest.StudentExamTableIOTestAssumptionsTutorTest;
@@ -15,6 +15,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.sourcegrade.jagr.api.rubric.TestForSubmission;
 import org.sourcegrade.jagr.api.testing.extension.JagrExecutionCondition;
 
+import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,30 +26,28 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @SuppressWarnings("DuplicatedCode")
 @TestForSubmission("h12")
-public class TestWriteStudentExamTableTutorTest {
+public class TestWriteStudentExamTableComplexTutorTest {
 
     @Test
     @ExtendWith(JagrExecutionCondition.class)
-    public void testAssumption() {
-        StudentExamTableIOTestAssumptionsTutorTest.checkAssumeWriter(
-            new StudentExamTableIOTest()::testWriteStudentExamTable);
+    public void testAssumption() throws IOException {
+        TutorFileReader.createFakeTable();
+        StudentExamTableIOTestAssumptionsTutorTest.checkAssumeBoth(
+            new StudentExamTableIOTest()::testWriteStudentExamTableComplex);
     }
 
     @Test
     @ExtendWith(JagrExecutionCondition.class)
-    public void testFunction() {
+    public void testFunction() throws IOException {
         TutorAssumptions.reset();
         TutorAssertions.reset();
-
-        // table generator settings
+        TutorFileReader.createFakeTable();
 
         TutorTableGenerator.reset();
         TutorTableGenerator.SIZE = size -> assertEquals(50, size, "Expected size 50");
         TutorTableGenerator.USE_SOLUTION = true;
         final List<TableWithTitle> allTables = new ArrayList<>();
         TutorTableGenerator.CREATE_TABLE = allTables::add;
-        final List<StudentExamEntry[]> allEntries = new ArrayList<>();
-        TutorTableGenerator.CREATE_ENTRIES = allEntries::add;
 
         // io settings
         final TutorStudentExamTableIO.StoreWrite storeWrite = new TutorStudentExamTableIO.StoreWrite();
@@ -71,10 +70,9 @@ public class TestWriteStudentExamTableTutorTest {
         assertDoesNotThrow(() -> new StudentExamTableIOTest().testWriteStudentExamTable());
         assertTrue(invokeCreateWriter[0], "Did not call IOFactory#createWriter(String)");
         assertFalse(allTables.isEmpty(), "Did not call TableGenerator#createTable");
-        assertFalse(allEntries.isEmpty(), "Did not call TableGenerator#createEntries");
         final int doesNotThrowCount = TutorAssertions.DOES_NOT_THROW_INVOCATIONS.size();
-        assertTrue(doesNotThrowCount >= 2,
-            "Expected at least 2 invocations of Assertions#assertDoesNotThrow");
+        assertTrue(doesNotThrowCount >= 1,
+            "Expected at least 1 invocation of Assertions#assertDoesNotThrow");
 
         assertTrue(storeWrite.checkForAll(w -> {
             final Writer wr = w.writer();
@@ -88,13 +86,6 @@ public class TestWriteStudentExamTableTutorTest {
                 storeWrite.writeData0List.stream()
                     .anyMatch(w -> Arrays.equals(w.entries(), table.getEntries()) && w.title().equals(table.getTitle())),
                 "Did not use result from TableGenerator#createTable in writeStudentExamTable");
-        }
-
-        // ensure that all created entries were used
-        // in StudentExamTableIO#writeStudentExamTable(Writer, StudentExamTableIO[])
-        for (StudentExamEntry[] entries : allEntries) {
-            assertTrue(storeWrite.writeData1List.stream().anyMatch(w -> Arrays.equals(w.entries(), entries)),
-                "Did not use result from TableGenerator#createEntries in writeStudentExamTable");
         }
     }
 }

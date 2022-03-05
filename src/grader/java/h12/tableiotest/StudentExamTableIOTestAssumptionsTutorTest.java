@@ -3,6 +3,7 @@ package h12.tableiotest;
 import h12.io.TutorBufferedReader;
 import h12.io.TutorBufferedWriter;
 import h12.tablegenerator.TutorTableGenerator;
+import h12.transform.TutorAssertions;
 import h12.transform.TutorAssumptions;
 import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.function.Executable;
@@ -28,10 +29,17 @@ public class StudentExamTableIOTestAssumptionsTutorTest {
         final @Nullable Boolean writer,
         final Executable executable
     ) {
+        TutorTableGenerator.reset();
         TutorAssumptions.reset();
-        TutorAssumptions.forwardInvocations = true;
         TutorIOFactory.reset();
         final boolean[] invokeCallbacks = setInvokeCallbacks(Boolean.TRUE.equals(reader), Boolean.TRUE.equals(writer));
+        if (Boolean.FALSE.equals(reader) || Boolean.FALSE.equals(writer)) {
+            TutorAssumptions.forwardInvocations = true;
+            assertThrows(TestAbortedException.class, executable,
+                "Test did not abort as expected when ioFactory read/write not supported");
+        }
+        TutorAssumptions.reset();
+        TutorAssertions.reset();
         assertDoesNotThrow(executable);
         if (reader == null) {
             assertFalse(invokeCallbacks[0], "Used IOFactory#supportsReader()");
@@ -45,42 +53,47 @@ public class StudentExamTableIOTestAssumptionsTutorTest {
         }
     }
 
-    private static void checkAssumeReader(final Executable executable) {
-        TutorTableGenerator.reset();
-        checkAssume(false, null,
-            () -> assertThrows(TestAbortedException.class, executable,
-                "Test did not abort as expected"));
+    public static void checkAssumeReader(final Executable executable) {
+        checkAssume(false, null, executable);
         assertTrue(TutorAssumptions.streamAllAssumptions().allMatch(TutorAssumptions.Assumption::isNotCorrect),
-            "Expected assumeTrue to be invoked with false");
-        TutorTableGenerator.reset();
+            "Expected assumeTrue to be invoked with false from IOFactory#supportsReader()");
+
         checkAssume(true, null, executable);
         assertTrue(TutorAssumptions.streamAllAssumptions().allMatch(TutorAssumptions.Assumption::isCorrect),
-            "Expected assumeTrue to be invoked with true");
+            "Expected assumeTrue to be invoked with true from IOFactory#supportsReader()");
     }
 
-    private static void checkAssumeWriter(final Executable executable) {
-        TutorTableGenerator.reset();
-        checkAssume(null, false,
-            () -> assertThrows(TestAbortedException.class, executable,
-                "Test did not abort as expected"));
+    public static void checkAssumeWriter(final Executable executable) {
+
+        checkAssume(null, false, executable);
         assertTrue(TutorAssumptions.streamAllAssumptions().allMatch(TutorAssumptions.Assumption::isNotCorrect),
-            "Expected assumeTrue to be invoked with false");
-        TutorTableGenerator.reset();
+            "Expected assumeTrue to be invoked with false from IOFactory#supportsWriter()");
+
         checkAssume(null, true, executable);
         assertTrue(TutorAssumptions.streamAllAssumptions().allMatch(TutorAssumptions.Assumption::isCorrect),
-            "Expected assumeTrue to be invoked with true");
+            "Expected assumeTrue to be invoked with true from IOFactory#supportsWriter()");
     }
 
-    public static void testAssume(
-        final boolean checkReader,
-        final boolean checkWriter,
-        final Executable executable
-    ) {
-        if (checkReader) {
-            checkAssumeReader(executable);
-        }
-        if (checkWriter) {
-            checkAssumeWriter(executable);
-        }
+    public static void checkAssumeBoth(final Executable executable) {
+
+        checkAssume(false, false, executable);
+        assertTrue(TutorAssumptions.streamAllAssumptions().allMatch(TutorAssumptions.Assumption::isNotCorrect),
+            "Expected assumeTrue to be invoked with false from IOFactory#supportsReader() or supportsWriter()");
+
+        checkAssume(false, true, executable);
+        assertTrue(TutorAssumptions.streamAllAssumptions().anyMatch(TutorAssumptions.Assumption::isNotCorrect),
+            "Expected assumeTrue to be invoked with false from IOFactory#supportsReader()");
+        assertTrue(TutorAssumptions.streamAllAssumptions().anyMatch(TutorAssumptions.Assumption::isCorrect),
+            "Expected assumeTrue to be invoked with true from IOFactory#supportsWriter()");
+
+        checkAssume(true, false, executable);
+        assertTrue(TutorAssumptions.streamAllAssumptions().anyMatch(TutorAssumptions.Assumption::isNotCorrect),
+            "Expected assumeTrue to be invoked with false from IOFactory#supportsWriter()");
+        assertTrue(TutorAssumptions.streamAllAssumptions().anyMatch(TutorAssumptions.Assumption::isCorrect),
+            "Expected assumeTrue to be invoked with true from IOFactory#supportsReader()");
+
+        checkAssume(true, true, executable);
+        assertTrue(TutorAssumptions.streamAllAssumptions().allMatch(TutorAssumptions.Assumption::isCorrect),
+            "Expected assumeTrue to be invoked with true from IOFactory#supportsReader() and supportsWriter()");
     }
 }

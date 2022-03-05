@@ -48,6 +48,10 @@
 
         "h12/h3_3/TestReadStudentExamEntryTutorTest.java",
 
+        "h12/h4_1/TestWriteStudentExamTableComplexTutorTest.java",
+
+        "h12/h4_2/TestWriteAndReadStudentExamTableTutorTest.java",
+
         "h12/io/FileSystemIOFactoryTransformer.java",
         "h12/io/TutorBufferedReader.java",
         "h12/io/TutorBufferedWriter.java",

@@ -1,12 +1,9 @@
 package h12.h3_2;
 
 import h12.StudentExamTableIOTest;
-import h12.TableWithTitle;
 import h12.io.TutorBufferedReader;
 import h12.io.TutorFileReader;
-import h12.studentexamtableio.SolutionStudentExamTableIO;
 import h12.studentexamtableio.TutorStudentExamTableIO;
-import h12.tablegenerator.SolutionTableGenerator;
 import h12.tableiotest.StudentExamTableIOTestAssumptionsTutorTest;
 import h12.tableiotest.TutorIOFactory;
 import h12.transform.TutorAssertions;
@@ -17,8 +14,6 @@ import org.sourcegrade.jagr.api.rubric.TestForSubmission;
 import org.sourcegrade.jagr.api.testing.extension.JagrExecutionCondition;
 
 import java.io.IOException;
-import java.io.StringReader;
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,24 +22,11 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestForSubmission("h12")
 public class TestReadStudentExamTableTutorTest {
 
-    private static void createFakeTable() throws IOException {
-        TutorFileReader.reset0();
-        TutorStudentExamTableIO.reset();
-        final StringWriter stringWriter = new StringWriter();
-        final TableWithTitle table = SolutionTableGenerator.createTable(20, 20);
-        SolutionStudentExamTableIO.writeStudentExamTable(stringWriter, table.getEntries(), table.getTitle());
-        final String tableString = stringWriter.toString();
-        TutorFileReader.DELEGATE_SUPPLIER = () -> new StringReader(tableString);
-        TutorStudentExamTableIO.EXECUTION_TYPE = TutorStudentExamTableIO.ExecutionType.USE_SOLUTION_NO_INFORM;
-    }
-
     @Test
     @ExtendWith(JagrExecutionCondition.class)
     public void testAssumption() throws IOException {
-        TutorIOFactory.reset();
-        TutorIOFactory.CREATE_READER = TutorBufferedReader.FS_IO_TUTOR;
-        createFakeTable();
-        StudentExamTableIOTestAssumptionsTutorTest.testAssume(true, false,
+        TutorFileReader.createFakeTable();
+        StudentExamTableIOTestAssumptionsTutorTest.checkAssumeReader(
             new StudentExamTableIOTest()::testReadStudentExamTable);
     }
 
@@ -52,7 +34,7 @@ public class TestReadStudentExamTableTutorTest {
     @ExtendWith(JagrExecutionCondition.class)
     public void testFunction() throws IOException {
 
-        createFakeTable();
+        TutorFileReader.createFakeTable();
 
         // io settings
         final TutorStudentExamTableIO.StoreRead storeRead = new TutorStudentExamTableIO.StoreRead();
