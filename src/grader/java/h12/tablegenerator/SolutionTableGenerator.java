@@ -1,5 +1,6 @@
 package h12.tablegenerator;
 
+import h12.OverridingTutorStudentExamEntry;
 import h12.StudentExamEntry;
 import h12.TableWithTitle;
 
@@ -55,7 +56,7 @@ public class SolutionTableGenerator {
             final String lastName = createRandomString(random);
             final int enrollmentNumber = random.nextInt(1000, 10000000);
             final String mark = marks[random.nextInt(marks.length)];
-            result[i] = new StudentExamEntry(firstName, lastName, enrollmentNumber, mark);
+            result[i] = new OverridingTutorStudentExamEntry(firstName, lastName, enrollmentNumber, mark);
         }
         return result;
     }

@@ -50,7 +50,7 @@ public class FakeFileSystem {
         private final String resourceName;
 
         /**
-         * Set as late as possible.
+         * Set as late as possible. // TODO: This is too nice.
          */
         private @Nullable Reader delegate;
 

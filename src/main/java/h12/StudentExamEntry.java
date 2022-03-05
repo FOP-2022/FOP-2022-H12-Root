@@ -110,4 +110,14 @@ public class StudentExamEntry {
     public int hashCode() {
         return Objects.hash(firstName, lastName, enrollmentNumber, mark);
     }
+
+    @Override
+    public String toString() {
+        return "StudentExamEntry{" +
+            "firstName='" + firstName + '\'' +
+            ", lastName='" + lastName + '\'' +
+            ", enrollmentNumber=" + enrollmentNumber +
+            ", mark='" + mark + '\'' +
+            '}';
+    }
 }

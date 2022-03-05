@@ -3,6 +3,7 @@ package h12;
 import h12.tablegenerator.SolutionTableGenerator;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Objects;
 import java.util.Random;
 import java.util.function.IntUnaryOperator;
 import java.util.function.UnaryOperator;
@@ -80,5 +81,30 @@ public class OverridingTutorStudentExamEntry extends StudentExamEntry {
         } else {
             return "%s:%s:%d:%s".formatted(firstName, lastName, enrollmentNumber, mark);
         }
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) return true;
+        if (!(o instanceof final StudentExamEntry that)) return false;
+        return getEnrollmentNumber() == that.getEnrollmentNumber()
+            && Objects.equals(getFirstName(), that.getFirstName())
+            && Objects.equals(getLastName(), that.getLastName())
+            && Objects.equals(getMark(), that.getMark());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), firstName, lastName, enrollmentNumber, mark);
+    }
+
+    @Override
+    public String toString() {
+        return "OverridingStudentExamEntry{" +
+            "firstName='" + getFirstName() + '\'' +
+            ", lastName='" + getLastName() + '\'' +
+            ", enrollmentNumber=" + getEnrollmentNumber() +
+            ", mark='" + getMark() + '\'' +
+            '}';
     }
 }

@@ -15,8 +15,6 @@ public class StudentExamTableIOTestAssumptionsTutorTest {
 
     private static boolean[] setInvokeCallbacks(final boolean reader, final boolean writer) {
         final boolean[] invokeCallbacks = new boolean[2];
-        TutorIOFactory.CREATE_READER = TutorBufferedReader.FS_IO_TUTOR;
-        TutorIOFactory.CREATE_WRITER = TutorBufferedWriter.FS_IO_TUTOR;
         TutorIOFactory.SUPPORTS_READER = () -> invokeCallbacks[0] = true;
         TutorIOFactory.SUPPORTS_WRITER = () -> invokeCallbacks[1] = true;
         TutorIOFactory.READER = reader;
@@ -28,10 +26,9 @@ public class StudentExamTableIOTestAssumptionsTutorTest {
         final @Nullable Boolean reader,
         final @Nullable Boolean writer,
         final Executable executable
-    ) {
+    ) throws Throwable {
         TutorTableGenerator.reset();
         TutorAssumptions.reset();
-        TutorIOFactory.reset();
         final boolean[] invokeCallbacks = setInvokeCallbacks(Boolean.TRUE.equals(reader), Boolean.TRUE.equals(writer));
         if (Boolean.FALSE.equals(reader) || Boolean.FALSE.equals(writer)) {
             TutorAssumptions.forwardInvocations = true;
@@ -40,7 +37,7 @@ public class StudentExamTableIOTestAssumptionsTutorTest {
         }
         TutorAssumptions.reset();
         TutorAssertions.reset();
-        assertDoesNotThrow(executable);
+        executable.execute();
         if (reader == null) {
             assertFalse(invokeCallbacks[0], "Used IOFactory#supportsReader()");
         } else {
@@ -53,7 +50,7 @@ public class StudentExamTableIOTestAssumptionsTutorTest {
         }
     }
 
-    public static void checkAssumeReader(final Executable executable) {
+    public static void checkAssumeReader(final Executable executable) throws Throwable {
         checkAssume(false, null, executable);
         assertTrue(TutorAssumptions.streamAllAssumptions().allMatch(TutorAssumptions.Assumption::isNotCorrect),
             "Expected assumeTrue to be invoked with false from IOFactory#supportsReader()");
@@ -63,8 +60,7 @@ public class StudentExamTableIOTestAssumptionsTutorTest {
             "Expected assumeTrue to be invoked with true from IOFactory#supportsReader()");
     }
 
-    public static void checkAssumeWriter(final Executable executable) {
-
+    public static void checkAssumeWriter(final Executable executable) throws Throwable {
         checkAssume(null, false, executable);
         assertTrue(TutorAssumptions.streamAllAssumptions().allMatch(TutorAssumptions.Assumption::isNotCorrect),
             "Expected assumeTrue to be invoked with false from IOFactory#supportsWriter()");
@@ -74,8 +70,7 @@ public class StudentExamTableIOTestAssumptionsTutorTest {
             "Expected assumeTrue to be invoked with true from IOFactory#supportsWriter()");
     }
 
-    public static void checkAssumeBoth(final Executable executable) {
-
+    public static void checkAssumeBoth(final Executable executable) throws Throwable {
         checkAssume(false, false, executable);
         assertTrue(TutorAssumptions.streamAllAssumptions().allMatch(TutorAssumptions.Assumption::isNotCorrect),
             "Expected assumeTrue to be invoked with false from IOFactory#supportsReader() or supportsWriter()");

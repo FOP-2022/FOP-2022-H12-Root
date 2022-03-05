@@ -27,6 +27,7 @@ import h12.h3_1.StudentExamTableIOReadTableTutorTest;
 import h12.h3_2.TestReadStudentExamTableTutorTest;
 import h12.h3_3.TestReadStudentExamEntryTutorTest;
 import h12.h4_1.TestWriteStudentExamTableComplexTutorTest;
+import h12.h4_2.TestWriteAndReadStudentExamTableTutorTest;
 import h12.io.FileSystemIOFactoryTransformer;
 import h12.studentexamtableio.StudentExamTableIOSignaturesTutorTest;
 import h12.studentexamtableio.StudentExamTableIOTransformer;
@@ -593,10 +594,28 @@ public class H12_RubricProvider implements RubricProvider {
 
     public static final Criterion H4_2_Basic = Criterion.builder()
         .shortDescription("testWriteAndReadStudentExamTable funktioniert")
+        .grader(Grader.testAwareBuilder()
+            .requirePass(JUnitTestRef.ofMethod(() ->
+                TestWriteAndReadStudentExamTableTutorTest.class.getMethod("testAssumption")))
+            .requirePass(JUnitTestRef.ofMethod(() ->
+                TestWriteAndReadStudentExamTableTutorTest.class.getMethod("testBasic")))
+            .pointsPassedMax()
+            .pointsFailedMin()
+            .build())
         .build();
 
     public static final Criterion H4_2_Complex = Criterion.builder()
         .shortDescription("testWriteAndReadStudentExamTable vollständig korrekt")
+        .grader(Grader.testAwareBuilder()
+            .requirePass(JUnitTestRef.ofMethod(() ->
+                TestWriteAndReadStudentExamTableTutorTest.class.getMethod("testAssumption")))
+            .requirePass(JUnitTestRef.ofMethod(() ->
+                TestWriteAndReadStudentExamTableTutorTest.class.getMethod("testBasic")))
+            .requirePass(JUnitTestRef.ofMethod(() ->
+                TestWriteAndReadStudentExamTableTutorTest.class.getMethod("testComplex")))
+            .pointsPassedMax()
+            .pointsFailedMin()
+            .build())
         .build();
 
     public static final Criterion H4_2 = Criterion.builder()

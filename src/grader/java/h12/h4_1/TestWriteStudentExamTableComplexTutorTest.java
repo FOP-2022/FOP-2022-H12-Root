@@ -1,5 +1,6 @@
 package h12.h4_1;
 
+import h12.OverridingTutorStudentExamEntry;
 import h12.StudentExamTableIOTest;
 import h12.TableWithTitle;
 import h12.io.TutorBufferedReader;
@@ -33,8 +34,10 @@ public class TestWriteStudentExamTableComplexTutorTest {
 
     @Test
     @ExtendWith(JagrExecutionCondition.class)
-    public void testAssumption() throws IOException {
-        TutorFileReader.createFakeTable();
+    public void testAssumption() throws Throwable {
+        final FakeFileSystem fakeFs = new FakeFileSystem();
+        TutorIOFactory.CREATE_READER = fakeFs::createReader;
+        TutorIOFactory.CREATE_WRITER = fakeFs::createWriter;
         StudentExamTableIOTestAssumptionsTutorTest.checkAssumeBoth(
             new StudentExamTableIOTest()::testWriteStudentExamTableComplex);
     }
@@ -45,6 +48,7 @@ public class TestWriteStudentExamTableComplexTutorTest {
         TutorAssumptions.reset();
         TutorAssertions.reset();
         TutorFileReader.createFakeTable();
+        OverridingTutorStudentExamEntry.reset();
 
         TutorTableGenerator.reset();
         TutorTableGenerator.SIZE = size -> assertEquals(50, size, "Expected size 50");
@@ -85,7 +89,8 @@ public class TestWriteStudentExamTableComplexTutorTest {
         TutorAssertions.forwardReturningInvocations = true;
         final StudentExamTableIOTest instance = new StudentExamTableIOTest();
         instance.testWriteStudentExamTableComplex();
-        assertTrue(invokeCreate[0], "Did not call IOFactory#createWriter(String)");
+        assertTrue(invokeCreate[0], "Did not call IOFactory#createReader(String)");
+        assertTrue(invokeCreate[1], "Did not call IOFactory#createWriter(String)");
         assertFalse(allTables.isEmpty(), "Did not call TableGenerator#createTable");
 
         assertTrue(storeWrite.checkForAll(w -> {

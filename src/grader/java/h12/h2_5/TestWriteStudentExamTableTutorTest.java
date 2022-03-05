@@ -6,6 +6,7 @@ import h12.TableWithTitle;
 import h12.io.TutorBufferedWriter;
 import h12.studentexamtableio.TutorStudentExamTableIO;
 import h12.tablegenerator.TutorTableGenerator;
+import h12.tableiotest.FakeFileSystem;
 import h12.tableiotest.StudentExamTableIOTestAssumptionsTutorTest;
 import h12.tableiotest.TutorIOFactory;
 import h12.transform.TutorAssertions;
@@ -29,7 +30,8 @@ public class TestWriteStudentExamTableTutorTest {
 
     @Test
     @ExtendWith(JagrExecutionCondition.class)
-    public void testAssumption() {
+    public void testAssumption() throws Throwable {
+        TutorIOFactory.CREATE_WRITER = new FakeFileSystem()::createWriter;
         StudentExamTableIOTestAssumptionsTutorTest.checkAssumeWriter(
             new StudentExamTableIOTest()::testWriteStudentExamTable);
     }

@@ -24,8 +24,9 @@ public class TestReadStudentExamTableTutorTest {
 
     @Test
     @ExtendWith(JagrExecutionCondition.class)
-    public void testAssumption() throws IOException {
+    public void testAssumption() throws Throwable {
         TutorFileReader.createFakeTable();
+        TutorIOFactory.CREATE_READER = TutorBufferedReader.FS_IO_TUTOR;
         StudentExamTableIOTestAssumptionsTutorTest.checkAssumeReader(
             new StudentExamTableIOTest()::testReadStudentExamTable);
     }
