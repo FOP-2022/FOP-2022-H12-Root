@@ -30,7 +30,7 @@ val grader: SourceSet by sourceSets.creating {
 
 dependencies {
     implementation("org.jetbrains:annotations:23.0.0")
-    "graderCompileOnly"("org.sourcegrade:jagr-launcher:0.4.0-SNAPSHOT") {
+    "graderCompileOnly"("org.sourcegrade:jagr-launcher:0.4.0") {
         exclude("org.jetbrains", "annotations")
     }
     "graderImplementation"("org.ow2.asm:asm-util:9.2")
