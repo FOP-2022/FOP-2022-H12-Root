@@ -16,9 +16,9 @@ public class TableGeneratorTransformer implements ClassTransformer {
     @Override
     public void transform(final ClassReader reader, final ClassWriter writer) {
         if ("h12/TableGenerator".equals(reader.getClassName())) {
-            reader.accept(new SwitcherooCV(Opcodes.ASM9, new CV(Opcodes.ASM9, writer)), 0);
+            reader.accept(new SwitcherooCV(Opcodes.ASM9, new CV(Opcodes.ASM9, writer), true), 0);
         } else {
-            reader.accept(new SwitcherooCV(Opcodes.ASM9, writer), 0);
+            reader.accept(new SwitcherooCV(Opcodes.ASM9, writer, false), 0);
         }
     }
 
@@ -65,8 +65,11 @@ public class TableGeneratorTransformer implements ClassTransformer {
 
     private static class SwitcherooCV extends ClassVisitor {
 
-        public SwitcherooCV(final int api, final ClassVisitor classVisitor) {
+        private final boolean useDirect;
+
+        public SwitcherooCV(final int api, final ClassVisitor classVisitor, final boolean useDirect) {
             super(api, classVisitor);
+            this.useDirect = useDirect;
         }
 
         @Override
@@ -75,7 +78,7 @@ public class TableGeneratorTransformer implements ClassTransformer {
             return new SwitcherooMV(api, super.visitMethod(access, name, descriptor, signature, exceptions));
         }
 
-        private static class SwitcherooMV extends MethodVisitor {
+        private class SwitcherooMV extends MethodVisitor {
 
             public SwitcherooMV(final int api, final MethodVisitor methodVisitor) {
                 super(api, methodVisitor);
@@ -87,7 +90,8 @@ public class TableGeneratorTransformer implements ClassTransformer {
                 if (opcode == Opcodes.INVOKESTATIC
                     && "h12/TableGenerator".equals(owner)
                     && (matchesCreateEntries(name, descriptor) || matchesCreateTable(name, descriptor))) {
-                    super.visitMethodInsn(opcode, "h12/tablegenerator/TutorTableGenerator", name, descriptor, isInterface);
+                    super.visitMethodInsn(opcode, "h12/tablegenerator/TutorTableGenerator",
+                        useDirect ? name + "Direct" : name, descriptor, isInterface);
                 } else {
                     super.visitMethodInsn(opcode, owner, name, descriptor, isInterface);
                 }

@@ -46,9 +46,15 @@ public class TestWriteStudentExamTableTutorTest {
         TutorTableGenerator.SIZE = size -> assertEquals(50, size, "Expected size 50");
         TutorTableGenerator.USE_SOLUTION = true;
         final List<TableWithTitle> allTables = new ArrayList<>();
-        TutorTableGenerator.CREATE_TABLE = allTables::add;
+        TutorTableGenerator.CREATE_TABLE = table -> {
+            allTables.add(table);
+            return table;
+        };
         final List<StudentExamEntry[]> allEntries = new ArrayList<>();
-        TutorTableGenerator.CREATE_ENTRIES = allEntries::add;
+        TutorTableGenerator.CREATE_ENTRIES = entries -> {
+            allEntries.add(entries);
+            return entries;
+        };
 
         // io settings
         final TutorStudentExamTableIO.StoreWrite storeWrite = new TutorStudentExamTableIO.StoreWrite();

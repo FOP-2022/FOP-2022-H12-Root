@@ -21,7 +21,7 @@ public class TableGeneratorCommonTutorTest {
             final StudentExamEntry[] entries = generator.generate(tableSize, i);
             assertEquals(tableSize, entries.length);
             for (int j = 0; j < entries.length; j++) {
-                assertNotNull(entries[j], "entry at index " + j + " + is null");
+                assertNotNull(entries[j], "entry at index " + j + " is null");
             }
         }
     }
@@ -33,7 +33,7 @@ public class TableGeneratorCommonTutorTest {
             assertEquals(tableSize, entries.length);
             for (int j = 0; j < entries.length; j++) {
                 final StudentExamEntry entry = entries[j];
-                assertNotNull(entry, "entry at index " + j + " + is null");
+                assertNotNull(entry, "entry at index " + j + " is null");
                 checkString(entry.getFirstName(), "firstName");
                 checkString(entry.getLastName(), "lastName");
                 checkEnrollmentNumber(entry.getEnrollmentNumber());
@@ -50,13 +50,15 @@ public class TableGeneratorCommonTutorTest {
             final int seed = random.nextInt();
             final StudentExamEntry[] e1 = generator.generate(tableSize, seed);
             // constructor may not be called if producing zero-length array
-            assertTrue(tableSize == 0 || H2_2_TutorStudentExamEntry.INVOKE_4, "did not invoke constructor with 4 arguments");
-            assertFalse(H2_2_TutorStudentExamEntry.INVOKE_3, "invoked constructor with 3 arguments");
-            final StudentExamEntry[] e2 = generator.generate(tableSize, seed + 1);
-            assertEquals(tableSize, e1.length, "table length incorrect");
-            assertEquals(e1.length, e2.length, "tables generated with the same length should have the same length");
+            assertTrue(tableSize == 0 || H2_2_TutorStudentExamEntry.INVOKE_4, "Did not invoke constructor with 4 arguments");
+            assertFalse(H2_2_TutorStudentExamEntry.INVOKE_3, "Invoked constructor with 3 arguments");
+            assertEquals(tableSize, e1.length, "Table length incorrect");
+            final StudentExamEntry[] e2 = generator.generate(tableSize, seed);
+            assertArrayEquals(e1, e2, "Two invocations of createEntries with the same input should produce the same result");
+            final StudentExamEntry[] e3 = generator.generate(tableSize, seed + 1);
+            assertEquals(e1.length, e3.length, "Tables generated with the same length should have the same length");
             for (int j = 0; j < tableSize; j++) {
-                assertNotEquals(e1[j], e2[j], "tables generated with different seed values should have different elements");
+                assertNotEquals(e1[j], e3[j], "Tables generated with different seed values should have different elements");
             }
         }
     }

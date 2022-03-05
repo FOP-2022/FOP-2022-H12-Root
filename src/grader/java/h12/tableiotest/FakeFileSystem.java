@@ -10,10 +10,24 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.UnaryOperator;
 
 public class FakeFileSystem {
 
     private final Map<String, String> resources = new HashMap<>();
+    private final UnaryOperator<String> transformer;
+
+    public FakeFileSystem(final UnaryOperator<String> transformer) {
+        this.transformer = transformer;
+    }
+
+    public FakeFileSystem() {
+        this(UnaryOperator.identity());
+    }
+
+    private void putResource(final String resourceName, final String resource) {
+        resources.put(resourceName, transformer.apply(resource));
+    }
 
     public BufferedReader createReader(final String resourceName) {
         return new BufferedReader(new DeferredReader(resourceName));
@@ -79,13 +93,13 @@ public class FakeFileSystem {
         @Override
         public void flush() throws IOException {
             super.flush();
-            resources.put(resourceName, out.toString());
+            putResource(resourceName, out.toString());
         }
 
         @Override
         public void close() throws IOException {
             super.close();
-            resources.put(resourceName, out.toString());
+            putResource(resourceName, out.toString());
         }
     }
 }
