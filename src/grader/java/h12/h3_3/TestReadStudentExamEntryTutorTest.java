@@ -56,7 +56,7 @@ public class TestReadStudentExamEntryTutorTest {
         assertDoesNotThrow(test::testReadStudentExamEntry,
             "testReadStudentExamEntry did not work with solution");
 
-        // break readStudentExamEntry and see if the test reacts correctly
+        // break StudentExamEntry and see if the test reacts correctly
 
         OverridingTutorStudentExamEntry.reset();
         OverridingTutorStudentExamEntry.FIRST_NAME_TRANSFORMER = firstName -> firstName + "a";
