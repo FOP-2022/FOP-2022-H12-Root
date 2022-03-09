@@ -1,17 +1,17 @@
 package h12.transform;
 
-import org.apiguardian.api.API;
 import org.jetbrains.annotations.Nullable;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.api.function.ThrowingSupplier;
+import org.opentest4j.MultipleFailuresError;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
-
-import static org.apiguardian.api.API.Status.STABLE;
+import java.util.stream.Stream;
 
 /**
  * Replaces {@link Assertions}.
@@ -31,15 +31,21 @@ public class TutorAssertions {
 
     public record EqualsInvocation(Object expected, Object actual) {}
 
-    public record NotEqualsInvocation(Object expected, Object actual) {}
-
     public record ArrayEqualsInvocation(Object expected, Object actual) {}
 
-    public record ArrayNotEqualsInvocation(Object expected, Object actual) {}
+    public record NotEqualsInvocation(Object expected, Object actual) {}
+
+    public record SameInvocation(Object expected, Object actual) {}
+
+    public record NotSameInvocation(Object unexpected, Object actual) {}
+
+    public record AllInvocation(Collection<Executable> executables) {}
 
     public record ThrowsInvocation<T extends Throwable>(Class<T> expectedType, Executable executable) {}
 
     public record DoesNotThrowInvocation<T>(ThrowingSupplier<T> supplier) {}
+
+    public record InstanceOfInvocation<T>(Class<T> expectedType, Object actual) {}
 
     public static final List<FailInvocation> FAIL_INVOCATIONS = new ArrayList<>();
     public static final List<TrueInvocation> TRUE_INVOCATIONS = new ArrayList<>();
@@ -47,11 +53,14 @@ public class TutorAssertions {
     public static final List<NullInvocation> NULL_INVOCATIONS = new ArrayList<>();
     public static final List<NotNullInvocation> NOT_NULL_INVOCATIONS = new ArrayList<>();
     public static final List<EqualsInvocation> EQUALS_INVOCATIONS = new ArrayList<>();
-    public static final List<NotEqualsInvocation> NOT_EQUALS_INVOCATIONS = new ArrayList<>();
     public static final List<ArrayEqualsInvocation> ARRAY_EQUALS_INVOCATIONS = new ArrayList<>();
-    public static final List<ArrayNotEqualsInvocation> ARRAY_NOT_EQUALS_INVOCATIONS = new ArrayList<>();
+    public static final List<NotEqualsInvocation> NOT_EQUALS_INVOCATIONS = new ArrayList<>();
+    public static final List<SameInvocation> SAME_INVOCATIONS = new ArrayList<>();
+    public static final List<NotSameInvocation> NOT_SAME_INVOCATIONS = new ArrayList<>();
+    public static final List<AllInvocation> ALL_INVOCATIONS = new ArrayList<>(); // invocations of assertAll, not _all_
     public static final List<ThrowsInvocation<?>> THROWS_INVOCATIONS = new ArrayList<>();
     public static final List<DoesNotThrowInvocation<?>> DOES_NOT_THROW_INVOCATIONS = new ArrayList<>();
+    public static final List<InstanceOfInvocation<?>> INSTANCE_OF_INVOCATIONS = new ArrayList<>();
     public static boolean forwardInvocations = false;
     public static boolean forwardReturningInvocations = false;
 
@@ -64,12 +73,14 @@ public class TutorAssertions {
         EQUALS_INVOCATIONS.clear();
         NOT_EQUALS_INVOCATIONS.clear();
         ARRAY_EQUALS_INVOCATIONS.clear();
-        ARRAY_NOT_EQUALS_INVOCATIONS.clear();
+        ALL_INVOCATIONS.clear();
         THROWS_INVOCATIONS.clear();
         DOES_NOT_THROW_INVOCATIONS.clear();
         forwardInvocations = false;
         forwardReturningInvocations = false;
     }
+
+    // --- fail ----------------------------------------------------------------
 
     public static <V> V fail() {
         FAIL_INVOCATIONS.add(new FailInvocation(null, null));
@@ -199,6 +210,7 @@ public class TutorAssertions {
         }
     }
 
+    // --- assertNull ----------------------------------------------------------
 
     public static void assertNull(Object actual) {
         NULL_INVOCATIONS.add(new NullInvocation(actual));
@@ -244,26 +256,7 @@ public class TutorAssertions {
         }
     }
 
-    public static void assertEquals(Object expected, Object actual) {
-        EQUALS_INVOCATIONS.add(new EqualsInvocation(expected, actual));
-        if (forwardInvocations) {
-            Assertions.assertEquals(expected, actual);
-        }
-    }
-
-    public static void assertEquals(Object expected, Object actual, String message) {
-        EQUALS_INVOCATIONS.add(new EqualsInvocation(expected, actual));
-        if (forwardInvocations) {
-            Assertions.assertEquals(expected, actual, message);
-        }
-    }
-
-    public static void assertEquals(Object expected, Object actual, Supplier<String> messageSupplier) {
-        EQUALS_INVOCATIONS.add(new EqualsInvocation(expected, actual));
-        if (forwardInvocations) {
-            Assertions.assertEquals(expected, actual, messageSupplier);
-        }
-    }
+    // --- assertEquals --------------------------------------------------------
 
     public static void assertEquals(short expected, short actual) {
         EQUALS_INVOCATIONS.add(new EqualsInvocation(expected, actual));
@@ -286,7 +279,6 @@ public class TutorAssertions {
         }
     }
 
-    @API(status = STABLE, since = "5.4")
     public static void assertEquals(Short expected, Short actual) {
         EQUALS_INVOCATIONS.add(new EqualsInvocation(expected, actual));
         if (forwardInvocations) {
@@ -315,7 +307,6 @@ public class TutorAssertions {
         }
     }
 
-    @API(status = STABLE, since = "5.4")
     public static void assertEquals(Short expected, Short actual, String message) {
         EQUALS_INVOCATIONS.add(new EqualsInvocation(expected, actual));
         if (forwardInvocations) {
@@ -540,7 +531,6 @@ public class TutorAssertions {
         }
     }
 
-    @API(status = STABLE, since = "5.4")
     public static void assertEquals(Long expected, Long actual) {
         EQUALS_INVOCATIONS.add(new EqualsInvocation(expected, actual));
         if (forwardInvocations) {
@@ -569,7 +559,6 @@ public class TutorAssertions {
         }
     }
 
-    @API(status = STABLE, since = "5.4")
     public static void assertEquals(Long expected, Long actual, String message) {
         EQUALS_INVOCATIONS.add(new EqualsInvocation(expected, actual));
         if (forwardInvocations) {
@@ -759,7 +748,6 @@ public class TutorAssertions {
         }
     }
 
-    @API(status = STABLE, since = "5.4")
     public static void assertEquals(Double expected, Double actual, String message) {
         EQUALS_INVOCATIONS.add(new EqualsInvocation(expected, actual));
         if (forwardInvocations) {
@@ -788,7 +776,6 @@ public class TutorAssertions {
         }
     }
 
-    @API(status = STABLE, since = "5.4")
     public static void assertEquals(Double expected, Double actual, Supplier<String> messageSupplier) {
         EQUALS_INVOCATIONS.add(new EqualsInvocation(expected, actual));
         if (forwardInvocations) {
@@ -901,6 +888,29 @@ public class TutorAssertions {
             Assertions.assertEquals(expected, actual, messageSupplier);
         }
     }
+
+    public static void assertEquals(Object expected, Object actual) {
+        EQUALS_INVOCATIONS.add(new EqualsInvocation(expected, actual));
+        if (forwardInvocations) {
+            Assertions.assertEquals(expected, actual);
+        }
+    }
+
+    public static void assertEquals(Object expected, Object actual, String message) {
+        EQUALS_INVOCATIONS.add(new EqualsInvocation(expected, actual));
+        if (forwardInvocations) {
+            Assertions.assertEquals(expected, actual, message);
+        }
+    }
+
+    public static void assertEquals(Object expected, Object actual, Supplier<String> messageSupplier) {
+        EQUALS_INVOCATIONS.add(new EqualsInvocation(expected, actual));
+        if (forwardInvocations) {
+            Assertions.assertEquals(expected, actual, messageSupplier);
+        }
+    }
+
+    // --- assertArrayEquals ---------------------------------------------------
 
     public static void assertArrayEquals(boolean[] expected, boolean[] actual) {
         ARRAY_EQUALS_INVOCATIONS.add(new ArrayEqualsInvocation(expected, actual));
@@ -1135,6 +1145,787 @@ public class TutorAssertions {
         }
     }
 
+    // --- assertNotEquals -----------------------------------------------------
+
+    public static void assertNotEquals(short unexpected, short actual) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual);
+        }
+    }
+
+    public static void assertNotEquals(short unexpected, Short actual) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual);
+        }
+    }
+
+    public static void assertNotEquals(Short unexpected, short actual) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual);
+        }
+    }
+
+    public static void assertNotEquals(Short unexpected, Short actual) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual);
+        }
+    }
+
+    public static void assertNotEquals(short unexpected, short actual, String message) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual, message);
+        }
+    }
+
+    public static void assertNotEquals(short unexpected, Short actual, String message) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual, message);
+        }
+    }
+
+    public static void assertNotEquals(Short unexpected, short actual, String message) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual, message);
+        }
+    }
+
+    public static void assertNotEquals(Short unexpected, Short actual, String message) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual, message);
+        }
+    }
+
+    public static void assertNotEquals(short unexpected, short actual, Supplier<String> messageSupplier) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual, messageSupplier);
+        }
+    }
+
+    public static void assertNotEquals(short unexpected, Short actual, Supplier<String> messageSupplier) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual, messageSupplier);
+        }
+    }
+
+    public static void assertNotEquals(Short unexpected, short actual, Supplier<String> messageSupplier) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual, messageSupplier);
+        }
+    }
+
+    public static void assertNotEquals(Short unexpected, Short actual, Supplier<String> messageSupplier) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual, messageSupplier);
+        }
+    }
+
+    public static void assertNotEquals(byte unexpected, byte actual) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual);
+        }
+    }
+
+    public static void assertNotEquals(byte unexpected, Byte actual) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual);
+        }
+    }
+
+    public static void assertNotEquals(Byte unexpected, byte actual) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual);
+        }
+    }
+
+    public static void assertNotEquals(Byte unexpected, Byte actual) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual);
+        }
+    }
+
+    public static void assertNotEquals(byte unexpected, byte actual, String message) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual, message);
+        }
+    }
+
+    public static void assertNotEquals(byte unexpected, Byte actual, String message) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual, message);
+        }
+    }
+
+    public static void assertNotEquals(Byte unexpected, byte actual, String message) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual, message);
+        }
+    }
+
+    public static void assertNotEquals(Byte unexpected, Byte actual, String message) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual, message);
+        }
+    }
+
+    public static void assertNotEquals(byte unexpected, byte actual, Supplier<String> messageSupplier) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual, messageSupplier);
+        }
+    }
+
+    public static void assertNotEquals(byte unexpected, Byte actual, Supplier<String> messageSupplier) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual, messageSupplier);
+        }
+    }
+
+    public static void assertNotEquals(Byte unexpected, byte actual, Supplier<String> messageSupplier) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual, messageSupplier);
+        }
+    }
+
+    public static void assertNotEquals(Byte unexpected, Byte actual, Supplier<String> messageSupplier) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual, messageSupplier);
+        }
+    }
+
+    public static void assertNotEquals(int unexpected, int actual) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual);
+        }
+    }
+
+    public static void assertNotEquals(int unexpected, Integer actual) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual);
+        }
+    }
+
+    public static void assertNotEquals(Integer unexpected, int actual) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual);
+        }
+    }
+
+    public static void assertNotEquals(Integer unexpected, Integer actual) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual);
+        }
+    }
+
+    public static void assertNotEquals(int unexpected, int actual, String message) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual);
+        }
+    }
+
+    public static void assertNotEquals(int unexpected, Integer actual, String message) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual, message);
+        }
+    }
+
+    public static void assertNotEquals(Integer unexpected, int actual, String message) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual, message);
+        }
+    }
+
+    public static void assertNotEquals(Integer unexpected, Integer actual, String message) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual, message);
+        }
+    }
+
+    public static void assertNotEquals(int unexpected, int actual, Supplier<String> messageSupplier) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual, messageSupplier);
+        }
+    }
+
+    public static void assertNotEquals(int unexpected, Integer actual, Supplier<String> messageSupplier) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual, messageSupplier);
+        }
+    }
+
+    public static void assertNotEquals(Integer unexpected, int actual, Supplier<String> messageSupplier) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual, messageSupplier);
+        }
+    }
+
+    public static void assertNotEquals(Integer unexpected, Integer actual, Supplier<String> messageSupplier) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual, messageSupplier);
+        }
+    }
+
+    public static void assertNotEquals(long unexpected, long actual) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual);
+        }
+    }
+
+    public static void assertNotEquals(long unexpected, Long actual) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual);
+        }
+    }
+
+    public static void assertNotEquals(Long unexpected, long actual) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual);
+        }
+    }
+
+    public static void assertNotEquals(Long unexpected, Long actual) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual);
+        }
+    }
+
+    public static void assertNotEquals(long unexpected, long actual, String message) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual, message);
+        }
+    }
+
+    public static void assertNotEquals(long unexpected, Long actual, String message) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual, message);
+        }
+    }
+
+    public static void assertNotEquals(Long unexpected, long actual, String message) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual, message);
+        }
+    }
+
+    public static void assertNotEquals(Long unexpected, Long actual, String message) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual, message);
+        }
+    }
+
+    public static void assertNotEquals(long unexpected, long actual, Supplier<String> messageSupplier) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual, messageSupplier);
+        }
+    }
+
+    public static void assertNotEquals(long unexpected, Long actual, Supplier<String> messageSupplier) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual, messageSupplier);
+        }
+    }
+
+    public static void assertNotEquals(Long unexpected, long actual, Supplier<String> messageSupplier) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual, messageSupplier);
+        }
+    }
+
+    public static void assertNotEquals(Long unexpected, Long actual, Supplier<String> messageSupplier) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual, messageSupplier);
+        }
+    }
+
+    public static void assertNotEquals(float unexpected, float actual) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual);
+        }
+    }
+
+    public static void assertNotEquals(float unexpected, Float actual) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual);
+        }
+    }
+
+    public static void assertNotEquals(Float unexpected, float actual) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual);
+        }
+    }
+
+    public static void assertNotEquals(Float unexpected, Float actual) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual);
+        }
+    }
+
+    public static void assertNotEquals(float unexpected, float actual, String message) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual, message);
+        }
+    }
+
+    public static void assertNotEquals(float unexpected, Float actual, String message) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual, message);
+        }
+    }
+
+    public static void assertNotEquals(Float unexpected, float actual, String message) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual, message);
+        }
+    }
+
+    public static void assertNotEquals(Float unexpected, Float actual, String message) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual, message);
+        }
+    }
+
+    public static void assertNotEquals(float unexpected, float actual, Supplier<String> messageSupplier) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual, messageSupplier);
+        }
+    }
+
+    public static void assertNotEquals(float unexpected, Float actual, Supplier<String> messageSupplier) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual, messageSupplier);
+        }
+    }
+
+    public static void assertNotEquals(Float unexpected, float actual, Supplier<String> messageSupplier) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual, messageSupplier);
+        }
+    }
+
+    public static void assertNotEquals(Float unexpected, Float actual, Supplier<String> messageSupplier) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual, messageSupplier);
+        }
+    }
+
+    public static void assertNotEquals(float unexpected, float actual, float delta) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual, delta);
+        }
+    }
+
+    public static void assertNotEquals(float unexpected, float actual, float delta, String message) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual, delta, message);
+        }
+    }
+
+    public static void assertNotEquals(float unexpected, float actual, float delta, Supplier<String> messageSupplier) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual, delta, messageSupplier);
+        }
+    }
+
+    public static void assertNotEquals(double unexpected, double actual) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual);
+        }
+    }
+
+    public static void assertNotEquals(double unexpected, Double actual) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual);
+        }
+    }
+
+    public static void assertNotEquals(Double unexpected, double actual) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual);
+        }
+    }
+
+    public static void assertNotEquals(Double unexpected, Double actual) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual);
+        }
+    }
+
+    public static void assertNotEquals(double unexpected, double actual, String message) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual, message);
+        }
+    }
+
+    public static void assertNotEquals(double unexpected, Double actual, String message) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual, message);
+        }
+    }
+
+    public static void assertNotEquals(Double unexpected, double actual, String message) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual, message);
+        }
+    }
+
+    public static void assertNotEquals(Double unexpected, Double actual, String message) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual, message);
+        }
+    }
+
+    public static void assertNotEquals(double unexpected, double actual, Supplier<String> messageSupplier) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual, messageSupplier);
+        }
+    }
+
+    public static void assertNotEquals(double unexpected, Double actual, Supplier<String> messageSupplier) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual, messageSupplier);
+        }
+    }
+
+    public static void assertNotEquals(Double unexpected, double actual, Supplier<String> messageSupplier) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual, messageSupplier);
+        }
+    }
+
+    public static void assertNotEquals(Double unexpected, Double actual, Supplier<String> messageSupplier) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual, messageSupplier);
+        }
+    }
+
+    public static void assertNotEquals(double unexpected, double actual, double delta) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual, delta);
+        }
+    }
+
+    public static void assertNotEquals(double unexpected, double actual, double delta, String message) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual, delta, message);
+        }
+    }
+
+    public static void assertNotEquals(double unexpected, double actual, double delta, Supplier<String> messageSupplier) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual, delta, messageSupplier);
+        }
+    }
+
+    public static void assertNotEquals(char unexpected, char actual) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual);
+        }
+    }
+
+    public static void assertNotEquals(char unexpected, Character actual) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual);
+        }
+    }
+
+    public static void assertNotEquals(Character unexpected, char actual) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual);
+        }
+    }
+
+    public static void assertNotEquals(Character unexpected, Character actual) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual);
+        }
+    }
+
+    public static void assertNotEquals(char unexpected, char actual, String message) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual);
+        }
+    }
+
+    public static void assertNotEquals(char unexpected, Character actual, String message) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual, message);
+        }
+    }
+
+    public static void assertNotEquals(Character unexpected, char actual, String message) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual, message);
+        }
+    }
+
+    public static void assertNotEquals(Character unexpected, Character actual, String message) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual, message);
+        }
+    }
+
+    public static void assertNotEquals(char unexpected, char actual, Supplier<String> messageSupplier) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual, messageSupplier);
+        }
+    }
+
+    public static void assertNotEquals(char unexpected, Character actual, Supplier<String> messageSupplier) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual, messageSupplier);
+        }
+    }
+
+    public static void assertNotEquals(Character unexpected, char actual, Supplier<String> messageSupplier) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual, messageSupplier);
+        }
+    }
+
+    public static void assertNotEquals(Character unexpected, Character actual, Supplier<String> messageSupplier) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual, messageSupplier);
+        }
+    }
+
+    public static void assertNotEquals(Object unexpected, Object actual) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual);
+        }
+    }
+
+    public static void assertNotEquals(Object unexpected, Object actual, String message) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual, message);
+        }
+    }
+
+    public static void assertNotEquals(Object unexpected, Object actual, Supplier<String> messageSupplier) {
+        NOT_EQUALS_INVOCATIONS.add(new NotEqualsInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertNotEquals(unexpected, actual, messageSupplier);
+        }
+    }
+
+    // --- assertSame ----------------------------------------------------------
+
+    public static void assertSame(Object expected, Object actual) {
+        SAME_INVOCATIONS.add(new SameInvocation(expected, actual));
+        if (forwardInvocations) {
+            Assertions.assertSame(expected, actual);
+        }
+    }
+
+    public static void assertSame(Object expected, Object actual, String message) {
+        SAME_INVOCATIONS.add(new SameInvocation(expected, actual));
+        if (forwardInvocations) {
+            Assertions.assertSame(expected, actual, message);
+        }
+    }
+
+    public static void assertSame(Object expected, Object actual, Supplier<String> messageSupplier) {
+        SAME_INVOCATIONS.add(new SameInvocation(expected, actual));
+        if (forwardInvocations) {
+            Assertions.assertSame(expected, actual, messageSupplier);
+        }
+    }
+
+    // --- assertNotSame ----------------------------------------------------------
+
+    public static void assertNotSame(Object unexpected, Object actual) {
+        NOT_SAME_INVOCATIONS.add(new NotSameInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertSame(unexpected, actual);
+        }
+    }
+
+    public static void assertNotSame(Object unexpected, Object actual, String message) {
+        NOT_SAME_INVOCATIONS.add(new NotSameInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertSame(unexpected, actual, message);
+        }
+    }
+
+    public static void assertNotSame(Object unexpected, Object actual, Supplier<String> messageSupplier) {
+        NOT_SAME_INVOCATIONS.add(new NotSameInvocation(unexpected, actual));
+        if (forwardInvocations) {
+            Assertions.assertSame(unexpected, actual, messageSupplier);
+        }
+    }
+
+    // --- assertAll -----------------------------------------------------------
+
+    public static void assertAll(Executable... executables) throws MultipleFailuresError {
+        ALL_INVOCATIONS.add(new AllInvocation(List.of(executables)));
+        if (forwardInvocations) {
+            Assertions.assertAll(executables);
+        }
+    }
+
+    public static void assertAll(String heading, Executable... executables) throws MultipleFailuresError {
+        ALL_INVOCATIONS.add(new AllInvocation(List.of(executables)));
+        if (forwardInvocations) {
+            Assertions.assertAll(heading, executables);
+        }
+    }
+
+    public static void assertAll(Collection<Executable> executables) throws MultipleFailuresError {
+        ALL_INVOCATIONS.add(new AllInvocation(executables));
+        if (forwardInvocations) {
+            Assertions.assertAll(executables);
+        }
+    }
+
+    public static void assertAll(String heading, Collection<Executable> executables) throws MultipleFailuresError {
+        ALL_INVOCATIONS.add(new AllInvocation(executables));
+        if (forwardInvocations) {
+            Assertions.assertAll(heading, executables);
+        }
+    }
+
+    public static void assertAll(Stream<Executable> executables) throws MultipleFailuresError {
+        List<Executable> executableList = new ArrayList<>();
+        Stream<Executable> newExecutableStream = executables.peek(executableList::add);
+        ALL_INVOCATIONS.add(new AllInvocation(executableList));
+        if (forwardInvocations) {
+            Assertions.assertAll(newExecutableStream);
+        }
+    }
+
+    public static void assertAll(String heading, Stream<Executable> executables) throws MultipleFailuresError {
+        List<Executable> executableList = new ArrayList<>();
+        Stream<Executable> newExecutableStream = executables.peek(executableList::add);
+        ALL_INVOCATIONS.add(new AllInvocation(executableList));
+        if (forwardInvocations) {
+            Assertions.assertAll(heading, newExecutableStream);
+        }
+    }
+
+    // --- assert exceptions ---------------------------------------------------
+
+    @SuppressWarnings("unchecked")
+    public static <T extends Throwable> T assertThrowsExactly(Class<T> expectedType, Executable executable) {
+        THROWS_INVOCATIONS.add(new ThrowsInvocation<>(expectedType, executable));
+        if (forwardInvocations || forwardReturningInvocations) {
+            return Assertions.assertThrowsExactly(expectedType, executable);
+        } else {
+            return (T) new Throwable();
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <T extends Throwable> T assertThrowsExactly(Class<T> expectedType, Executable executable, String message) {
+        THROWS_INVOCATIONS.add(new ThrowsInvocation<>(expectedType, executable));
+        if (forwardInvocations || forwardReturningInvocations) {
+            return Assertions.assertThrowsExactly(expectedType, executable, message);
+        } else {
+            return (T) new Throwable();
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <T extends Throwable> T assertThrowsExactly(Class<T> expectedType, Executable executable,
+                                                              Supplier<String> messageSupplier) {
+        THROWS_INVOCATIONS.add(new ThrowsInvocation<>(expectedType, executable));
+        if (forwardInvocations || forwardReturningInvocations) {
+            return Assertions.assertThrowsExactly(expectedType, executable, messageSupplier);
+        } else {
+            return (T) new Throwable();
+        }
+    }
+
     @SuppressWarnings("unchecked")
     public static <T extends Throwable> T assertThrows(Class<T> expectedType, Executable executable) {
         THROWS_INVOCATIONS.add(new ThrowsInvocation<>(expectedType, executable));
@@ -1193,6 +1984,35 @@ public class TutorAssertions {
         }));
         if (forwardInvocations || forwardReturningInvocations) {
             Assertions.assertDoesNotThrow(executable, message);
+        }
+    }
+
+    // --- assertInstanceOf ----------------------------------------------------
+
+    public static <T> T assertInstanceOf(Class<T> expectedType, Object actualValue) {
+        INSTANCE_OF_INVOCATIONS.add(new InstanceOfInvocation<>(expectedType, actualValue));
+        if (forwardInvocations || forwardReturningInvocations) {
+            return Assertions.assertInstanceOf(expectedType, actualValue);
+        } else {
+            return null;
+        }
+    }
+
+    public static <T> T assertInstanceOf(Class<T> expectedType, Object actualValue, String message) {
+        INSTANCE_OF_INVOCATIONS.add(new InstanceOfInvocation<>(expectedType, actualValue));
+        if (forwardInvocations || forwardReturningInvocations) {
+            return Assertions.assertInstanceOf(expectedType, actualValue, message);
+        } else {
+            return null;
+        }
+    }
+
+    public static <T> T assertInstanceOf(Class<T> expectedType, Object actualValue, Supplier<String> messageSupplier) {
+        INSTANCE_OF_INVOCATIONS.add(new InstanceOfInvocation<>(expectedType, actualValue));
+        if (forwardInvocations || forwardReturningInvocations) {
+            return Assertions.assertInstanceOf(expectedType, actualValue, messageSupplier);
+        } else {
+            return null;
         }
     }
 }
