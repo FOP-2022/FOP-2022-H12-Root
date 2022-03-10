@@ -101,7 +101,6 @@ public class StudentExamEntryTestFunctionTutorTest {
         invokeSafe(new StudentExamEntryTest()::testMarks);
         checkAssertThrows(BadStudentMarkException.class, 1);
         checkAssertThrows(NullPointerException.class, 1);
-        checkAssertDoesNotThrow(1);
 
         // check that all valid mark values are tested
         final List<String> validMarks = List.of(SolutionTableGenerator.VALID_MARKS);
