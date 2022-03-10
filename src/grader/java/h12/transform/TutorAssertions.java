@@ -1978,6 +1978,15 @@ public class TutorAssertions {
         }
     }
 
+    public static <T> T assertDoesNotThrow(ThrowingSupplier<T> supplier) {
+        DOES_NOT_THROW_INVOCATIONS.add(new DoesNotThrowInvocation<>(supplier));
+        if (forwardInvocations || forwardReturningInvocations) {
+            return Assertions.assertDoesNotThrow(supplier);
+        } else {
+            return null;
+        }
+    }
+
     public static <T> T assertDoesNotThrow(ThrowingSupplier<T> supplier, String message) {
         DOES_NOT_THROW_INVOCATIONS.add(new DoesNotThrowInvocation<>(supplier));
         if (forwardInvocations || forwardReturningInvocations) {
