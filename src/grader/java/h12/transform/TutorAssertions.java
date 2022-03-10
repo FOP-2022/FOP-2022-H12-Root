@@ -1983,7 +1983,11 @@ public class TutorAssertions {
         if (forwardInvocations || forwardReturningInvocations) {
             return Assertions.assertDoesNotThrow(supplier);
         } else {
-            return null;
+            try {
+                return supplier.get();
+            } catch (Throwable e) {
+                return null;
+            }
         }
     }
 
@@ -1992,7 +1996,11 @@ public class TutorAssertions {
         if (forwardInvocations || forwardReturningInvocations) {
             return Assertions.assertDoesNotThrow(supplier, message);
         } else {
-            return null;
+            try {
+                return supplier.get();
+            } catch (Throwable e) {
+                return null;
+            }
         }
     }
 
@@ -2001,36 +2009,43 @@ public class TutorAssertions {
         if (forwardInvocations || forwardReturningInvocations) {
             return Assertions.assertDoesNotThrow(supplier, messageSupplier);
         } else {
-            return null;
+            try {
+                return supplier.get();
+            } catch (Throwable e) {
+                return null;
+            }
         }
     }
 
     // --- assertInstanceOf ----------------------------------------------------
 
+    @SuppressWarnings("unchecked")
     public static <T> T assertInstanceOf(Class<T> expectedType, Object actualValue) {
         INSTANCE_OF_INVOCATIONS.add(new InstanceOfInvocation<>(expectedType, actualValue));
         if (forwardInvocations || forwardReturningInvocations) {
             return Assertions.assertInstanceOf(expectedType, actualValue);
         } else {
-            return null;
+            return (T) actualValue;
         }
     }
 
+    @SuppressWarnings("unchecked")
     public static <T> T assertInstanceOf(Class<T> expectedType, Object actualValue, String message) {
         INSTANCE_OF_INVOCATIONS.add(new InstanceOfInvocation<>(expectedType, actualValue));
         if (forwardInvocations || forwardReturningInvocations) {
             return Assertions.assertInstanceOf(expectedType, actualValue, message);
         } else {
-            return null;
+            return (T) actualValue;
         }
     }
 
+    @SuppressWarnings("unchecked")
     public static <T> T assertInstanceOf(Class<T> expectedType, Object actualValue, Supplier<String> messageSupplier) {
         INSTANCE_OF_INVOCATIONS.add(new InstanceOfInvocation<>(expectedType, actualValue));
         if (forwardInvocations || forwardReturningInvocations) {
             return Assertions.assertInstanceOf(expectedType, actualValue, messageSupplier);
         } else {
-            return null;
+            return (T) actualValue;
         }
     }
 }
