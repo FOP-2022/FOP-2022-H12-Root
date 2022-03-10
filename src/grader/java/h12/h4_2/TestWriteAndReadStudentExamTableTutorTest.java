@@ -168,7 +168,7 @@ public class TestWriteAndReadStudentExamTableTutorTest {
             "Incorrect table title did not lead to failed test");
 
         final Random random = new Random();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 4; i++) {
             final int breakIndex = random.nextInt(5, 200);
             final FakeFileSystem fakeFs2 = new FakeFileSystem(tableString -> {
                 final String[] split = tableString.split("\n");

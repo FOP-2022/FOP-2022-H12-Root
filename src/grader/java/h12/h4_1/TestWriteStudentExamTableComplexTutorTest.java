@@ -154,7 +154,7 @@ public class TestWriteStudentExamTableComplexTutorTest {
         assertEquals(1, createdTables.size(),
             "Incorrect number of calls to TableGenerator#createTable");
 
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i < 5; i++) {
             final int finalI = i;
             final FakeFileSystem fakeFs2 = new FakeFileSystem(tableString -> {
                 // tableSize is 50 so this is ok
