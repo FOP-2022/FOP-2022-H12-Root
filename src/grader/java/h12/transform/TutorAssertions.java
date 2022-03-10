@@ -1958,20 +1958,11 @@ public class TutorAssertions {
         }
     }
 
-    public static <T> T assertDoesNotThrow(ThrowingSupplier<T> supplier) {
-        DOES_NOT_THROW_INVOCATIONS.add(new DoesNotThrowInvocation<>(supplier));
-        if (forwardInvocations || forwardReturningInvocations) {
-            return Assertions.assertDoesNotThrow(supplier);
-        } else {
-            return null;
-        }
-    }
-
     public static void assertDoesNotThrow(Executable executable) {
-        assertDoesNotThrow(() -> {
+        DOES_NOT_THROW_INVOCATIONS.add(new DoesNotThrowInvocation<>(() -> {
             executable.execute();
             return null;
-        });
+        }));
         if (forwardInvocations || forwardReturningInvocations) {
             Assertions.assertDoesNotThrow(executable);
         }
@@ -1984,6 +1975,24 @@ public class TutorAssertions {
         }));
         if (forwardInvocations || forwardReturningInvocations) {
             Assertions.assertDoesNotThrow(executable, message);
+        }
+    }
+
+    public static <T> T assertDoesNotThrow(ThrowingSupplier<T> supplier, String message) {
+        DOES_NOT_THROW_INVOCATIONS.add(new DoesNotThrowInvocation<>(supplier));
+        if (forwardInvocations || forwardReturningInvocations) {
+            return Assertions.assertDoesNotThrow(supplier, message);
+        } else {
+            return null;
+        }
+    }
+
+    public static <T> T assertDoesNotThrow(ThrowingSupplier<T> supplier, Supplier<String> messageSupplier) {
+        DOES_NOT_THROW_INVOCATIONS.add(new DoesNotThrowInvocation<>(supplier));
+        if (forwardInvocations || forwardReturningInvocations) {
+            return Assertions.assertDoesNotThrow(supplier, messageSupplier);
+        } else {
+            return null;
         }
     }
 
