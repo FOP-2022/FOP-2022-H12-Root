@@ -39,6 +39,7 @@ public class TestReadStudentExamEntryTutorTest {
     @ExtendWith(JagrExecutionCondition.class)
     public void testFunction() {
         TutorAssertions.reset();
+        TutorStudentExamTableIO.reset();
         final StudentExamTableIOTest test = new StudentExamTableIOTest();
         test.testReadStudentExamEntry();
         final int actualCount = TutorAssertions.EQUALS_INVOCATIONS.size();

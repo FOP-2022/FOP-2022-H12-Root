@@ -2,6 +2,7 @@ package h12.tableiotest;
 
 import h12.io.TutorBufferedReader;
 import h12.io.TutorBufferedWriter;
+import h12.studentexamtableio.TutorStudentExamTableIO;
 import h12.tablegenerator.TutorTableGenerator;
 import h12.transform.TutorAssertions;
 import h12.transform.TutorAssumptions;
@@ -29,6 +30,7 @@ public class StudentExamTableIOTestAssumptionsTutorTest {
     ) throws Throwable {
         TutorTableGenerator.reset();
         TutorAssumptions.reset();
+        TutorStudentExamTableIO.reset();
         final boolean[] invokeCallbacks = setInvokeCallbacks(Boolean.TRUE.equals(reader), Boolean.TRUE.equals(writer));
         if (Boolean.FALSE.equals(reader) || Boolean.FALSE.equals(writer)) {
             TutorAssumptions.forwardInvocations = true;
