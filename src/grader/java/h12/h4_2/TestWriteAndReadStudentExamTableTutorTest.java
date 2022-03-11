@@ -179,7 +179,7 @@ public class TestWriteAndReadStudentExamTableTutorTest {
             TutorIOFactory.CREATE_READER = fakeFs2::createReader;
             TutorIOFactory.CREATE_WRITER = fakeFs2::createWriter;
 
-            assertThrows(AssertionFailedError.class, () -> invoke(instance, original),
+            assertThrows(Throwable.class, () -> invoke(instance, original),
                 "Incorrect entry " + breakIndex + " did not lead to failed test");
         }
     }
